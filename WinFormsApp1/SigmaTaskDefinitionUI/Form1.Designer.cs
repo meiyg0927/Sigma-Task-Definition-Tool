@@ -41,6 +41,9 @@
             tabPage4 = new TabPage();
             treeView = new TreeView();
             buttonOutput = new Button();
+            buttonNodeUp = new Button();
+            buttonNodeDown = new Button();
+            buttonNodeDelete = new Button();
             groupBox1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -169,6 +172,7 @@
             treeView.Name = "treeView";
             treeView.Size = new Size(716, 944);
             treeView.TabIndex = 4;
+            treeView.NodeMouseClick += treeView_NodeMouseClick;
             // 
             // buttonOutput
             // 
@@ -181,11 +185,43 @@
             buttonOutput.UseVisualStyleBackColor = true;
             buttonOutput.Click += buttonOutput_Click;
             // 
+            // buttonNodeUp
+            // 
+            buttonNodeUp.Location = new Point(1561, 75);
+            buttonNodeUp.Name = "buttonNodeUp";
+            buttonNodeUp.Size = new Size(50, 46);
+            buttonNodeUp.TabIndex = 6;
+            buttonNodeUp.Text = "▲";
+            buttonNodeUp.UseVisualStyleBackColor = true;
+            // 
+            // buttonNodeDown
+            // 
+            buttonNodeDown.Location = new Point(1561, 127);
+            buttonNodeDown.Name = "buttonNodeDown";
+            buttonNodeDown.Size = new Size(50, 46);
+            buttonNodeDown.TabIndex = 7;
+            buttonNodeDown.Text = "▼";
+            buttonNodeDown.UseVisualStyleBackColor = true;
+            // 
+            // buttonNodeDelete
+            // 
+            buttonNodeDelete.Font = new Font("Arial", 10.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            buttonNodeDelete.Location = new Point(1561, 179);
+            buttonNodeDelete.Name = "buttonNodeDelete";
+            buttonNodeDelete.Size = new Size(50, 46);
+            buttonNodeDelete.TabIndex = 8;
+            buttonNodeDelete.Text = "✕";
+            buttonNodeDelete.UseVisualStyleBackColor = true;
+            buttonNodeDelete.Click += buttonNodeDelete_Click;
+            // 
             // Form
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(buttonNodeDelete);
+            Controls.Add(buttonNodeDown);
+            Controls.Add(buttonNodeUp);
             Controls.Add(buttonOutput);
             Controls.Add(treeView);
             Controls.Add(tabControl1);
@@ -223,5 +259,8 @@
         private Button buttonNewTask;
         private TreeView treeView;
         private Button buttonOutput;
+        private Button buttonNodeUp;
+        private Button buttonNodeDown;
+        private Button buttonNodeDelete;
     }
 }
