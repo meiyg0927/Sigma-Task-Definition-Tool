@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Folder
+.vs
+obj
+bin
+
