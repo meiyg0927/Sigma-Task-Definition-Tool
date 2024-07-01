@@ -35,11 +35,12 @@
             // 
             // richTextBox
             // 
+            richTextBox.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
             richTextBox.Location = new Point(39, 41);
             richTextBox.Name = "richTextBox";
             richTextBox.Size = new Size(1246, 1002);
             richTextBox.TabIndex = 0;
-            richTextBox.Text = "";
+            richTextBox.Text = "Hello";
             // 
             // buttonSave
             // 
