@@ -35,7 +35,7 @@
             // 
             // richTextBox
             // 
-            richTextBox.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            richTextBox.Font = new Font("Arial", 10.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
             richTextBox.Location = new Point(39, 41);
             richTextBox.Name = "richTextBox";
             richTextBox.Size = new Size(1246, 1002);
