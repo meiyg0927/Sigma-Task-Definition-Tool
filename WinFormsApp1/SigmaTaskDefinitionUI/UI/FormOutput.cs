@@ -13,6 +13,8 @@ namespace SigmaTaskDefinitionUI
 {
     public partial class FormOutput : Form
     {
+        private static string jsonFileName = "sigma.state.diamond.tasklibrary.json";
+
         public FormOutput()
         {
             InitializeComponent();
@@ -47,7 +49,7 @@ namespace SigmaTaskDefinitionUI
 
         private void SavetoFlie()
         {
-            FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "\\" + "sigma.state.diamond.tasklibrary.json", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "\\" + jsonFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
             StreamWriter sw = new StreamWriter(fs, Encoding.Default);
             StringBuilder exdata;
             try

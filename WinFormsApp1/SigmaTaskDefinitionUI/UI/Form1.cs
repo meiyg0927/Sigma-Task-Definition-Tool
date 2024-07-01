@@ -15,8 +15,8 @@ namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
     {
-        SigmaTask Task = new SigmaTask();
-        FormOutput frmOutput = new FormOutput();
+        private SigmaTask _task = new SigmaTask();
+        private FormOutput frmOutput = new FormOutput();
 
         public Form()
         {
@@ -32,13 +32,16 @@ namespace WinFormsApp1
         {
             //MessageBox.Show("buttonNewTask_Click");
 
+            //Task.JsonSerialize(); return;
+
             string taskName = textTaskName.Text.Trim();
 
-            if(Task.setTaskName(taskName))
+            if(_task.setTaskName(taskName))
             {
                 if(treeView.Nodes.Count <= 0)
                 {
                     treeView.Nodes.Add(new TreeNode(taskName));
+                    _task.addStep(); //only for test
                     Debug.WriteLine("Add New Root Node: " + taskName);
                 }
                 else
@@ -48,13 +51,13 @@ namespace WinFormsApp1
                     Debug.WriteLine("Update Root Node: " + taskName);
                 }
                 textTaskName.Clear();
-                Task.Dump();
+                _task.Dump();
             }
         }
 
         private void buttonOutput_Click(object sender, EventArgs e)
         {
-            frmOutput.strJson = Task.JsonSerialize();
+            frmOutput.strJson = _task.JsonSerialize();
             if (DialogResult.OK == frmOutput.ShowDialog())
             {
             }
