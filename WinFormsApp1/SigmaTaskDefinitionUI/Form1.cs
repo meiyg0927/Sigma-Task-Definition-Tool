@@ -16,6 +16,7 @@ namespace WinFormsApp1
     public partial class Form : System.Windows.Forms.Form
     {
         SigmaTask Task = new SigmaTask();
+        FormOutput frmOutput = new FormOutput();
 
         public Form()
         {
@@ -47,15 +48,16 @@ namespace WinFormsApp1
                     Debug.WriteLine("Update Root Node: " + taskName);
                 }
                 textTaskName.Clear();
-
                 Task.Dump();
-                Task.JsonSerialize();
             }
         }
 
         private void buttonOutput_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("buttonOutput_Click");
+            frmOutput.strJson = Task.JsonSerialize();
+            if (DialogResult.OK == frmOutput.ShowDialog())
+            {
+            }
         }
 
 

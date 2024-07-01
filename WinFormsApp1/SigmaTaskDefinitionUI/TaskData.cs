@@ -36,16 +36,18 @@ namespace SigmaTaskDefinitionUI
 
         public void Dump()
         {
-            Debug.WriteLine("---DUMP TaskData ---");
+            Debug.WriteLine("---Dump TaskData ---");
             Debug.WriteLine("Task Name: " + _data.Name);
         }
 
-        public void JsonSerialize()
+        public string JsonSerialize()
         {
             var serialized = JsonSerializer.Serialize(_data);
 
             Debug.WriteLine("---Serialize TaskData ---");
             Debug.WriteLine(serialized);
+
+            return serialized;
         }
 
         #endregion
