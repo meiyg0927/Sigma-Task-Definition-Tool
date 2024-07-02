@@ -36,9 +36,9 @@ namespace WinFormsApp1
 
             string taskName = textTaskName.Text.Trim();
 
-            if(_task.setTaskName(taskName))
+            if (_task.setTaskName(taskName))
             {
-                if(treeView.Nodes.Count <= 0)
+                if (treeView.Nodes.Count <= 0)
                 {
                     treeView.Nodes.Add(new TreeNode(taskName));
                     _task.addStep(); //only for test
@@ -83,6 +83,11 @@ namespace WinFormsApp1
                 Debug.WriteLine("Delete Selected Node: " + treeView.SelectedNode.Text);
                 treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
             }
+        }
+
+        private void buttonMainClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

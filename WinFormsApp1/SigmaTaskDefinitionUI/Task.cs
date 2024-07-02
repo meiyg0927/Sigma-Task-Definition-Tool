@@ -53,18 +53,18 @@ namespace SigmaTaskDefinitionUI
 
             string serialized = JsonConvert.SerializeObject(_data, Formatting.Indented);
 
-            Debug.WriteLine("--- Serialize TaskData START ---");
+            Debug.WriteLine("=== Serialize TaskData START ===");
             Debug.WriteLine(serialized);
-            Debug.WriteLine("--- Serialize TaskData END ---");
+            Debug.WriteLine("=== Serialize TaskData END ===");
 
             return serialized;
         }
 
         public void Dump()
         {
-            Debug.WriteLine("--- Dump TaskData START ---");
+            Debug.WriteLine("=== Dump TaskData START ===");
             Debug.WriteLine("Task Name: " + _data.Name);
-            Debug.WriteLine("--- Dump TaskData END ---");
+            Debug.WriteLine("=== Dump TaskData END ===");
         }
     }
 }

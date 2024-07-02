@@ -28,15 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            groupBox1 = new GroupBox();
-            radioButton2 = new RadioButton();
-            radioButton1 = new RadioButton();
             textTaskName = new TextBox();
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            pictureBox1 = new PictureBox();
+            label2 = new Label();
             buttonNewTask = new Button();
             tabPage2 = new TabPage();
+            label3 = new Label();
+            richTextBox1 = new RichTextBox();
+            label5 = new Label();
+            buttonRemoveGatherList = new Button();
+            buttonAddGatherList = new Button();
+            buttonAddGatherStep = new Button();
+            textBox1 = new TextBox();
+            label4 = new Label();
+            listBoxGatherObject = new ListBox();
+            pictureBox2 = new PictureBox();
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
             treeView = new TreeView();
@@ -44,48 +53,17 @@
             buttonNodeUp = new Button();
             buttonNodeDown = new Button();
             buttonNodeDelete = new Button();
-            groupBox1.SuspendLayout();
+            buttonMainClose = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(radioButton2);
-            groupBox1.Controls.Add(radioButton1);
-            groupBox1.Location = new Point(72, 71);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(438, 540);
-            groupBox1.TabIndex = 0;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Task Type";
-            // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(22, 98);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(195, 35);
-            radioButton2.TabIndex = 1;
-            radioButton2.TabStop = true;
-            radioButton2.Text = "radioButton2";
-            radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(22, 57);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(195, 35);
-            radioButton1.TabIndex = 0;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "radioButton1";
-            radioButton1.UseVisualStyleBackColor = true;
             // 
             // textTaskName
             // 
-            textTaskName.Location = new Point(53, 335);
+            textTaskName.Location = new Point(37, 132);
             textTaskName.Name = "textTaskName";
             textTaskName.Size = new Size(662, 38);
             textTaskName.TabIndex = 1;
@@ -93,7 +71,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(53, 281);
+            label1.Location = new Point(37, 78);
             label1.Name = "label1";
             label1.Size = new Size(110, 31);
             label1.TabIndex = 2;
@@ -101,6 +79,7 @@
             // 
             // tabControl1
             // 
+            tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
@@ -113,57 +92,183 @@
             // 
             // tabPage1
             // 
+            tabPage1.BorderStyle = BorderStyle.FixedSingle;
+            tabPage1.Controls.Add(pictureBox1);
+            tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(buttonNewTask);
             tabPage1.Controls.Add(textTaskName);
             tabPage1.Controls.Add(label1);
-            tabPage1.Location = new Point(8, 45);
+            tabPage1.Location = new Point(4, 43);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(771, 944);
+            tabPage1.Size = new Size(779, 950);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "步骤 1";
+            tabPage1.Text = "任务总体设置";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureBox1.Location = new Point(64, 825);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(93, 75);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 5;
+            pictureBox1.TabStop = false;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label2.Location = new Point(176, 849);
+            label2.Name = "label2";
+            label2.Size = new Size(302, 31);
+            label2.TabIndex = 4;
+            label2.Text = "此页面设置任务的总体信息";
             // 
             // buttonNewTask
             // 
-            buttonNewTask.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonNewTask.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
             buttonNewTask.Location = new Point(240, 467);
             buttonNewTask.Name = "buttonNewTask";
             buttonNewTask.Size = new Size(271, 198);
             buttonNewTask.TabIndex = 3;
-            buttonNewTask.Text = "创建";
+            buttonNewTask.Text = "新建任务";
             buttonNewTask.UseVisualStyleBackColor = true;
             buttonNewTask.Click += buttonNewTask_Click;
             // 
             // tabPage2
             // 
-            tabPage2.Controls.Add(groupBox1);
-            tabPage2.Location = new Point(8, 45);
+            tabPage2.Controls.Add(label3);
+            tabPage2.Controls.Add(richTextBox1);
+            tabPage2.Controls.Add(label5);
+            tabPage2.Controls.Add(buttonRemoveGatherList);
+            tabPage2.Controls.Add(buttonAddGatherList);
+            tabPage2.Controls.Add(buttonAddGatherStep);
+            tabPage2.Controls.Add(textBox1);
+            tabPage2.Controls.Add(label4);
+            tabPage2.Controls.Add(listBoxGatherObject);
+            tabPage2.Controls.Add(pictureBox2);
+            tabPage2.Location = new Point(4, 43);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(771, 944);
+            tabPage2.Size = new Size(779, 950);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "步骤 2";
+            tabPage2.Text = "收集类任务设置";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label3.Location = new Point(178, 782);
+            label3.Name = "label3";
+            label3.Size = new Size(302, 31);
+            label3.TabIndex = 16;
+            label3.Text = "此页面设置任务的总体信息";
+            // 
+            // richTextBox1
+            // 
+            richTextBox1.BorderStyle = BorderStyle.None;
+            richTextBox1.Font = new Font("Microsoft YaHei UI", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            richTextBox1.Location = new Point(151, 827);
+            richTextBox1.Name = "richTextBox1";
+            richTextBox1.ReadOnly = true;
+            richTextBox1.Size = new Size(591, 119);
+            richTextBox1.TabIndex = 15;
+            richTextBox1.Text = "1. 写入收集物品名称\n2. 点击“物品加入”按钮，可以把名称添加到列表中\n3. 点击“物品去除”按钮，可以把列表中选中的物品去除\n4. 点击“加入指令”按钮，新增收集指令，收集对象为列表中的所有物体";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(27, 201);
+            label5.Name = "label5";
+            label5.Size = new Size(158, 31);
+            label5.TabIndex = 14;
+            label5.Text = "收集物品列表";
+            // 
+            // buttonRemoveGatherList
+            // 
+            buttonRemoveGatherList.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonRemoveGatherList.Location = new Point(471, 248);
+            buttonRemoveGatherList.Name = "buttonRemoveGatherList";
+            buttonRemoveGatherList.Size = new Size(271, 147);
+            buttonRemoveGatherList.TabIndex = 13;
+            buttonRemoveGatherList.Text = "物品去除";
+            buttonRemoveGatherList.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddGatherList
+            // 
+            buttonAddGatherList.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonAddGatherList.Location = new Point(471, 85);
+            buttonAddGatherList.Name = "buttonAddGatherList";
+            buttonAddGatherList.Size = new Size(271, 147);
+            buttonAddGatherList.TabIndex = 12;
+            buttonAddGatherList.Text = "物品加入";
+            buttonAddGatherList.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddGatherStep
+            // 
+            buttonAddGatherStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonAddGatherStep.Location = new Point(471, 457);
+            buttonAddGatherStep.Name = "buttonAddGatherStep";
+            buttonAddGatherStep.Size = new Size(271, 198);
+            buttonAddGatherStep.TabIndex = 11;
+            buttonAddGatherStep.Text = "加入指令";
+            buttonAddGatherStep.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(27, 85);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(380, 38);
+            textBox1.TabIndex = 9;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(27, 36);
+            label4.Name = "label4";
+            label4.Size = new Size(158, 31);
+            label4.TabIndex = 10;
+            label4.Text = "收集物品名称";
+            // 
+            // listBoxGatherObject
+            // 
+            listBoxGatherObject.FormattingEnabled = true;
+            listBoxGatherObject.Location = new Point(27, 248);
+            listBoxGatherObject.Name = "listBoxGatherObject";
+            listBoxGatherObject.Size = new Size(380, 407);
+            listBoxGatherObject.TabIndex = 8;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureBox2.Location = new Point(27, 826);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(93, 75);
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.TabIndex = 7;
+            pictureBox2.TabStop = false;
             // 
             // tabPage3
             // 
-            tabPage3.Location = new Point(8, 45);
+            tabPage3.Location = new Point(4, 43);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(771, 944);
+            tabPage3.Size = new Size(779, 950);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "步骤 3";
+            tabPage3.Text = "执行类任务设置";
             tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
-            tabPage4.Location = new Point(8, 45);
+            tabPage4.Location = new Point(4, 43);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(771, 944);
+            tabPage4.Size = new Size(779, 950);
             tabPage4.TabIndex = 3;
-            tabPage4.Text = "步骤 4";
+            tabPage4.Text = "复杂任务设置";
             tabPage4.UseVisualStyleBackColor = true;
             // 
             // treeView
@@ -214,11 +319,23 @@
             buttonNodeDelete.UseVisualStyleBackColor = true;
             buttonNodeDelete.Click += buttonNodeDelete_Click;
             // 
+            // buttonMainClose
+            // 
+            buttonMainClose.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonMainClose.Location = new Point(1598, 899);
+            buttonMainClose.Name = "buttonMainClose";
+            buttonMainClose.Size = new Size(271, 120);
+            buttonMainClose.TabIndex = 9;
+            buttonMainClose.Text = "关闭";
+            buttonMainClose.UseVisualStyleBackColor = true;
+            buttonMainClose.Click += buttonMainClose_Click;
+            // 
             // Form
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(buttonMainClose);
             Controls.Add(buttonNodeDelete);
             Controls.Add(buttonNodeDown);
             Controls.Add(buttonNodeUp);
@@ -230,12 +347,13 @@
             Name = "Form";
             Text = "Sigma指令生成工具";
             Load += Form1_Load;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage2.ResumeLayout(false);
+            tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
         }
 
@@ -244,13 +362,9 @@
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        private GroupBox groupBox1;
-        private RadioButton radioButton1;
+#endregion
         private TextBox textTaskName;
         private Label label1;
-        private RadioButton radioButton2;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
@@ -262,5 +376,18 @@
         private Button buttonNodeUp;
         private Button buttonNodeDown;
         private Button buttonNodeDelete;
+        private Label label2;
+        private PictureBox pictureBox1;
+        private Button buttonMainClose;
+        private PictureBox pictureBox2;
+        private TextBox textBox1;
+        private Label label4;
+        private ListBox listBoxGatherObject;
+        private Button buttonAddGatherStep;
+        private Label label5;
+        private Button buttonRemoveGatherList;
+        private Button buttonAddGatherList;
+        private RichTextBox richTextBox1;
+        private Label label3;
     }
 }
