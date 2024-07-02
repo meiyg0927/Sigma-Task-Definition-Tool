@@ -35,11 +35,9 @@ namespace SigmaTaskDefinitionUI
             if (_data.Steps != null && _data.Steps.Count == 0)
             {
                 GatherStep step1 = new GatherStep();
-                step1.Verb = "AAA";
                 _data.Steps.Add(step1);
 
                 GatherStep step2 = new GatherStep();
-                step2.Verb = "BBB";
                 _data.Steps.Add(step2);
             }
             return true;

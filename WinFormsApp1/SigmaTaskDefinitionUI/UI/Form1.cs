@@ -41,7 +41,10 @@ namespace WinFormsApp1
             {
                 if (treeView.Nodes.Count <= 0)
                 {
-                    treeView.Nodes.Add(new TreeNode(taskName));
+                    TreeNode newNode = new TreeNode(taskName);
+                    newNode.ImageIndex = 0;
+                    treeView.Nodes.Add(newNode);
+                    _task.addStep(); // only for test
                     Debug.WriteLine("Add New Root Node: " + taskName);
                 }
                 else

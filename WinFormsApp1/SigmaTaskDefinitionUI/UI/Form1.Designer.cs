@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             textTaskName = new TextBox();
             label1 = new Label();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            pictureBox1 = new PictureBox();
+            pictureTip1 = new PictureBox();
             label2 = new Label();
             buttonNewTask = new Button();
             tabPage2 = new TabPage();
@@ -45,10 +47,11 @@
             textBoxGatherObjectBack = new TextBox();
             label4 = new Label();
             listBoxGatherObject = new ListBox();
-            pictureBox2 = new PictureBox();
+            pictureITips2 = new PictureBox();
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
             treeView = new TreeView();
+            imageList = new ImageList(components);
             buttonOutput = new Button();
             buttonNodeUp = new Button();
             buttonNodeDown = new Button();
@@ -56,9 +59,9 @@
             buttonMainClose = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureITips2).BeginInit();
             SuspendLayout();
             // 
             // textTaskName
@@ -93,7 +96,7 @@
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.FixedSingle;
-            tabPage1.Controls.Add(pictureBox1);
+            tabPage1.Controls.Add(pictureTip1);
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(buttonNewTask);
             tabPage1.Controls.Add(textTaskName);
@@ -106,15 +109,15 @@
             tabPage1.Text = "任务总体配置";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // pictureTip1
             // 
-            pictureBox1.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
-            pictureBox1.Location = new Point(64, 825);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(93, 75);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 5;
-            pictureBox1.TabStop = false;
+            pictureTip1.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureTip1.Location = new Point(64, 825);
+            pictureTip1.Name = "pictureTip1";
+            pictureTip1.Size = new Size(93, 75);
+            pictureTip1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureTip1.TabIndex = 5;
+            pictureTip1.TabStop = false;
             // 
             // label2
             // 
@@ -149,7 +152,7 @@
             tabPage2.Controls.Add(textBoxGatherObjectBack);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(listBoxGatherObject);
-            tabPage2.Controls.Add(pictureBox2);
+            tabPage2.Controls.Add(pictureITips2);
             tabPage2.Location = new Point(4, 43);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -244,15 +247,15 @@
             listBoxGatherObject.Size = new Size(380, 407);
             listBoxGatherObject.TabIndex = 8;
             // 
-            // pictureBox2
+            // pictureITips2
             // 
-            pictureBox2.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
-            pictureBox2.Location = new Point(27, 826);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(93, 75);
-            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox2.TabIndex = 7;
-            pictureBox2.TabStop = false;
+            pictureITips2.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureITips2.Location = new Point(27, 826);
+            pictureITips2.Name = "pictureITips2";
+            pictureITips2.Size = new Size(93, 75);
+            pictureITips2.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureITips2.TabIndex = 7;
+            pictureITips2.TabStop = false;
             // 
             // tabPage3
             // 
@@ -276,11 +279,25 @@
             // 
             // treeView
             // 
+            treeView.ImageIndex = 0;
+            treeView.ImageList = imageList;
             treeView.Location = new Point(839, 73);
             treeView.Name = "treeView";
+            treeView.SelectedImageIndex = 0;
             treeView.Size = new Size(716, 950);
             treeView.TabIndex = 4;
             treeView.NodeMouseClick += treeView_NodeMouseClick;
+            // 
+            // imageList
+            // 
+            imageList.ColorDepth = ColorDepth.Depth32Bit;
+            imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
+            imageList.TransparentColor = Color.Transparent;
+            imageList.Images.SetKeyName(0, "Task.png");
+            imageList.Images.SetKeyName(1, "Eyes.png");
+            imageList.Images.SetKeyName(2, "Do.png");
+            imageList.Images.SetKeyName(3, "Combo.png");
+            imageList.Images.SetKeyName(4, "Substep.png");
             // 
             // buttonOutput
             // 
@@ -353,10 +370,10 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureITips2).EndInit();
             ResumeLayout(false);
         }
 
@@ -380,9 +397,9 @@
         private Button buttonNodeDown;
         private Button buttonNodeDelete;
         private Label label2;
-        private PictureBox pictureBox1;
+        private PictureBox pictureTip1;
         private Button buttonMainClose;
-        private PictureBox pictureBox2;
+        private PictureBox pictureITips2;
         private TextBox textBoxGatherObjectBack;
         private Label label4;
         private ListBox listBoxGatherObject;
@@ -392,5 +409,6 @@
         private Button buttonAddGatherList;
         private RichTextBox richTextBox1;
         private Label label3;
+        private ImageList imageList;
     }
 }
