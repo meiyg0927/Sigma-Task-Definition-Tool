@@ -17,6 +17,7 @@ namespace WinFormsApp1
     {
         private SigmaTask _task = new SigmaTask();
         private FormOutput frmOutput = new FormOutput();
+        private HashSet<string> existingGatherObjects = new HashSet<string>();
 
         public Form()
         {
@@ -41,7 +42,6 @@ namespace WinFormsApp1
                 if (treeView.Nodes.Count <= 0)
                 {
                     treeView.Nodes.Add(new TreeNode(taskName));
-                    _task.addStep(); //only for test
                     Debug.WriteLine("Add New Root Node: " + taskName);
                 }
                 else
@@ -88,6 +88,31 @@ namespace WinFormsApp1
         private void buttonMainClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }   
+
+        private void buttonAddGatherList_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxGatherObjectBack.Text)) return;
+
+            string newItem = textBoxGatherObjectBack.Text.Trim();
+            if(!existingGatherObjects.Contains(newItem))
+            {
+                existingGatherObjects.Add(newItem);
+                listBoxGatherObject.Items.Add(newItem);
+                textBoxGatherObjectBack.Clear();
+            }
+            else { MessageBox.Show("同样名字的物品已经在列表中","",MessageBoxButtons.OK, MessageBoxIcon.Information); }
+        }
+
+        private void buttonRemoveGatherList_Click(object sender, EventArgs e)
+        {
+            int selectedIndex = listBoxGatherObject.SelectedIndex;
+            
+            if (selectedIndex >=0 )
+            {
+                existingGatherObjects.Remove(listBoxGatherObject.Items[selectedIndex].ToString());
+                listBoxGatherObject.Items.RemoveAt(selectedIndex);
+            }
         }
     }
 }

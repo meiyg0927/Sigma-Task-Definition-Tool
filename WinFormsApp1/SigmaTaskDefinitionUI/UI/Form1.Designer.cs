@@ -42,7 +42,7 @@
             buttonRemoveGatherList = new Button();
             buttonAddGatherList = new Button();
             buttonAddGatherStep = new Button();
-            textBox1 = new TextBox();
+            textBoxGatherObjectBack = new TextBox();
             label4 = new Label();
             listBoxGatherObject = new ListBox();
             pictureBox2 = new PictureBox();
@@ -103,7 +103,7 @@
             tabPage1.Padding = new Padding(3);
             tabPage1.Size = new Size(779, 950);
             tabPage1.TabIndex = 0;
-            tabPage1.Text = "任务总体设置";
+            tabPage1.Text = "任务总体配置";
             tabPage1.UseVisualStyleBackColor = true;
             // 
             // pictureBox1
@@ -139,13 +139,14 @@
             // 
             // tabPage2
             // 
+            tabPage2.BorderStyle = BorderStyle.FixedSingle;
             tabPage2.Controls.Add(label3);
             tabPage2.Controls.Add(richTextBox1);
             tabPage2.Controls.Add(label5);
             tabPage2.Controls.Add(buttonRemoveGatherList);
             tabPage2.Controls.Add(buttonAddGatherList);
             tabPage2.Controls.Add(buttonAddGatherStep);
-            tabPage2.Controls.Add(textBox1);
+            tabPage2.Controls.Add(textBoxGatherObjectBack);
             tabPage2.Controls.Add(label4);
             tabPage2.Controls.Add(listBoxGatherObject);
             tabPage2.Controls.Add(pictureBox2);
@@ -154,18 +155,18 @@
             tabPage2.Padding = new Padding(3);
             tabPage2.Size = new Size(779, 950);
             tabPage2.TabIndex = 1;
-            tabPage2.Text = "收集类任务设置";
+            tabPage2.Text = "收集类任务配置";
             tabPage2.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            label3.Location = new Point(178, 782);
+            label3.Location = new Point(151, 781);
             label3.Name = "label3";
-            label3.Size = new Size(302, 31);
+            label3.Size = new Size(326, 31);
             label3.TabIndex = 16;
-            label3.Text = "此页面设置任务的总体信息";
+            label3.Text = "此页面配置收集类任务的信息";
             // 
             // richTextBox1
             // 
@@ -196,6 +197,7 @@
             buttonRemoveGatherList.TabIndex = 13;
             buttonRemoveGatherList.Text = "物品去除";
             buttonRemoveGatherList.UseVisualStyleBackColor = true;
+            buttonRemoveGatherList.Click += buttonRemoveGatherList_Click;
             // 
             // buttonAddGatherList
             // 
@@ -206,6 +208,7 @@
             buttonAddGatherList.TabIndex = 12;
             buttonAddGatherList.Text = "物品加入";
             buttonAddGatherList.UseVisualStyleBackColor = true;
+            buttonAddGatherList.Click += buttonAddGatherList_Click;
             // 
             // buttonAddGatherStep
             // 
@@ -217,12 +220,12 @@
             buttonAddGatherStep.Text = "加入指令";
             buttonAddGatherStep.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // textBoxGatherObjectBack
             // 
-            textBox1.Location = new Point(27, 85);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(380, 38);
-            textBox1.TabIndex = 9;
+            textBoxGatherObjectBack.Location = new Point(27, 85);
+            textBoxGatherObjectBack.Name = "textBoxGatherObjectBack";
+            textBoxGatherObjectBack.Size = new Size(380, 38);
+            textBoxGatherObjectBack.TabIndex = 9;
             // 
             // label4
             // 
@@ -258,7 +261,7 @@
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(779, 950);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "执行类任务设置";
+            tabPage3.Text = "执行类任务配置";
             tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
@@ -268,14 +271,14 @@
             tabPage4.Padding = new Padding(3);
             tabPage4.Size = new Size(779, 950);
             tabPage4.TabIndex = 3;
-            tabPage4.Text = "复杂任务设置";
+            tabPage4.Text = "复杂任务配置";
             tabPage4.UseVisualStyleBackColor = true;
             // 
             // treeView
             // 
-            treeView.Location = new Point(839, 75);
+            treeView.Location = new Point(839, 73);
             treeView.Name = "treeView";
-            treeView.Size = new Size(716, 944);
+            treeView.Size = new Size(716, 950);
             treeView.TabIndex = 4;
             treeView.NodeMouseClick += treeView_NodeMouseClick;
             // 
@@ -380,7 +383,7 @@
         private PictureBox pictureBox1;
         private Button buttonMainClose;
         private PictureBox pictureBox2;
-        private TextBox textBox1;
+        private TextBox textBoxGatherObjectBack;
         private Label label4;
         private ListBox listBoxGatherObject;
         private Button buttonAddGatherStep;

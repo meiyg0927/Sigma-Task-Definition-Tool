@@ -45,6 +45,16 @@ namespace SigmaTaskDefinitionUI
             return true;
         }
 
+        public bool addGatherStep(List<string> objects)
+        {
+            if(_data.Steps == null) return false;
+
+            GatherStep step = new GatherStep();
+            _data.Steps.Add(step);
+
+            return true;
+        }
+
         //Method
         public string JsonSerialize()
         {

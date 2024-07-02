@@ -29,25 +29,15 @@ namespace SigmaTaskDefinitionUI.Data
 
         public string Noun { get; set; } = string.Empty;
 
-        // public List<string> Objects { get; set; }
+        public List<string> Objects { get; set; } = new List<string>();
 
         public GatherStep()
         {
             Type = 1;
 
-            this.Label = "GatherStep";
-            this.Verb = string.Empty;
-            this.Noun = string.Empty;
-        }
-
-        public GatherStep(string label, string verb, string noun, List<string> objects)
-        {
-            Type = 1;
-
-            this.Label = "GatherStep";
-            this.Verb = verb;
-            this.Noun = noun;
-            // this.Objects = objects;
+            this.Label = string.Empty;
+            this.Verb = "Gather";
+            this.Noun = "Objects";
         }
     }
 }
