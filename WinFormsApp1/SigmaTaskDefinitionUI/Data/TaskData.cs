@@ -13,16 +13,9 @@ namespace SigmaTaskDefinitionUI.Data
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public IList<Step>? Steps { get; set; }
-    }
-    #endregion
 
-    #region Step
-    internal class Step
-    {
-        public string Label { get; set; } = string.Empty;
-
-        public Step() { }
+        //public IList<Step>? Steps { get; set; }
+        public List<Step> Steps {  get; set; } = new List<Step>();
     }
     #endregion
 }

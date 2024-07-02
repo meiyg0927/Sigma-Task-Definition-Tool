@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
+//using System.Text.Json;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using SigmaTaskDefinitionUI.Data;
 
@@ -12,7 +13,7 @@ namespace SigmaTaskDefinitionUI
     //This class is the bridge/interface between UI & Data
     internal class SigmaTask
     {
-        private TaskData _data = new TaskData { Steps = new List<Step>(), Description = "This is the game I love" };
+        private TaskData _data = new TaskData { Description = "This is the Sigma Task Data" };
 
         //TaskName
         public string getTaskName() { return _data.Name; }
@@ -31,11 +32,15 @@ namespace SigmaTaskDefinitionUI
         //Step
         public bool addStep()
         {
-            if (_data.Steps.Count == 0)
+            if (_data.Steps != null && _data.Steps.Count == 0)
             {
-                Step step = new Step();
-                step.Label = "Label0";
-                _data.Steps.Add(step);
+                GatherStep step1 = new GatherStep();
+                step1.Verb = "AAA";
+                _data.Steps.Add(step1);
+
+                GatherStep step2 = new GatherStep();
+                step2.Verb = "BBB";
+                _data.Steps.Add(step2);
             }
             return true;
         }
@@ -43,8 +48,10 @@ namespace SigmaTaskDefinitionUI
         //Method
         public string JsonSerialize()
         {
-            var options = new JsonSerializerOptions { WriteIndented = true }; //, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-            string serialized = JsonSerializer.Serialize(_data, options);
+            //var options = new JsonSerializerOptions { WriteIndented = true }; //, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            //string serialized = JsonSerializer.Serialize(_data, options);
+
+            string serialized = JsonConvert.SerializeObject(_data, Formatting.Indented);
 
             Debug.WriteLine("--- Serialize TaskData START ---");
             Debug.WriteLine(serialized);
