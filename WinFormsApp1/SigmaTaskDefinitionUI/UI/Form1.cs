@@ -121,8 +121,12 @@ namespace WinFormsApp1
 
             if (selectedIndex >= 0)
             {
-                existingGatherObjects.Remove(listBoxGatherObject.Items[selectedIndex].ToString());
-                listBoxGatherObject.Items.RemoveAt(selectedIndex);
+                string? str = listBoxGatherObject.Items[selectedIndex].ToString();
+                if (str != null)
+                {
+                    existingGatherObjects.Remove(str);
+                    listBoxGatherObject.Items.RemoveAt(selectedIndex);
+                }
             }
         }
 
@@ -138,7 +142,6 @@ namespace WinFormsApp1
             }
 
             //TreeView 增加一个GatherStep节点
-            TreeNode rootTreeNode = root_node;
             string GatherStepName = "GatherStep: ";
             List<string> Objects = new List<string>();
             for (int i = 0; i < listBoxGatherObject.Items.Count; i++) 
@@ -148,11 +151,17 @@ namespace WinFormsApp1
                 GatherStepName += obj + ",";
                 Objects.Add(obj);
             }
-            if(GatherStepName.Length > NAME_MAX) GatherStepName = GatherStepName.Substring(0, NAME_MAX);
 
-            TreeNode newNode = new TreeNode(GatherStepName);
+            TreeNode newNode = new TreeNode();
+            if (GatherStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = GatherStepName; //物体字符太长的话，用Tip来展示
+                GatherStepName = GatherStepName.Substring(0, NAME_MAX);
+            }
+            newNode.Text = GatherStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.GATHER;
-            int node_index = rootTreeNode.Nodes.Add(newNode);
+            int node_index = root_node.Nodes.Add(newNode);
+            root_node.Expand();
 
             Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
 

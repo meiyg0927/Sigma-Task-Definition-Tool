@@ -285,6 +285,7 @@
             treeView.Location = new Point(839, 73);
             treeView.Name = "treeView";
             treeView.SelectedImageIndex = 0;
+            treeView.ShowNodeToolTips = true;
             treeView.Size = new Size(716, 950);
             treeView.TabIndex = 4;
             treeView.NodeMouseClick += treeView_NodeMouseClick;
