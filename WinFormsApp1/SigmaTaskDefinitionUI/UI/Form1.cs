@@ -11,11 +11,15 @@ using System.Windows.Forms;
 using System.Text.Json;
 using SigmaTaskDefinitionUI;
 using SigmaTaskDefinitionUI.UI;
+using SigmaTaskDefinitionUI.Data;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
     {
+        static int NAME_MAX = 40; //step 最长字符数
+
         private SigmaTask sigma_task = new SigmaTask();
         private FormOutput frmOutput = new FormOutput();
         private HashSet<string> existingGatherObjects = new HashSet<string>();
@@ -73,21 +77,21 @@ namespace WinFormsApp1
 
             if (sigma_task.setTaskName(taskName))
             {
-                TreeNodeData? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+                TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
 
                 if (root_node == null)
                 {
                     TreeNode newNode = new TreeNode(taskName);
-                    newNode.ImageIndex = (int)TreeNodeType.ROOT;
+                    newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.ROOT;
                     int root_index = treeView.Nodes.Add(newNode);
-                    TreeNodeManage.Instance.Add(root_index, TreeNodeType.ROOT);
+                    TreeNodeManage.Instance.Add(TreeNodeType.ROOT, newNode);
 
                     Debug.WriteLine("Add New Root Node: " + taskName);
                 }
-                else 
+                else
                 {
-                    TreeNode rootNode = treeView.Nodes[root_node.Index_TreeNode];
-                    rootNode.Text = taskName;
+                    TreeNode rootTreeNode = root_node;
+                    rootTreeNode.Text = taskName;
                     Debug.WriteLine("Update Root Node: " + taskName);
                 }
 
@@ -124,7 +128,42 @@ namespace WinFormsApp1
 
         private void buttonAddGatherStep_Click(object sender, EventArgs e)
         {
+            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            if (root_node == null) return;
 
+            if (listBoxGatherObject.Items.Count <= 0)
+            {
+                MessageBox.Show("请先输入需要收集的物品名字", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //TreeView 增加一个GatherStep节点
+            TreeNode rootTreeNode = root_node;
+            string GatherStepName = "GatherStep: ";
+            List<string> Objects = new List<string>();
+            for (int i = 0; i < listBoxGatherObject.Items.Count; i++) 
+            {
+                string? obj = listBoxGatherObject.Items[i].ToString();
+                if (obj == null) continue;
+                GatherStepName += obj + ",";
+                Objects.Add(obj);
+            }
+            if(GatherStepName.Length > NAME_MAX) GatherStepName = GatherStepName.Substring(0, NAME_MAX);
+
+            TreeNode newNode = new TreeNode(GatherStepName);
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.GATHER;
+            int node_index = rootTreeNode.Nodes.Add(newNode);
+
+            Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
+
+            //清空ListBoxGatherObject控件的物体
+            listBoxGatherObject.Items.Clear();
+
+            //TaskData增加一条记录
+            Step? step = sigma_task.addGatherStep(Objects);
+
+            //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+            TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode,step);
         }
         #endregion
     }

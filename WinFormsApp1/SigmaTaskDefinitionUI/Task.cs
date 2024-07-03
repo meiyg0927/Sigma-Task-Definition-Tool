@@ -30,27 +30,15 @@ namespace SigmaTaskDefinitionUI
         bool isTaskNameNullOrEmpty() { return string.IsNullOrEmpty(_data.Name); }
         
         //Step
-        public bool addStep()
+        public Step? addGatherStep(List<string> objects)
         {
-            if (_data.Steps != null && _data.Steps.Count == 0)
-            {
-                GatherStep step1 = new GatherStep();
-                _data.Steps.Add(step1);
-
-                GatherStep step2 = new GatherStep();
-                _data.Steps.Add(step2);
-            }
-            return true;
-        }
-
-        public int addGatherStep(List<string> objects)
-        {
-            if(_data.Steps == null) return -1;
+            if(_data.Steps == null) return null;
 
             GatherStep step = new GatherStep();
+            step.Objects = objects;
             _data.Steps.Add(step);
 
-            return -1;
+            return step;
         }
 
         //Method
