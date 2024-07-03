@@ -51,6 +51,9 @@
             tabPage3 = new TabPage();
             tabPage4 = new TabPage();
             treeView = new TreeView();
+            contextMenuStripTreeView = new ContextMenuStrip(components);
+            toolStripSeparator1 = new ToolStripSeparator();
+            toolStripMenuItemEdit = new ToolStripMenuItem();
             imageList = new ImageList(components);
             buttonOutput = new Button();
             buttonNodeUp = new Button();
@@ -62,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureITips2).BeginInit();
+            contextMenuStripTreeView.SuspendLayout();
             SuspendLayout();
             // 
             // textTaskName
@@ -280,6 +284,7 @@
             // 
             // treeView
             // 
+            treeView.ContextMenuStrip = contextMenuStripTreeView;
             treeView.ImageIndex = 0;
             treeView.ImageList = imageList;
             treeView.Location = new Point(839, 73);
@@ -289,6 +294,25 @@
             treeView.Size = new Size(716, 950);
             treeView.TabIndex = 4;
             treeView.NodeMouseClick += treeView_NodeMouseClick;
+            // 
+            // contextMenuStripTreeView
+            // 
+            contextMenuStripTreeView.ImageScalingSize = new Size(32, 32);
+            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemEdit });
+            contextMenuStripTreeView.Name = "contextMenuStripTreeView";
+            contextMenuStripTreeView.Size = new Size(301, 92);
+            contextMenuStripTreeView.ItemClicked += contextMenuStripTreeView_ItemClicked;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new Size(297, 6);
+            // 
+            // toolStripMenuItemEdit
+            // 
+            toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
+            toolStripMenuItemEdit.Size = new Size(300, 38);
+            toolStripMenuItemEdit.Text = "编辑";
             // 
             // imageList
             // 
@@ -377,6 +401,7 @@
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureITips2).EndInit();
+            contextMenuStripTreeView.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -413,5 +438,8 @@
         private RichTextBox richTextBox1;
         private Label label3;
         private ImageList imageList;
+        private ContextMenuStrip contextMenuStripTreeView;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem toolStripMenuItemEdit;
     }
 }

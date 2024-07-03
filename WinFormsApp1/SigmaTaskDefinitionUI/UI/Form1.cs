@@ -66,6 +66,22 @@ namespace WinFormsApp1
                 treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
             }
         }
+
+        private void contextMenuStripTreeView_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem == null || e.ClickedItem.Name == null) 
+                return;
+
+            string item = e.ClickedItem.Name;
+            switch (item)
+            {
+                case "toolStripMenuItemEdit":
+                    //MessageBox.Show("Sender: " + sender.ToString() + " Event: toolStripMenuItemEdit");
+                    break;
+                default:
+                    break;
+            }
+        }
         #endregion
 
         #region Message Handle for Tab of Basic
@@ -144,7 +160,7 @@ namespace WinFormsApp1
             //TreeView 增加一个GatherStep节点
             string GatherStepName = "GatherStep: ";
             List<string> Objects = new List<string>();
-            for (int i = 0; i < listBoxGatherObject.Items.Count; i++) 
+            for (int i = 0; i < listBoxGatherObject.Items.Count; i++)
             {
                 string? obj = listBoxGatherObject.Items[i].ToString();
                 if (obj == null) continue;
@@ -172,8 +188,10 @@ namespace WinFormsApp1
             Step? step = sigma_task.addGatherStep(Objects);
 
             //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
-            TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode,step);
+            TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
         }
         #endregion
+
+
     }
 }
