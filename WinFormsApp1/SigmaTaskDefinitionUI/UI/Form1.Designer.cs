@@ -222,6 +222,7 @@
             buttonAddGatherStep.TabIndex = 11;
             buttonAddGatherStep.Text = "加入指令";
             buttonAddGatherStep.UseVisualStyleBackColor = true;
+            buttonAddGatherStep.Click += buttonAddGatherStep_Click;
             // 
             // textBoxGatherObjectBack
             // 
@@ -293,11 +294,12 @@
             imageList.ColorDepth = ColorDepth.Depth32Bit;
             imageList.ImageStream = (ImageListStreamer)resources.GetObject("imageList.ImageStream");
             imageList.TransparentColor = Color.Transparent;
-            imageList.Images.SetKeyName(0, "Task.png");
-            imageList.Images.SetKeyName(1, "Eyes.png");
-            imageList.Images.SetKeyName(2, "Do.png");
-            imageList.Images.SetKeyName(3, "Combo.png");
-            imageList.Images.SetKeyName(4, "Substep.png");
+            imageList.Images.SetKeyName(0, "Error.png");
+            imageList.Images.SetKeyName(1, "Task.png");
+            imageList.Images.SetKeyName(2, "Eyes.png");
+            imageList.Images.SetKeyName(3, "Do.png");
+            imageList.Images.SetKeyName(4, "Combo.png");
+            imageList.Images.SetKeyName(5, "Substep.png");
             // 
             // buttonOutput
             // 

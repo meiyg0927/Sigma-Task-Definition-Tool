@@ -43,14 +43,14 @@ namespace SigmaTaskDefinitionUI
             return true;
         }
 
-        public bool addGatherStep(List<string> objects)
+        public int addGatherStep(List<string> objects)
         {
-            if(_data.Steps == null) return false;
+            if(_data.Steps == null) return -1;
 
             GatherStep step = new GatherStep();
             _data.Steps.Add(step);
 
-            return true;
+            return -1;
         }
 
         //Method
