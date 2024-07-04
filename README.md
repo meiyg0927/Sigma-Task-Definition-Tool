@@ -1,2 +1,2 @@
 # Sigma-Task-Definition-Tool
-This is PC UI to define Sigam Task
+This is the PC GUI tool to define Sigma Task
