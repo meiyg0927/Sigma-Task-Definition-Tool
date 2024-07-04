@@ -23,10 +23,11 @@ namespace SigmaTaskDefinitionUI.Data
         public TreeNodeType type = TreeNodeType.NONE;
         public TreeNode? node = null;
         public Step? step = null;
+        public SubStep? subStep = null;
 
         public TreeNodeData() { }
-        public TreeNodeData(TreeNodeType Type, TreeNode? Node, Step? Stp) 
-        { this.type = Type; this.node = Node; this.step = Stp; }
+        public TreeNodeData(TreeNodeType Type, TreeNode? Node, Step? Stp, SubStep? Substp) 
+        { this.type = Type; this.node = Node; this.step = Stp; this.subStep = Substp; }
     }
 
     internal class TreeNodeManage
@@ -41,7 +42,7 @@ namespace SigmaTaskDefinitionUI.Data
         private Dictionary<TreeNode, TreeNodeData> _dict = new Dictionary<TreeNode, TreeNodeData>();
         private TreeNode? root_node = null;
 
-        public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null)
+        public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null, SubStep? Substp = null)
         {
             if (Node == null) return false;
 
@@ -53,7 +54,7 @@ namespace SigmaTaskDefinitionUI.Data
             }
             else
             {
-                TreeNodeData data = new TreeNodeData(Type, Node, Stp);
+                TreeNodeData data = new TreeNodeData(Type, Node, Stp, Substp);
                 try
                 {
                     _dict.Add(Node, data);

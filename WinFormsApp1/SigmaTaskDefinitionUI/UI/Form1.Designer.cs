@@ -58,6 +58,19 @@
             pictureTip3 = new PictureBox();
             dateTimeDoDuring = new DateTimePicker();
             tabPage4 = new TabPage();
+            groupBox1 = new GroupBox();
+            button4 = new Button();
+            button5 = new Button();
+            buttonRemoveSubStep = new Button();
+            buttonEditSubStep = new Button();
+            buttonAddSubStep = new Button();
+            listBoxSubStep = new ListBox();
+            label10 = new Label();
+            richTextComplexDescription = new RichTextBox();
+            label9 = new Label();
+            richTextBox3 = new RichTextBox();
+            pictureBox1 = new PictureBox();
+            buttonAddComplexStep = new Button();
             treeView = new TreeView();
             contextMenuStripTreeView = new ContextMenuStrip(components);
             toolStripSeparator1 = new ToolStripSeparator();
@@ -75,6 +88,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureITips2).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip3).BeginInit();
+            tabPage4.SuspendLayout();
+            groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStripTreeView.SuspendLayout();
             SuspendLayout();
             // 
@@ -373,6 +389,14 @@
             // 
             // tabPage4
             // 
+            tabPage4.BorderStyle = BorderStyle.FixedSingle;
+            tabPage4.Controls.Add(groupBox1);
+            tabPage4.Controls.Add(label10);
+            tabPage4.Controls.Add(richTextComplexDescription);
+            tabPage4.Controls.Add(label9);
+            tabPage4.Controls.Add(richTextBox3);
+            tabPage4.Controls.Add(pictureBox1);
+            tabPage4.Controls.Add(buttonAddComplexStep);
             tabPage4.Location = new Point(4, 43);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
@@ -380,6 +404,141 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "复杂任务配置";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(button4);
+            groupBox1.Controls.Add(button5);
+            groupBox1.Controls.Add(buttonRemoveSubStep);
+            groupBox1.Controls.Add(buttonEditSubStep);
+            groupBox1.Controls.Add(buttonAddSubStep);
+            groupBox1.Controls.Add(listBoxSubStep);
+            groupBox1.Location = new Point(15, 6);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(740, 430);
+            groupBox1.TabIndex = 29;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "子指令设置";
+            // 
+            // button4
+            // 
+            button4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            button4.Location = new Point(367, 240);
+            button4.Name = "button4";
+            button4.Size = new Size(68, 63);
+            button4.TabIndex = 33;
+            button4.Text = "▼";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            button5.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            button5.Location = new Point(367, 127);
+            button5.Name = "button5";
+            button5.Size = new Size(68, 68);
+            button5.TabIndex = 32;
+            button5.Text = "▲";
+            button5.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemoveSubStep
+            // 
+            buttonRemoveSubStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonRemoveSubStep.Location = new Point(448, 170);
+            buttonRemoveSubStep.Name = "buttonRemoveSubStep";
+            buttonRemoveSubStep.Size = new Size(271, 108);
+            buttonRemoveSubStep.TabIndex = 30;
+            buttonRemoveSubStep.Text = "删除子指令";
+            buttonRemoveSubStep.UseVisualStyleBackColor = true;
+            buttonRemoveSubStep.Click += buttonRemoveSubStep_Click;
+            // 
+            // buttonEditSubStep
+            // 
+            buttonEditSubStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonEditSubStep.Location = new Point(448, 305);
+            buttonEditSubStep.Name = "buttonEditSubStep";
+            buttonEditSubStep.Size = new Size(271, 108);
+            buttonEditSubStep.TabIndex = 31;
+            buttonEditSubStep.Text = "编辑子指令";
+            buttonEditSubStep.UseVisualStyleBackColor = true;
+            buttonEditSubStep.Click += buttonEditSubStep_Click;
+            // 
+            // buttonAddSubStep
+            // 
+            buttonAddSubStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonAddSubStep.Location = new Point(448, 37);
+            buttonAddSubStep.Name = "buttonAddSubStep";
+            buttonAddSubStep.Size = new Size(271, 103);
+            buttonAddSubStep.TabIndex = 29;
+            buttonAddSubStep.Text = "新建子指令";
+            buttonAddSubStep.UseVisualStyleBackColor = true;
+            buttonAddSubStep.Click += buttonAddSubStep_Click;
+            // 
+            // listBoxSubStep
+            // 
+            listBoxSubStep.FormattingEnabled = true;
+            listBoxSubStep.Location = new Point(17, 37);
+            listBoxSubStep.Name = "listBoxSubStep";
+            listBoxSubStep.Size = new Size(344, 376);
+            listBoxSubStep.TabIndex = 28;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(35, 452);
+            label10.Name = "label10";
+            label10.Size = new Size(158, 31);
+            label10.TabIndex = 26;
+            label10.Text = "复杂任务描述";
+            // 
+            // richTextComplexDescription
+            // 
+            richTextComplexDescription.Location = new Point(35, 494);
+            richTextComplexDescription.Name = "richTextComplexDescription";
+            richTextComplexDescription.Size = new Size(344, 198);
+            richTextComplexDescription.TabIndex = 25;
+            richTextComplexDescription.Text = "";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label9.Location = new Point(151, 781);
+            label9.Name = "label9";
+            label9.Size = new Size(326, 31);
+            label9.TabIndex = 24;
+            label9.Text = "此页面配置复杂类任务的信息";
+            // 
+            // richTextBox3
+            // 
+            richTextBox3.BorderStyle = BorderStyle.None;
+            richTextBox3.Font = new Font("Microsoft YaHei UI", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            richTextBox3.Location = new Point(151, 827);
+            richTextBox3.Name = "richTextBox3";
+            richTextBox3.ReadOnly = true;
+            richTextBox3.Size = new Size(591, 119);
+            richTextBox3.TabIndex = 23;
+            richTextBox3.Text = "1. 设置执行任务的时间\n2. 输入执行任务的具体描述\n3. 点击“加入指令”按钮，新增执行指令";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureBox1.Location = new Point(27, 826);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(93, 75);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.TabIndex = 22;
+            pictureBox1.TabStop = false;
+            // 
+            // buttonAddComplexStep
+            // 
+            buttonAddComplexStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonAddComplexStep.Location = new Point(463, 494);
+            buttonAddComplexStep.Name = "buttonAddComplexStep";
+            buttonAddComplexStep.Size = new Size(271, 198);
+            buttonAddComplexStep.TabIndex = 21;
+            buttonAddComplexStep.Text = "加入指令";
+            buttonAddComplexStep.UseVisualStyleBackColor = true;
+            buttonAddComplexStep.Click += buttonAddComplexStep_Click;
             // 
             // treeView
             // 
@@ -470,9 +629,9 @@
             // buttonMainClose
             // 
             buttonMainClose.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonMainClose.Location = new Point(1598, 899);
+            buttonMainClose.Location = new Point(1598, 876);
             buttonMainClose.Name = "buttonMainClose";
-            buttonMainClose.Size = new Size(271, 120);
+            buttonMainClose.Size = new Size(271, 143);
             buttonMainClose.TabIndex = 9;
             buttonMainClose.Text = "关闭";
             buttonMainClose.UseVisualStyleBackColor = true;
@@ -505,6 +664,10 @@
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip3).EndInit();
+            tabPage4.ResumeLayout(false);
+            tabPage4.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             contextMenuStripTreeView.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -553,5 +716,18 @@
         private Label label7;
         private RichTextBox richTextDoDescription;
         private Button buttonAddDoStep;
+        private Button buttonAddComplexStep;
+        private Label label9;
+        private RichTextBox richTextBox3;
+        private PictureBox pictureBox1;
+        private Label label10;
+        private RichTextBox richTextComplexDescription;
+        private GroupBox groupBox1;
+        private Button buttonAddSubStep;
+        private ListBox listBoxSubStep;
+        private Button buttonRemoveSubStep;
+        private Button buttonEditSubStep;
+        private Button button4;
+        private Button button5;
     }
 }

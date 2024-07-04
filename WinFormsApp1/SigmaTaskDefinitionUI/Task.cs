@@ -38,9 +38,9 @@ namespace Sigma
 
             foreach (Step step in _data.Steps)
             {
-                if (step.GetType() == typeof(ComplexStep)) //如果是ComplexStep，需要清空内部的SubStep
+                if (step is ComplexStep stepC)//如果是ComplexStep，需要清空内部的SubStep
                 {
-                    ComplexStep? stepC = step as ComplexStep;
+                    stepC.SubSteps.Clear();
                 }
             }
 
@@ -72,21 +72,71 @@ namespace Sigma
             return step;
         }
 
+        public Step? addComplexStep(string description)
+        {
+            if (_data.Steps == null) { return null; }
+
+            ComplexStep step = new ComplexStep();
+            step.Description = description;
+            _data.Steps.Add(step);
+
+            return step;
+        }
+
         public bool RemoveStep(Step? step)
         {
             if (step == null) return false;
 
-            if (step.GetType() == typeof(ComplexStep)) //如果是ComplexStep，需要清空内部的SubStep
+            if (step is ComplexStep stepC)//如果是ComplexStep，需要清空内部的SubStep
             {
-                return false;
+               stepC.SubSteps.Clear();
             }
-            else
+            
+            return _data.Steps.Remove(step);
+        }
+
+        public bool RemoveSubStep(Step? complexStep, SubStep? subStep)
+        { 
+            if (subStep == null || complexStep == null) return false;
+
+            if (complexStep is ComplexStep complexStepC)
             { 
-                return _data.Steps.Remove(step);
+                return complexStepC.SubSteps.Remove(subStep);
             }
+            return false;
         }
 
         //Method
+        public void CalculateLabel()
+        {
+            int index = 0;
+            foreach (Step step in _data.Steps)
+            {
+                if (step is GatherStep stepG)
+                {
+                    stepG.Label = index.ToString();
+                }
+                else
+                if(step is DoStep stepD)
+                {
+                   stepD.Label = index.ToString();
+                }
+                else
+                if(step is ComplexStep stepC)
+                {
+                    stepC.Label = index.ToString();
+
+                    int index_sub = 0;
+                    foreach(SubStep sub_step in stepC.SubSteps)
+                    {
+                        sub_step.Label = index_sub.ToString();
+                        index_sub++;
+                    }
+                }
+
+                index++;
+             }
+        }
         public string JsonSerialize()
         {
             //var options = new JsonSerializerOptions { WriteIndented = true }; //, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
