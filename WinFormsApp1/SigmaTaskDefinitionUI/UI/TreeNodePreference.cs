@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Sigma;
 
-namespace SigmaTaskDefinitionUI.UI
+namespace SigmaTaskDefinitionUI.Data
 {
     public enum TreeNodeType
     {

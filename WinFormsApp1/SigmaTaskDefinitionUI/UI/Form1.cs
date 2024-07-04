@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.Json;
-using SigmaTaskDefinitionUI;
-using SigmaTaskDefinitionUI.UI;
-using SigmaTaskDefinitionUI.Data;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Sigma;
+using SigmaTaskDefinitionUI;
+using SigmaTaskDefinitionUI.Data;
 
 namespace WinFormsApp1
 {

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 //using System.Text.Json;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
-using SigmaTaskDefinitionUI.Data;
+using Newtonsoft.Json.Serialization;
+using System.Reflection;
+using Newtonsoft.Json.Linq;
 
-namespace SigmaTaskDefinitionUI
+namespace Sigma
 {
     //This class is the bridge/interface between UI & Data
     internal class SigmaTask
@@ -47,7 +49,14 @@ namespace SigmaTaskDefinitionUI
             //var options = new JsonSerializerOptions { WriteIndented = true }; //, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
             //string serialized = JsonSerializer.Serialize(_data, options);
 
-            string serialized = JsonConvert.SerializeObject(_data, Formatting.Indented);
+            // 配置 JSON.NET 序列化器
+            var serializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                Formatting = Formatting.Indented
+            };
+            Type type = typeof(TaskData);
+            string serialized = JsonConvert.SerializeObject(_data, type, serializerSettings);
 
             Debug.WriteLine("=== Serialize TaskData START ===");
             Debug.WriteLine(serialized);

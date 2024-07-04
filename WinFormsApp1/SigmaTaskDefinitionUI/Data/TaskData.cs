@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
-namespace SigmaTaskDefinitionUI.Data
+namespace Sigma
 {
     #region TaskData
     internal class TaskData
