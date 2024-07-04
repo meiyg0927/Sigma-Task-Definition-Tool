@@ -14,16 +14,8 @@ namespace SigmaTaskDefinitionUI.Data
         ROOT = 1,
         GATHER = 2,
         DO = 3,
-        COMBO = 4,
+        COMPLEX = 4,
         SUB = 5
-    }
-
-    public enum TaskDataType
-    {
-        NONE = 0,
-        BASIC_TASKNAME = 1,
-        BASIC_TASKDESC = 2,
-        STEP_GATHER = 3,
     }
 
     internal class TreeNodeData
@@ -45,9 +37,7 @@ namespace SigmaTaskDefinitionUI.Data
         private TreeNodeManage() {}
         public static TreeNodeManage Instance => _instance.Value;
 
-        /// <summary>
-        /// 把TreeView的Node 和 TaskData的数据 一对一对应起来
-        /// </summary>
+        // 把TreeView的Node 和 TaskData的数据 一对一对应起来; 根节点直接保存，不加入Dictionary，因为没有Step数据
         private Dictionary<TreeNode, TreeNodeData> _dict = new Dictionary<TreeNode, TreeNodeData>();
         private TreeNode? root_node = null;
 
@@ -99,6 +89,28 @@ namespace SigmaTaskDefinitionUI.Data
             }
 
             return NodeData;
+        }
+
+        public bool RemoveAllNodes()
+        {
+            root_node = null;
+            _dict.Clear();
+
+            return true;
+        }
+
+        public bool RemoveNode(TreeNode? Node)
+        {
+            if(Node == null) return false;
+            try
+            {
+                return _dict.Remove(Node);
+            }
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine(error_message_title + ex.Message);
+                return false;
+            }
         }
     }
 }

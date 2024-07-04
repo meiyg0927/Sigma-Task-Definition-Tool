@@ -63,9 +63,9 @@ namespace SigmaTaskDefinitionUI.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
-        internal static System.Drawing.Bitmap Combo {
+        internal static System.Drawing.Bitmap Complex {
             get {
-                object obj = ResourceManager.GetObject("Combo", resourceCulture);
+                object obj = ResourceManager.GetObject("Complex", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

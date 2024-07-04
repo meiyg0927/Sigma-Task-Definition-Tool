@@ -62,8 +62,28 @@ namespace WinFormsApp1
             if (treeView.SelectedNode == null) { }
             else
             {
-                Debug.WriteLine("Delete Selected Node: " + treeView.SelectedNode.Text);
-                treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
+                TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode(); 
+                    if (root_node == null) return;
+                if(treeView.SelectedNode == root_node) //删除根节点
+                {
+                    treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
+                    sigma_task.Initialize();
+                    TreeNodeManage.Instance.RemoveAllNodes();
+
+                    Debug.WriteLine("Delete Root Node");
+                }
+                else //删除普通节点
+                {
+                    TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(treeView.SelectedNode);
+                    if (data != null && data.node != null)
+                    {
+                        root_node.Nodes.Remove(data.node);
+                        sigma_task.RemoveStep(data.step);
+                        TreeNodeManage.Instance.RemoveNode(data.node);
+
+                        Debug.WriteLine("Delete Normal Node: " + data.type.ToString());
+                    }
+                }
             }
         }
 

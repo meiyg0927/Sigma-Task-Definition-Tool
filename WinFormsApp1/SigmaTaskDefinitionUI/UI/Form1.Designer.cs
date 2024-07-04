@@ -422,7 +422,7 @@
             imageList.Images.SetKeyName(1, "Task.png");
             imageList.Images.SetKeyName(2, "Eyes.png");
             imageList.Images.SetKeyName(3, "Do.png");
-            imageList.Images.SetKeyName(4, "Combo.png");
+            imageList.Images.SetKeyName(4, "Complex.png");
             imageList.Images.SetKeyName(5, "Substep.png");
             // 
             // buttonOutput
@@ -438,30 +438,32 @@
             // 
             // buttonNodeUp
             // 
+            buttonNodeUp.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
             buttonNodeUp.Location = new Point(1561, 75);
             buttonNodeUp.Name = "buttonNodeUp";
-            buttonNodeUp.Size = new Size(50, 46);
+            buttonNodeUp.Size = new Size(84, 82);
             buttonNodeUp.TabIndex = 6;
             buttonNodeUp.Text = "▲";
             buttonNodeUp.UseVisualStyleBackColor = true;
             // 
             // buttonNodeDown
             // 
-            buttonNodeDown.Location = new Point(1561, 127);
+            buttonNodeDown.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonNodeDown.Location = new Point(1561, 162);
             buttonNodeDown.Name = "buttonNodeDown";
-            buttonNodeDown.Size = new Size(50, 46);
+            buttonNodeDown.Size = new Size(84, 82);
             buttonNodeDown.TabIndex = 7;
             buttonNodeDown.Text = "▼";
             buttonNodeDown.UseVisualStyleBackColor = true;
             // 
             // buttonNodeDelete
             // 
-            buttonNodeDelete.Font = new Font("Arial", 10.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            buttonNodeDelete.Location = new Point(1561, 179);
+            buttonNodeDelete.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonNodeDelete.Location = new Point(1561, 250);
             buttonNodeDelete.Name = "buttonNodeDelete";
-            buttonNodeDelete.Size = new Size(50, 46);
+            buttonNodeDelete.Size = new Size(84, 82);
             buttonNodeDelete.TabIndex = 8;
-            buttonNodeDelete.Text = "✕";
+            buttonNodeDelete.Text = "✖";
             buttonNodeDelete.UseVisualStyleBackColor = true;
             buttonNodeDelete.Click += buttonNodeDelete_Click;
             // 

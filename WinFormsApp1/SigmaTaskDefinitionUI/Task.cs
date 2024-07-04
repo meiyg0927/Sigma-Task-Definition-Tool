@@ -29,7 +29,24 @@ namespace Sigma
             return true;
         }
 
-        bool isTaskNameNullOrEmpty() { return string.IsNullOrEmpty(_data.Name); }
+        public bool isTaskNameNullOrEmpty() { return string.IsNullOrEmpty(_data.Name); }
+
+        public bool Initialize()
+        {
+            _data.Name = string.Empty;
+            _data.Description = string.Empty;
+
+            foreach (Step step in _data.Steps)
+            {
+                if (step.GetType() == typeof(ComplexStep)) //如果是ComplexStep，需要清空内部的SubStep
+                {
+                    ComplexStep? stepC = step as ComplexStep;
+                }
+            }
+
+            _data.Steps.Clear();
+            return true;
+        }
         
         //Step
         public Step? addGatherStep(List<string> objects)
@@ -53,6 +70,20 @@ namespace Sigma
             _data.Steps.Add(step);
 
             return step;
+        }
+
+        public bool RemoveStep(Step? step)
+        {
+            if (step == null) return false;
+
+            if (step.GetType() == typeof(ComplexStep)) //如果是ComplexStep，需要清空内部的SubStep
+            {
+                return false;
+            }
+            else
+            { 
+                return _data.Steps.Remove(step);
+            }
         }
 
         //Method
