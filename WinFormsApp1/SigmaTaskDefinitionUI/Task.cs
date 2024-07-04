@@ -43,6 +43,18 @@ namespace Sigma
             return step;
         }
 
+        public Step? addDoStep(string description, TimeSpan ts)
+        {
+            if (_data.Steps == null) return null;
+
+            DoStep step = new DoStep();
+            step.Description = description;
+            step.TimerDuration = ts;
+            _data.Steps.Add(step);
+
+            return step;
+        }
+
         //Method
         public string JsonSerialize()
         {

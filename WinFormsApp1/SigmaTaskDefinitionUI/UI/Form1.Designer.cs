@@ -49,6 +49,14 @@
             listBoxGatherObject = new ListBox();
             pictureITips2 = new PictureBox();
             tabPage3 = new TabPage();
+            label8 = new Label();
+            label7 = new Label();
+            richTextDoDescription = new RichTextBox();
+            buttonAddDoStep = new Button();
+            label6 = new Label();
+            richTextBox2 = new RichTextBox();
+            pictureTip3 = new PictureBox();
+            dateTimeDoDuring = new DateTimePicker();
             tabPage4 = new TabPage();
             treeView = new TreeView();
             contextMenuStripTreeView = new ContextMenuStrip(components);
@@ -65,6 +73,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureITips2).BeginInit();
+            tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureTip3).BeginInit();
             contextMenuStripTreeView.SuspendLayout();
             SuspendLayout();
             // 
@@ -264,6 +274,15 @@
             // 
             // tabPage3
             // 
+            tabPage3.BorderStyle = BorderStyle.FixedSingle;
+            tabPage3.Controls.Add(label8);
+            tabPage3.Controls.Add(label7);
+            tabPage3.Controls.Add(richTextDoDescription);
+            tabPage3.Controls.Add(buttonAddDoStep);
+            tabPage3.Controls.Add(label6);
+            tabPage3.Controls.Add(richTextBox2);
+            tabPage3.Controls.Add(pictureTip3);
+            tabPage3.Controls.Add(dateTimeDoDuring);
             tabPage3.Location = new Point(4, 43);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
@@ -271,6 +290,86 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "执行类任务配置";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(44, 36);
+            label8.Name = "label8";
+            label8.Size = new Size(314, 31);
+            label8.TabIndex = 23;
+            label8.Text = "执行任务时间（小时:分:秒）";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(44, 194);
+            label7.Name = "label7";
+            label7.Size = new Size(158, 31);
+            label7.TabIndex = 22;
+            label7.Text = "执行任务描述";
+            // 
+            // richTextDoDescription
+            // 
+            richTextDoDescription.Location = new Point(39, 239);
+            richTextDoDescription.Name = "richTextDoDescription";
+            richTextDoDescription.Size = new Size(344, 454);
+            richTextDoDescription.TabIndex = 21;
+            richTextDoDescription.Text = "";
+            // 
+            // buttonAddDoStep
+            // 
+            buttonAddDoStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonAddDoStep.Location = new Point(446, 375);
+            buttonAddDoStep.Name = "buttonAddDoStep";
+            buttonAddDoStep.Size = new Size(271, 198);
+            buttonAddDoStep.TabIndex = 20;
+            buttonAddDoStep.Text = "加入指令";
+            buttonAddDoStep.UseVisualStyleBackColor = true;
+            buttonAddDoStep.Click += buttonAddDoStep_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label6.Location = new Point(151, 781);
+            label6.Name = "label6";
+            label6.Size = new Size(326, 31);
+            label6.TabIndex = 19;
+            label6.Text = "此页面配置执行类任务的信息";
+            // 
+            // richTextBox2
+            // 
+            richTextBox2.BorderStyle = BorderStyle.None;
+            richTextBox2.Font = new Font("Microsoft YaHei UI", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            richTextBox2.Location = new Point(151, 827);
+            richTextBox2.Name = "richTextBox2";
+            richTextBox2.ReadOnly = true;
+            richTextBox2.Size = new Size(591, 119);
+            richTextBox2.TabIndex = 18;
+            richTextBox2.Text = "1. 设置执行任务的时间\n2. 输入执行任务的具体描述\n3. 点击“加入指令”按钮，新增执行指令";
+            // 
+            // pictureTip3
+            // 
+            pictureTip3.Image = SigmaTaskDefinitionUI.Properties.Resources.Tips;
+            pictureTip3.Location = new Point(27, 826);
+            pictureTip3.Name = "pictureTip3";
+            pictureTip3.Size = new Size(93, 75);
+            pictureTip3.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureTip3.TabIndex = 17;
+            pictureTip3.TabStop = false;
+            // 
+            // dateTimeDoDuring
+            // 
+            dateTimeDoDuring.CalendarFont = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            dateTimeDoDuring.CustomFormat = "HH:mm:ss";
+            dateTimeDoDuring.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            dateTimeDoDuring.Format = DateTimePickerFormat.Custom;
+            dateTimeDoDuring.Location = new Point(44, 79);
+            dateTimeDoDuring.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
+            dateTimeDoDuring.Name = "dateTimeDoDuring";
+            dateTimeDoDuring.Size = new Size(339, 54);
+            dateTimeDoDuring.TabIndex = 0;
             // 
             // tabPage4
             // 
@@ -300,18 +399,18 @@
             contextMenuStripTreeView.ImageScalingSize = new Size(32, 32);
             contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemEdit });
             contextMenuStripTreeView.Name = "contextMenuStripTreeView";
-            contextMenuStripTreeView.Size = new Size(301, 92);
+            contextMenuStripTreeView.Size = new Size(137, 48);
             contextMenuStripTreeView.ItemClicked += contextMenuStripTreeView_ItemClicked;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(297, 6);
+            toolStripSeparator1.Size = new Size(133, 6);
             // 
             // toolStripMenuItemEdit
             // 
             toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            toolStripMenuItemEdit.Size = new Size(300, 38);
+            toolStripMenuItemEdit.Size = new Size(136, 38);
             toolStripMenuItemEdit.Text = "编辑";
             // 
             // imageList
@@ -401,6 +500,9 @@
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureITips2).EndInit();
+            tabPage3.ResumeLayout(false);
+            tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureTip3).EndInit();
             contextMenuStripTreeView.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -441,5 +543,13 @@
         private ContextMenuStrip contextMenuStripTreeView;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem toolStripMenuItemEdit;
+        private DateTimePicker dateTimeDoDuring;
+        private Label label6;
+        private RichTextBox richTextBox2;
+        private PictureBox pictureTip3;
+        private Label label8;
+        private Label label7;
+        private RichTextBox richTextDoDescription;
+        private Button buttonAddDoStep;
     }
 }

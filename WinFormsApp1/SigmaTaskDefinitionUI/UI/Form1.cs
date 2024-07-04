@@ -31,7 +31,7 @@ namespace WinFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
@@ -69,7 +69,7 @@ namespace WinFormsApp1
 
         private void contextMenuStripTreeView_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (e.ClickedItem == null || e.ClickedItem.Name == null) 
+            if (e.ClickedItem == null || e.ClickedItem.Name == null)
                 return;
 
             string item = e.ClickedItem.Name;
@@ -181,8 +181,9 @@ namespace WinFormsApp1
 
             Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
 
-            //清空ListBoxGatherObject控件的物体
+            //清空ListBoxGatherObject控件的物体和之前保存的物体名称
             listBoxGatherObject.Items.Clear();
+            existingGatherObjects.Clear();
 
             //TaskData增加一条记录
             Step? step = sigma_task.addGatherStep(Objects);
@@ -190,8 +191,59 @@ namespace WinFormsApp1
             //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
             TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
         }
+
         #endregion
 
+        #region Message Handle for Tab of DoStep
+        private void buttonAddDoStep_Click(object sender, EventArgs e)
+        {
+           TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            if (root_node == null) return;
 
+            DateTime dt = dateTimeDoDuring.Value;
+            TimeSpan span = dt.Subtract(dateTimeDoDuring.MinDate);
+
+            if (span.TotalHours >= 24)
+            {
+                MessageBox.Show("请设置小于一天的任务执行时间","",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (span.TotalSeconds <= 0)
+            {
+                MessageBox.Show("请设置任务执行的时间", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if(string.IsNullOrEmpty(richTextDoDescription.Text))
+            {
+                MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            //TreeView 增加一个DoStep节点
+            string DoStepName = "DoStep: "  + span.ToString() + " Desption: " + richTextDoDescription.Text;
+            TreeNode newNode = new TreeNode();            
+            if (DoStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = DoStepName; //物体字符太长的话，用Tip来展示
+                DoStepName = DoStepName.Substring(0, NAME_MAX);
+            }
+            newNode.Text = DoStepName;
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.DO;
+            int node_index = root_node.Nodes.Add(newNode);
+            root_node.Expand();
+
+            //TaskData增加一条记录
+            Step? step = sigma_task.addDoStep(richTextDoDescription.Text, span);
+
+            //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+            TreeNodeManage.Instance.Add(TreeNodeType.DO, newNode, step);
+
+            //DataTimePicker控件时间归零，执行任务的描述控件清空
+            dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
+            richTextDoDescription.Text = string.Empty;
+        }
+        #endregion
     }
 }

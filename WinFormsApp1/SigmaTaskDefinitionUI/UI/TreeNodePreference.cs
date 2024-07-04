@@ -48,7 +48,7 @@ namespace SigmaTaskDefinitionUI.Data
         /// <summary>
         /// 把TreeView的Node 和 TaskData的数据 一对一对应起来
         /// </summary>
-        private Dictionary<TreeNode, TreeNodeData> _preference = new Dictionary<TreeNode, TreeNodeData>();
+        private Dictionary<TreeNode, TreeNodeData> _dict = new Dictionary<TreeNode, TreeNodeData>();
         private TreeNode? root_node = null;
 
         public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null)
@@ -66,7 +66,7 @@ namespace SigmaTaskDefinitionUI.Data
                 TreeNodeData data = new TreeNodeData(Type, Node, Stp);
                 try
                 {
-                    _preference.Add(Node, data);
+                    _dict.Add(Node, data);
                 }
                 catch(ArgumentException ex) 
                 {
@@ -91,7 +91,7 @@ namespace SigmaTaskDefinitionUI.Data
 
             try
             {
-                _preference.TryGetValue(Node, out NodeData);
+                _dict.TryGetValue(Node, out NodeData);
             }
             catch (ArgumentException ex)
             {
