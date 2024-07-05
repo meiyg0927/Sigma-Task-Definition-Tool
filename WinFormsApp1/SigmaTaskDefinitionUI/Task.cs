@@ -10,12 +10,16 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 
+#pragma warning disable IDE1006
+#pragma warning disable IDE0028
+
 namespace Sigma
 {
     //This class is the bridge/interface between UI & Data
     internal class SigmaTask
     {
-        private TaskData _data = new TaskData { Description = "This is the Sigma Task Data" };
+        //注意：TaskData里面的Steps是不包括SubStep的；SubStep是ComplexStep的成员变量，因为它不继承Step，所以不记录在TaskData的Steps里面
+        private readonly TaskData _data = new() { Description = "This is the Sigma Task Data" };
 
         //TaskName
         public string getTaskName() { return _data.Name; }
@@ -49,8 +53,7 @@ namespace Sigma
         {
             if(_data.Steps == null) return null;
 
-            GatherStep step = new GatherStep();
-            step.Objects = objects;
+            GatherStep step = new() { Objects = objects };
             _data.Steps.Add(step);
 
             return step;
@@ -60,20 +63,23 @@ namespace Sigma
         {
             if (_data.Steps == null) return null;
 
-            DoStep step = new DoStep();
-            step.Description = description;
-            step.TimerDuration = ts;
+            DoStep step = new() { Description=description, TimerDuration=ts };
             _data.Steps.Add(step);
 
             return step;
         }
 
-        public Step? addComplexStep(string description)
+        public Step? addComplexStep(string description, List<SubStep> subSteps)
         {
             if (_data.Steps == null) { return null; }
 
-            ComplexStep step = new ComplexStep();
+            ComplexStep step = new() { Description = description };
             step.Description = description;
+            foreach (SubStep subStep in subSteps)
+            {
+                SubStep newStep = subStep.Clone();
+                step.SubSteps.Add(newStep);
+            }
             _data.Steps.Add(step);
 
             return step;

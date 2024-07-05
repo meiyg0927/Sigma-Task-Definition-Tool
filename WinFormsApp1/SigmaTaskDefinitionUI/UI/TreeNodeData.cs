@@ -32,14 +32,15 @@ namespace SigmaTaskDefinitionUI.Data
 
     internal class TreeNodeManage
     {
-        static string error_message_title = "TreeNodeManage ERROR!!!  ERROR!!! ERROR!!!\n";
+        private static readonly string error_message_title = "TreeNodeManage ERROR!!!  ERROR!!! ERROR!!!\n";
 
         private static readonly Lazy<TreeNodeManage> _instance = new Lazy<TreeNodeManage>(() => new TreeNodeManage());
         private TreeNodeManage() {}
         public static TreeNodeManage Instance => _instance.Value;
 
-        // 把TreeView的Node 和 TaskData的数据 一对一对应起来; 根节点直接保存，不加入Dictionary，因为没有Step数据
-        private Dictionary<TreeNode, TreeNodeData> _dict = new Dictionary<TreeNode, TreeNodeData>();
+        // 把TreeView的Node 和 TaskData的数据 一对一对应起来; 根节点直接保存，不加入Dictionary，因为没有Step数据；
+        // 注意：SubStep也会记录在Dictionary里面，这点和TaskData不一样；
+        private readonly Dictionary<TreeNode, TreeNodeData> _dict = new();
         private TreeNode? root_node = null;
 
         public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null, SubStep? Substp = null)
@@ -54,7 +55,7 @@ namespace SigmaTaskDefinitionUI.Data
             }
             else
             {
-                TreeNodeData data = new TreeNodeData(Type, Node, Stp, Substp);
+                TreeNodeData data = new(Type, Node, Stp, Substp);
                 try
                 {
                     _dict.Add(Node, data);
@@ -100,11 +101,15 @@ namespace SigmaTaskDefinitionUI.Data
             return true;
         }
 
-        public bool RemoveNode(TreeNode? Node)
+        public bool RemoveNode(TreeNode? Node, TreeNodeType NodeType)
         {
             if(Node == null) return false;
             try
             {
+                //if(TreeNodeType.COMPLEX == NodeType) //需要在UI层先删除下面的SUB节点的关联
+                //{
+                //}
+                
                 return _dict.Remove(Node);
             }
             catch (ArgumentException ex)

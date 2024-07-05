@@ -16,6 +16,9 @@ using SigmaTaskDefinitionUI.Data;
 using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
 
+#pragma warning disable IDE1006
+#pragma warning disable IDE0028
+
 namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
@@ -23,12 +26,12 @@ namespace WinFormsApp1
         readonly int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
         readonly int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
 
-        private SigmaTask sigma_task = new();
+        private readonly SigmaTask sigma_task = new();
         private readonly FormOutput frmOutput = new();
         private readonly FormSubStep frmSubStep = new();
 
-        private HashSet<string> existingGatherObjects = new HashSet<string>();
-        private List<UISubStep> SubStepDataList = new List<UISubStep>();
+        private readonly HashSet<string> existingGatherObjects = new();// HashSet<string>();
+        private readonly List<UISubStep> SubStepDataList = new();// List<UISubStep>();
 
         public Form()
         {
@@ -91,24 +94,36 @@ namespace WinFormsApp1
                             {
                                 sigma_task.RemoveSubStep(parent_data.step, data.subStep);
                             }
-                            TreeNodeManage.Instance.RemoveNode(data.node);
+                            TreeNodeManage.Instance.RemoveNode(data.node, TreeNodeType.SUB);
 
                             data.node.Remove();
+
+                            //如果最后一个子任务节点删除了，是否需要删除父ComplexStep节点？
+                            if(parent_data != null && parent_data.node != null && parent_data.node.Nodes.Count <=0)
+                            {
+                                MessageBox.Show("子任务节点全部删除了");
+                            }
                         }
                         else
                         if (data.type == TreeNodeType.COMPLEX) //复杂任务节点需要删除下面的所有子任务节点
                         {
+                            //删除下面所有子节点和子任务的关联
+                            foreach(TreeNode child_node in data.node.Nodes)
+                            {
+                                TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
+                            }
+                            //删除子节点
                             data.node.Nodes.Clear();
 
                             root_node.Nodes.Remove(data.node);
                             sigma_task.RemoveStep(data.step);
-                            TreeNodeManage.Instance.RemoveNode(data.node);
+                            TreeNodeManage.Instance.RemoveNode(data.node, TreeNodeType.COMPLEX);
                         }
                         else
                         {
                             root_node.Nodes.Remove(data.node);
                             sigma_task.RemoveStep(data.step);
-                            TreeNodeManage.Instance.RemoveNode(data.node);
+                            TreeNodeManage.Instance.RemoveNode(data.node, data.type);
                         }
 
                         Debug.WriteLine("Delete Normal Node: " + data.type.ToString());
@@ -147,9 +162,9 @@ namespace WinFormsApp1
 
                 if (root_node == null)
                 {
-                    TreeNode newNode = new TreeNode(taskName);
+                    TreeNode newNode = new(taskName);
                     newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.ROOT;
-                    int root_index = treeView.Nodes.Add(newNode);
+                    treeView.Nodes.Add(newNode);
                     TreeNodeManage.Instance.Add(TreeNodeType.ROOT, newNode);
 
                     Debug.WriteLine("Add New Root Node: " + taskName);
@@ -209,7 +224,7 @@ namespace WinFormsApp1
 
             //TreeView 增加一个GatherStep节点
             string GatherStepName = "GatherStep: ";
-            List<string> Objects = new List<string>();
+            List<string> Objects = new();
             for (int i = 0; i < listBoxGatherObject.Items.Count; i++)
             {
                 string? obj = listBoxGatherObject.Items[i].ToString();
@@ -218,7 +233,7 @@ namespace WinFormsApp1
                 Objects.Add(obj);
             }
 
-            TreeNode newNode = new TreeNode();
+            TreeNode newNode = new();
             if (GatherStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = GatherStepName; //物体字符太长的话，用Tip来展示
@@ -273,7 +288,7 @@ namespace WinFormsApp1
 
             //TreeView 增加一个DoStep节点
             string DoStepName = "DoStep: " + span.ToString() + " Desption: " + richTextDoDescription.Text;
-            TreeNode newNode = new TreeNode();
+            TreeNode newNode = new();
             if (DoStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = DoStepName; //物体字符太长的话，用Tip来展示
@@ -281,7 +296,7 @@ namespace WinFormsApp1
             }
             newNode.Text = DoStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.DO;
-            int node_index = root_node.Nodes.Add(newNode);
+            root_node.Nodes.Add(newNode);
             root_node.Expand();
 
             //TaskData增加一条记录
@@ -308,9 +323,15 @@ namespace WinFormsApp1
                 return;
             }
 
+            if(SubStepDataList.Count <= 0)
+            {
+                MessageBox.Show("请先添加子任务", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             //TreeView 增加一个ComplexStep节点
             string ComplexStepName = "ComplexStep: " + richTextComplexDescription.Text;
-            TreeNode newNode = new TreeNode();
+            TreeNode newNode = new();
             if (ComplexStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = ComplexStepName; //物体字符太长的话，用Tip来展示
@@ -318,23 +339,24 @@ namespace WinFormsApp1
             }
             newNode.Text = ComplexStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.COMPLEX;
-            int node_index = root_node.Nodes.Add(newNode);
+            root_node.Nodes.Add(newNode);
             root_node.Expand();
 
             //TaskData增加一条记录
-            Step? step = sigma_task.addComplexStep(richTextComplexDescription.Text);
+            Step? step = sigma_task.addComplexStep(richTextComplexDescription.Text, SubStepDataList);
 
             //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
             TreeNodeManage.Instance.Add(TreeNodeType.COMPLEX, newNode, step);
 
             //TreeView 增加SubSteps节点
             {
-                Func_AddSubSteps();
+                Func_AddSubSteps(newNode,step);
             }
 
             //清空子任务列表；复杂任务的描述控件清空
             listBoxSubStep.Items.Clear();
             richTextComplexDescription.Text = string.Empty;
+            SubStepDataList.Clear();
         }
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
@@ -390,15 +412,36 @@ namespace WinFormsApp1
             Func_MoveUISubStepDataInList(SelectedIndex, SelectedIndex + 1);
         }
 
-        private void Func_AddSubSteps()
+        private void Func_AddSubSteps(TreeNode parent_node, Step? complex_step)
         {
-            foreach (var item in listBoxSubStep.Items)
+            for(int i = 0; i<SubStepDataList.Count; i++)
             {
-                //TreeView 增加一个SubStep节点
-                string SubStepName = "SubStep: " + item.ToString();
-                TreeNode newNode = new TreeNode();
+                UISubStep step = SubStepDataList[i];
 
-                //NOT Finish!
+                //TreeView 增加一个SubStep节点
+                string SubStepName = "SubStep: " + step.Description;
+                TreeNode newNode = new();
+                if (SubStepName.Length > NAME_MAX)
+                {
+                    newNode.ToolTipText = SubStepName; //物体字符太长的话，用Tip来展示
+                    SubStepName = SubStepName.Substring(0, NAME_MAX);
+                }
+                newNode.Text = SubStepName;
+                newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.SUB;
+                parent_node.Nodes.Add(newNode);
+                parent_node.Expand();
+
+                //TaskData中不需要增加SubStep记录
+
+                //TreeNodeData增加一条记录，把TreeView的Node和SubStep的记录关联起来
+                if (complex_step is ComplexStep stepC)
+                {
+                    TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, stepC.SubSteps[i]);
+                }
+                else 
+                {
+                    MessageBox.Show("出错了：子任务的父节点无法转换为ComplexStep", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -438,7 +481,6 @@ namespace WinFormsApp1
                 return;
             }
 
-            //List<object> items = new List<object>(listBox.Items);
             UISubStep selectedItem = SubStepDataList.ElementAt(fromIndex);
             SubStepDataList.RemoveAt(fromIndex);
             SubStepDataList.Insert(toIndex, selectedItem);

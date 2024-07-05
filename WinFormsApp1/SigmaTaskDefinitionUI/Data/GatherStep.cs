@@ -19,7 +19,7 @@ namespace Sigma
 
         public string Noun { get; set; } = string.Empty;
 
-        public List<string> Objects { get; set; } = new List<string>();
+        public List<string> Objects { get; set; } = new();
 
         public GatherStep()
         {

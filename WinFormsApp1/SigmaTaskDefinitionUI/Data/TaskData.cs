@@ -15,7 +15,7 @@ namespace Sigma
         public string Description { get; set; } = string.Empty;
 
         //public IList<Step>? Steps { get; set; }
-        public List<Step> Steps {  get; set; } = new List<Step>();
+        public List<Step> Steps { get; set; } = new();
     }
     #endregion
 }
