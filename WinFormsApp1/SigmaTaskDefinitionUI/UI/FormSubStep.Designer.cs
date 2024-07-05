@@ -86,6 +86,7 @@
             MaximizeBox = false;
             Name = "FormSubStep";
             Text = "子任务配置";
+            Load += this.FormSubStep_Load;
             ResumeLayout(false);
             PerformLayout();
         }

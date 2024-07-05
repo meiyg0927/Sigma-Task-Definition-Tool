@@ -59,8 +59,8 @@
             dateTimeDoDuring = new DateTimePicker();
             tabPage4 = new TabPage();
             groupBox1 = new GroupBox();
-            button4 = new Button();
-            button5 = new Button();
+            buttonSubStepMoveDown = new Button();
+            buttonSubStepMoveUp = new Button();
             buttonRemoveSubStep = new Button();
             buttonEditSubStep = new Button();
             buttonAddSubStep = new Button();
@@ -407,8 +407,8 @@
             // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(button4);
-            groupBox1.Controls.Add(button5);
+            groupBox1.Controls.Add(buttonSubStepMoveDown);
+            groupBox1.Controls.Add(buttonSubStepMoveUp);
             groupBox1.Controls.Add(buttonRemoveSubStep);
             groupBox1.Controls.Add(buttonEditSubStep);
             groupBox1.Controls.Add(buttonAddSubStep);
@@ -420,25 +420,27 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "子指令设置";
             // 
-            // button4
+            // buttonSubStepMoveDown
             // 
-            button4.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            button4.Location = new Point(367, 240);
-            button4.Name = "button4";
-            button4.Size = new Size(68, 63);
-            button4.TabIndex = 33;
-            button4.Text = "▼";
-            button4.UseVisualStyleBackColor = true;
+            buttonSubStepMoveDown.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonSubStepMoveDown.Location = new Point(367, 240);
+            buttonSubStepMoveDown.Name = "buttonSubStepMoveDown";
+            buttonSubStepMoveDown.Size = new Size(68, 63);
+            buttonSubStepMoveDown.TabIndex = 33;
+            buttonSubStepMoveDown.Text = "▼";
+            buttonSubStepMoveDown.UseVisualStyleBackColor = true;
+            buttonSubStepMoveDown.Click += buttonSubStepMoveDown_Click;
             // 
-            // button5
+            // buttonSubStepMoveUp
             // 
-            button5.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            button5.Location = new Point(367, 127);
-            button5.Name = "button5";
-            button5.Size = new Size(68, 68);
-            button5.TabIndex = 32;
-            button5.Text = "▲";
-            button5.UseVisualStyleBackColor = true;
+            buttonSubStepMoveUp.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonSubStepMoveUp.Location = new Point(367, 127);
+            buttonSubStepMoveUp.Name = "buttonSubStepMoveUp";
+            buttonSubStepMoveUp.Size = new Size(68, 68);
+            buttonSubStepMoveUp.TabIndex = 32;
+            buttonSubStepMoveUp.Text = "▲";
+            buttonSubStepMoveUp.UseVisualStyleBackColor = true;
+            buttonSubStepMoveUp.Click += buttonSubStepMoveUp_Click;
             // 
             // buttonRemoveSubStep
             // 
@@ -727,7 +729,7 @@
         private ListBox listBoxSubStep;
         private Button buttonRemoveSubStep;
         private Button buttonEditSubStep;
-        private Button button4;
-        private Button button5;
+        private Button buttonSubStepMoveDown;
+        private Button buttonSubStepMoveUp;
     }
 }

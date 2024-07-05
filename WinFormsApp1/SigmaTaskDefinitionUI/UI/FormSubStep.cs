@@ -31,6 +31,12 @@ namespace SigmaTaskDefinitionUI
         {
             InitializeComponent();
         }
+
+        private void FormSubStep_Load(object sender, EventArgs e)
+        {
+            richTextSubStepDescription.Text = _inValue.Description;
+        }
+
         private void buttonSubStepOK_Click(object sender, EventArgs e)
         {
             if(string.IsNullOrWhiteSpace(richTextSubStepDescription.Text))
@@ -40,7 +46,7 @@ namespace SigmaTaskDefinitionUI
             else
             { 
                 retValue.Description = richTextSubStepDescription.Text.Trim();
-                richTextSubStepDescription.Text = string.Empty;
+                //richTextSubStepDescription.Text = string.Empty;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -48,7 +54,7 @@ namespace SigmaTaskDefinitionUI
 
         private void buttonSubStepCancel_Click(object sender, EventArgs e)
         {
-            richTextSubStepDescription.Text = string.Empty;
+            //richTextSubStepDescription.Text = string.Empty;
             this.DialogResult= DialogResult.Cancel;
             this.Close();
         }

@@ -20,15 +20,15 @@ namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
     {
-        static int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
-        static int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
+        readonly int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
+        readonly int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
 
-        private SigmaTask sigma_task = new SigmaTask();
-        private FormOutput frmOutput = new FormOutput();
-        private FormSubStep frmSubStep = new FormSubStep();
+        private SigmaTask sigma_task = new();
+        private readonly FormOutput frmOutput = new();
+        private readonly FormSubStep frmSubStep = new();
 
         private HashSet<string> existingGatherObjects = new HashSet<string>();
-        private List<UISubStep> SubStepData = new List<UISubStep>();
+        private List<UISubStep> SubStepDataList = new List<UISubStep>();
 
         public Form()
         {
@@ -338,24 +338,56 @@ namespace WinFormsApp1
         }
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
-            if(DialogResult.OK == frmSubStep.ShowDialog())
+            if (DialogResult.OK == frmSubStep.ShowDialog())
             {
-                SubStepData.Add(frmSubStep.retValue);
+                UISubStep data = frmSubStep.retValue.Clone();
+                SubStepDataList.Add(data);
 
                 string str = frmSubStep.retValue.Description;
-                if(str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
+                if (str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
                 listBoxSubStep.Items.Add(str);
             }
         }
 
         private void buttonRemoveSubStep_Click(object sender, EventArgs e)
         {
-
+            if (listBoxSubStep.SelectedItem != null)
+            {
+                SubStepDataList.RemoveAt(listBoxSubStep.SelectedIndex);
+                listBoxSubStep.Items.RemoveAt(listBoxSubStep.SelectedIndex);
+            }
         }
 
         private void buttonEditSubStep_Click(object sender, EventArgs e)
         {
+            if (listBoxSubStep.SelectedItem != null)
+            {
+                int SelectedIndex = listBoxSubStep.SelectedIndex;
 
+                frmSubStep.inValue.Copy(SubStepDataList.ElementAt(SelectedIndex));
+                if (DialogResult.OK == frmSubStep.ShowDialog())
+                {
+                    UISubStep updated_data = frmSubStep.retValue.Clone();
+                    SubStepDataList[SelectedIndex] = updated_data;
+
+                    string updated_str = frmSubStep.retValue.Description;
+                    if (updated_str.Length > NAME_SUBSTP_MAX) updated_str = updated_str.Substring(0, NAME_SUBSTP_MAX);
+                    listBoxSubStep.Items[SelectedIndex] = updated_str;
+                }
+            }
+            else { MessageBox.Show("请先点选一个子任务再选择编辑", "", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+        }
+        private void buttonSubStepMoveUp_Click(object sender, EventArgs e)
+        {
+            int SelectedIndex = listBoxSubStep.SelectedIndex;
+            Func_MoveListBoxItemOptimized(listBoxSubStep, SelectedIndex, SelectedIndex - 1);
+            Func_MoveUISubStepDataInList(SelectedIndex, SelectedIndex - 1);
+        }
+        private void buttonSubStepMoveDown_Click(object sender, EventArgs e)
+        {
+            int SelectedIndex = listBoxSubStep.SelectedIndex;
+            Func_MoveListBoxItemOptimized(listBoxSubStep, SelectedIndex, SelectedIndex + 1);
+            Func_MoveUISubStepDataInList(SelectedIndex, SelectedIndex + 1);
         }
 
         private void Func_AddSubSteps()
@@ -369,6 +401,50 @@ namespace WinFormsApp1
                 //NOT Finish!
             }
         }
+
+        private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)
+        {
+            if (fromIndex < 0 || fromIndex >= listBox.Items.Count || toIndex < 0 || toIndex >= listBox.Items.Count)
+            {
+                return;
+            }
+
+            int selectedIndex = listBox.SelectedIndex;
+            listBox.SuspendLayout();
+            listBox.BeginUpdate();
+
+            object selectedItem = listBox.Items[fromIndex];
+            listBox.Items.RemoveAt(fromIndex);
+            listBox.Items.Insert(toIndex, selectedItem);
+
+            if (selectedIndex == fromIndex)
+            {
+                selectedIndex = toIndex;
+            }
+            else if (selectedIndex > fromIndex)
+            {
+                selectedIndex--;
+            }
+
+            listBox.SetSelected(selectedIndex, true);
+            listBox.EndUpdate();
+            listBox.ResumeLayout();
+        }
+
+        private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
+        {
+            if (fromIndex < 0 || fromIndex >= SubStepDataList.Count || toIndex < 0 || toIndex >= SubStepDataList.Count)
+            {
+                return;
+            }
+
+            //List<object> items = new List<object>(listBox.Items);
+            UISubStep selectedItem = SubStepDataList.ElementAt(fromIndex);
+            SubStepDataList.RemoveAt(fromIndex);
+            SubStepDataList.Insert(toIndex, selectedItem);
+        }
+
         #endregion
     }
+
 }
