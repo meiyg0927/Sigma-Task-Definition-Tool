@@ -21,15 +21,11 @@ namespace Sigma
         public string getTaskName() { return _data.Name; }
         public bool setTaskName(string s)
         {
-            s.Trim();
+            if (string.IsNullOrWhiteSpace(s)) return false;
 
-            if (string.IsNullOrEmpty(s)) return false;
-
-            _data.Name = s;
+            _data.Name = s.Trim();
             return true;
         }
-
-        public bool isTaskNameNullOrEmpty() { return string.IsNullOrEmpty(_data.Name); }
 
         public bool Initialize()
         {

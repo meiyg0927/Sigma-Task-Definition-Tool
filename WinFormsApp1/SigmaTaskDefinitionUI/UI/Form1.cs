@@ -13,16 +13,22 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Sigma;
 using SigmaTaskDefinitionUI;
 using SigmaTaskDefinitionUI.Data;
+using UISubStep = Sigma.SubStep;
+using System.Security.Cryptography;
 
 namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
     {
-        static int NAME_MAX = 40; //step 最长字符数
+        static int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
+        static int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
 
         private SigmaTask sigma_task = new SigmaTask();
         private FormOutput frmOutput = new FormOutput();
+        private FormSubStep frmSubStep = new FormSubStep();
+
         private HashSet<string> existingGatherObjects = new HashSet<string>();
+        private List<UISubStep> SubStepData = new List<UISubStep>();
 
         public Form()
         {
@@ -163,7 +169,7 @@ namespace WinFormsApp1
         #region Message Handle for Tab of GatherStep
         private void buttonAddGatherList_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxGatherObjectBack.Text)) return;
+            if (string.IsNullOrWhiteSpace(textBoxGatherObjectBack.Text)) return;
 
             string newItem = textBoxGatherObjectBack.Text.Trim();
             if (!existingGatherObjects.Contains(newItem))
@@ -259,7 +265,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            if (string.IsNullOrEmpty(richTextDoDescription.Text))
+            if (string.IsNullOrWhiteSpace(richTextDoDescription.Text))
             {
                 MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -296,7 +302,7 @@ namespace WinFormsApp1
             TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             if (root_node == null) return;
 
-            if (string.IsNullOrEmpty(richTextComplexDescription.Text))
+            if (string.IsNullOrWhiteSpace(richTextComplexDescription.Text))
             {
                 MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -332,7 +338,14 @@ namespace WinFormsApp1
         }
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
+            if(DialogResult.OK == frmSubStep.ShowDialog())
+            {
+                SubStepData.Add(frmSubStep.retValue);
 
+                string str = frmSubStep.retValue.Description;
+                if(str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
+                listBoxSubStep.Items.Add(str);
+            }
         }
 
         private void buttonRemoveSubStep_Click(object sender, EventArgs e)
