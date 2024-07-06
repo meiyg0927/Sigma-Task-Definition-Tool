@@ -44,8 +44,7 @@ namespace WinFormsApp1
         {
             dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
 
-            buttonUpdateGatherStep.Visible = false;
-            buttonUpdateDoStep.Visible = false;
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.NONE);
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
@@ -79,6 +78,10 @@ namespace WinFormsApp1
             {
                 TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
                 if (root_node == null) return;
+
+                if (DialogResult.No == MessageBox.Show("这将删除任务，是否继续？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
+                    return;
+
                 if (treeView.SelectedNode == root_node) //删除根节点
                 {
                     treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
@@ -106,7 +109,11 @@ namespace WinFormsApp1
                             //如果最后一个子任务节点删除了，是否需要删除父ComplexStep节点？
                             if (parent_data != null && parent_data.node != null && parent_data.node.Nodes.Count <= 0)
                             {
-                                MessageBox.Show("子任务节点全部删除了");
+                                // MessageBox.Show("子任务节点全部删除了");
+
+                                root_node.Nodes.Remove(parent_data.node);
+                                sigma_task.RemoveStep(parent_data.step);
+                                TreeNodeManage.Instance.RemoveNode(parent_data.node, TreeNodeType.COMPLEX);
                             }
                         }
                         else
@@ -206,7 +213,7 @@ namespace WinFormsApp1
                         listBoxGatherObject.Items.Clear();
                         existingGatherObjects.Clear();
 
-                        buttonUpdateGatherStep.Visible = true;
+                        Func_AddandUpdateButtonVisible(true, TreeNodeType.GATHER);
 
                         foreach (string obj in stepG.Objects)
                         {
@@ -221,7 +228,7 @@ namespace WinFormsApp1
                 {
                     if (node_data.step is DoStep stepD)
                     {
-                        buttonUpdateDoStep.Visible = true;
+                        Func_AddandUpdateButtonVisible(true, TreeNodeType.DO);
 
                         dateTimeDoDuring.Value = dateTimeDoDuring.MinDate.Add(stepD.TimerDuration);
                         richTextDoDescription.Text = stepD.Description;
@@ -315,8 +322,17 @@ namespace WinFormsApp1
             }
 
             Func_AddorUpdateGatherStep(treeView.SelectedNode);
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.GATHER);
+        }
 
-            buttonUpdateGatherStep.Visible = false;
+        private void buttonUpdateGatherStepCancel_Click(object sender, EventArgs e)
+        {
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.GATHER);
+
+            //清空ListBoxGatherObject控件的物体和之前保存的物体名称
+            textBoxGatherObjectBack.Text = string.Empty;
+            listBoxGatherObject.Items.Clear();
+            existingGatherObjects.Clear();
         }
 
         private void Func_AddorUpdateGatherStep(TreeNode? tree_node)
@@ -401,7 +417,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            Func_AddorUpdateDoStep(span,null);
+            Func_AddorUpdateDoStep(span, null);
         }
 
         private void buttonUpdateDoStep_Click(object sender, EventArgs e)
@@ -428,17 +444,25 @@ namespace WinFormsApp1
             }
 
             Func_AddorUpdateDoStep(span, treeView.SelectedNode);
-
-            buttonUpdateDoStep.Visible = false;
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.DO);
         }
 
-        private void Func_AddorUpdateDoStep(TimeSpan span, TreeNode? tree_node) 
+        private void buttonUpdateDoStepCancel_Click(object sender, EventArgs e)
+        {
+            //DataTimePicker控件时间归零，执行任务的描述控件清空
+            dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
+            richTextDoDescription.Text = string.Empty;
+
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.DO);
+        }
+
+        private void Func_AddorUpdateDoStep(TimeSpan span, TreeNode? tree_node)
         {
             TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             if (root_node == null) return;
 
             bool isNew = (tree_node == null);
-            TreeNode newNode = (tree_node == null) ? new() : tree_node;            
+            TreeNode newNode = (tree_node == null) ? new() : tree_node;
             string DoStepName = "DoStep: " + span.ToString() + " Desption: " + richTextDoDescription.Text;
             if (DoStepName.Length > NAME_MAX)
             {
@@ -633,6 +657,26 @@ namespace WinFormsApp1
 
         #endregion
 
+        #region Function tool for All Steps
+        private void Func_AddandUpdateButtonVisible(bool isEdit, TreeNodeType type)
+        {
+            if (type == TreeNodeType.GATHER || type == TreeNodeType.NONE)
+            {
+                buttonUpdateGatherStep.Visible = isEdit;
+                buttonUpdateGatherStepCancel.Visible = isEdit;
+                buttonAddGatherStep.Visible = !isEdit;
+            }
+
+            if (type == TreeNodeType.DO || type == TreeNodeType.NONE)
+            {
+                buttonUpdateDoStep.Visible = isEdit;
+                buttonUpdateDoStepCancel.Visible = isEdit;
+                buttonAddDoStep.Visible = !isEdit;
+            }
+
+            buttonNodeUp.Enabled = buttonNodeDown.Enabled = buttonNodeDelete.Enabled = !isEdit;
+        }
+
         private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)
         {
             if (fromIndex < 0 || fromIndex >= listBox.Items.Count || toIndex < 0 || toIndex >= listBox.Items.Count)
@@ -661,5 +705,7 @@ namespace WinFormsApp1
             listBox.EndUpdate();
             listBox.ResumeLayout();
         }
+
+        #endregion
     }
 }

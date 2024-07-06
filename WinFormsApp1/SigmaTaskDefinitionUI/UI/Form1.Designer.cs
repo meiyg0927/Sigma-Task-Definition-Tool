@@ -38,6 +38,7 @@
             label2 = new Label();
             buttonNewTask = new Button();
             tabPage2 = new TabPage();
+            buttonUpdateGatherStepCancel = new Button();
             buttonUpdateGatherStep = new Button();
             label3 = new Label();
             richTextBox1 = new RichTextBox();
@@ -50,6 +51,7 @@
             listBoxGatherObject = new ListBox();
             pictureITips2 = new PictureBox();
             tabPage3 = new TabPage();
+            buttonUpdateDoStepCancel = new Button();
             buttonUpdateDoStep = new Button();
             label8 = new Label();
             label7 = new Label();
@@ -175,6 +177,7 @@
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.FixedSingle;
+            tabPage2.Controls.Add(buttonUpdateGatherStepCancel);
             tabPage2.Controls.Add(buttonUpdateGatherStep);
             tabPage2.Controls.Add(label3);
             tabPage2.Controls.Add(richTextBox1);
@@ -194,14 +197,26 @@
             tabPage2.Text = "收集类任务配置";
             tabPage2.UseVisualStyleBackColor = true;
             // 
+            // buttonUpdateGatherStepCancel
+            // 
+            buttonUpdateGatherStepCancel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateGatherStepCancel.Location = new Point(609, 457);
+            buttonUpdateGatherStepCancel.Name = "buttonUpdateGatherStepCancel";
+            buttonUpdateGatherStepCancel.Size = new Size(133, 198);
+            buttonUpdateGatherStepCancel.TabIndex = 18;
+            buttonUpdateGatherStepCancel.Text = "取消";
+            buttonUpdateGatherStepCancel.UseVisualStyleBackColor = true;
+            buttonUpdateGatherStepCancel.Visible = false;
+            buttonUpdateGatherStepCancel.Click += buttonUpdateGatherStepCancel_Click;
+            // 
             // buttonUpdateGatherStep
             // 
             buttonUpdateGatherStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
             buttonUpdateGatherStep.Location = new Point(471, 457);
             buttonUpdateGatherStep.Name = "buttonUpdateGatherStep";
-            buttonUpdateGatherStep.Size = new Size(271, 198);
+            buttonUpdateGatherStep.Size = new Size(132, 198);
             buttonUpdateGatherStep.TabIndex = 17;
-            buttonUpdateGatherStep.Text = "更新指令";
+            buttonUpdateGatherStep.Text = "更新";
             buttonUpdateGatherStep.UseVisualStyleBackColor = true;
             buttonUpdateGatherStep.Visible = false;
             buttonUpdateGatherStep.Click += buttonUpdateGatherStep_Click;
@@ -306,6 +321,7 @@
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.FixedSingle;
+            tabPage3.Controls.Add(buttonUpdateDoStepCancel);
             tabPage3.Controls.Add(buttonUpdateDoStep);
             tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(label7);
@@ -323,14 +339,26 @@
             tabPage3.Text = "执行类任务配置";
             tabPage3.UseVisualStyleBackColor = true;
             // 
+            // buttonUpdateDoStepCancel
+            // 
+            buttonUpdateDoStepCancel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateDoStepCancel.Location = new Point(584, 375);
+            buttonUpdateDoStepCancel.Name = "buttonUpdateDoStepCancel";
+            buttonUpdateDoStepCancel.Size = new Size(132, 198);
+            buttonUpdateDoStepCancel.TabIndex = 25;
+            buttonUpdateDoStepCancel.Text = "取消";
+            buttonUpdateDoStepCancel.UseVisualStyleBackColor = true;
+            buttonUpdateDoStepCancel.Visible = false;
+            buttonUpdateDoStepCancel.Click += buttonUpdateDoStepCancel_Click;
+            // 
             // buttonUpdateDoStep
             // 
             buttonUpdateDoStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
             buttonUpdateDoStep.Location = new Point(446, 375);
             buttonUpdateDoStep.Name = "buttonUpdateDoStep";
-            buttonUpdateDoStep.Size = new Size(271, 198);
+            buttonUpdateDoStep.Size = new Size(132, 198);
             buttonUpdateDoStep.TabIndex = 24;
-            buttonUpdateDoStep.Text = "更新指令";
+            buttonUpdateDoStep.Text = "更新";
             buttonUpdateDoStep.UseVisualStyleBackColor = true;
             buttonUpdateDoStep.Visible = false;
             buttonUpdateDoStep.Click += buttonUpdateDoStep_Click;
@@ -547,7 +575,7 @@
             richTextBox3.ReadOnly = true;
             richTextBox3.Size = new Size(591, 119);
             richTextBox3.TabIndex = 23;
-            richTextBox3.Text = "1. 设置执行任务的时间\n2. 输入执行任务的具体描述\n3. 点击“加入指令”按钮，新增执行指令";
+            richTextBox3.Text = "1. 通过新建、删除、编辑等按钮，建立多个子指令\n2. 子指令列表右面的上下箭头按钮可改变选中指令的先后顺序\n3. 输入复杂任务的具体描述\n4. 点击“加入指令”按钮，新增执行指令";
             // 
             // pictureBox1
             // 
@@ -761,5 +789,7 @@
         private Button buttonSubStepMoveUp;
         private Button buttonUpdateGatherStep;
         private Button buttonUpdateDoStep;
+        private Button buttonUpdateGatherStepCancel;
+        private Button buttonUpdateDoStepCancel;
     }
 }
