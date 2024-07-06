@@ -11,7 +11,6 @@ using System.Reflection;
 using Newtonsoft.Json.Linq;
 
 #pragma warning disable IDE1006
-#pragma warning disable IDE0028
 
 namespace Sigma
 {
@@ -80,6 +79,21 @@ namespace Sigma
             _data.Steps.Add(step);
 
             return step;
+        }
+
+        public bool updateDoStep(Step? step, string description, TimeSpan ts)
+        {
+            if (_data.Steps == null || step == null) return false;
+
+            if (step is DoStep stepD)
+            {
+                stepD.Description = description;
+                stepD.TimerDuration = ts;
+
+                return true;
+            }
+
+            return false;
         }
 
         public Step? addComplexStep(string description, List<SubStep> subSteps)

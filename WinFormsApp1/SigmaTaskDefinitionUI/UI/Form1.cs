@@ -15,10 +15,11 @@ using SigmaTaskDefinitionUI;
 using SigmaTaskDefinitionUI.Data;
 using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
-//using System.Reflection.Metadata.Ecma335;
+using System.Reflection.Metadata.Ecma335;
 
 #pragma warning disable IDE1006
 #pragma warning disable IDE0028
+#pragma warning disable IDE0029
 
 namespace WinFormsApp1
 {
@@ -44,6 +45,7 @@ namespace WinFormsApp1
             dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
 
             buttonUpdateGatherStep.Visible = false;
+            buttonUpdateDoStep.Visible = false;
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
@@ -217,6 +219,13 @@ namespace WinFormsApp1
 
                 if (node_data.type == TreeNodeType.DO)
                 {
+                    if (node_data.step is DoStep stepD)
+                    {
+                        buttonUpdateDoStep.Visible = true;
+
+                        dateTimeDoDuring.Value = dateTimeDoDuring.MinDate.Add(stepD.TimerDuration);
+                        richTextDoDescription.Text = stepD.Description;
+                    }
                     return;
                 }
             }
@@ -315,7 +324,6 @@ namespace WinFormsApp1
             TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             if (root_node == null) return;
 
-            //TreeView 增加一个GatherStep节点
             string GatherStepName = "GatherStep: ";
             List<string> Objects = new();
             for (int i = 0; i < listBoxGatherObject.Items.Count; i++)
@@ -333,14 +341,16 @@ namespace WinFormsApp1
                 newNode.ToolTipText = GatherStepName; //物体字符太长的话，用Tip来展示
                 GatherStepName = GatherStepName.Substring(0, NAME_MAX);
             }
+
+            //TreeNode状态更新
             newNode.Text = GatherStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.GATHER;
 
-            if (isNew)
+            if (isNew)//TreeView 增加一个GatherStep节点
             {
                 int node_index = root_node.Nodes.Add(newNode);
                 root_node.Expand();
-                Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
+                Debug.WriteLine("Add New GatherStep Node: " + GatherStepName + "  node_index:" + node_index);
 
                 //TaskData增加一条记录
                 Step? step = sigma_task.addGatherStep(Objects);
@@ -357,7 +367,7 @@ namespace WinFormsApp1
                     sigma_task.updateGatherStep(data.step, Objects);
                 }
 
-                Debug.WriteLine("Update Gather Node: " + GatherStepName + "  node_index:" + newNode.Index);
+                Debug.WriteLine("Update GatherStep Node: " + GatherStepName + "  node_index:" + newNode.Index);
             }
 
             //清空ListBoxGatherObject控件的物体和之前保存的物体名称
@@ -365,15 +375,11 @@ namespace WinFormsApp1
             listBoxGatherObject.Items.Clear();
             existingGatherObjects.Clear();
         }
-
         #endregion
 
         #region Message Handle for Tab of DoStep
         private void buttonAddDoStep_Click(object sender, EventArgs e)
         {
-            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-            if (root_node == null) return;
-
             DateTime dt = dateTimeDoDuring.Value;
             TimeSpan span = dt.Subtract(dateTimeDoDuring.MinDate);
 
@@ -395,29 +401,86 @@ namespace WinFormsApp1
                 return;
             }
 
-            //TreeView 增加一个DoStep节点
+            Func_AddorUpdateDoStep(span,null);
+        }
+
+        private void buttonUpdateDoStep_Click(object sender, EventArgs e)
+        {
+            DateTime dt = dateTimeDoDuring.Value;
+            TimeSpan span = dt.Subtract(dateTimeDoDuring.MinDate);
+
+            if (span.TotalHours >= 24)
+            {
+                MessageBox.Show("请设置小于一天的任务执行时间", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (span.TotalSeconds <= 0)
+            {
+                MessageBox.Show("请设置任务执行的时间", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(richTextDoDescription.Text))
+            {
+                MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Func_AddorUpdateDoStep(span, treeView.SelectedNode);
+
+            buttonUpdateDoStep.Visible = false;
+        }
+
+        private void Func_AddorUpdateDoStep(TimeSpan span, TreeNode? tree_node) 
+        {
+            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            if (root_node == null) return;
+
+            bool isNew = (tree_node == null);
+            TreeNode newNode = (tree_node == null) ? new() : tree_node;            
             string DoStepName = "DoStep: " + span.ToString() + " Desption: " + richTextDoDescription.Text;
-            TreeNode newNode = new();
             if (DoStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = DoStepName; //物体字符太长的话，用Tip来展示
                 DoStepName = DoStepName.Substring(0, NAME_MAX);
             }
+
+            //TreeNode状态更新
             newNode.Text = DoStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.DO;
-            root_node.Nodes.Add(newNode);
-            root_node.Expand();
 
-            //TaskData增加一条记录
-            Step? step = sigma_task.addDoStep(richTextDoDescription.Text, span);
+            if (isNew)//TreeView 增加一个DoStep节点
+            {
+                int node_index = root_node.Nodes.Add(newNode);
+                root_node.Expand();
 
-            //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
-            TreeNodeManage.Instance.Add(TreeNodeType.DO, newNode, step);
+                Debug.WriteLine("Add New DoStep Node: " + DoStepName + "  node_index:" + node_index);
+
+                //TaskData增加一条记录
+                Step? step = sigma_task.addDoStep(richTextDoDescription.Text, span);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.DO, newNode, step);
+            }
+            else
+            {
+                //TaskData更新一条记录
+                TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(tree_node);
+                if (data != null)
+                {
+                    sigma_task.updateDoStep(data.step, richTextDoDescription.Text, span);
+                }
+
+                Debug.WriteLine("Update DoStep Node: " + DoStepName + "  node_index:" + newNode.Index);
+
+            }
 
             //DataTimePicker控件时间归零，执行任务的描述控件清空
             dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
             richTextDoDescription.Text = string.Empty;
         }
+
         #endregion
 
         #region Message Handle for Tab of Complex Step

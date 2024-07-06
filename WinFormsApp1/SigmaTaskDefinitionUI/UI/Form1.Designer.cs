@@ -50,6 +50,7 @@
             listBoxGatherObject = new ListBox();
             pictureITips2 = new PictureBox();
             tabPage3 = new TabPage();
+            buttonUpdateDoStep = new Button();
             label8 = new Label();
             label7 = new Label();
             richTextDoDescription = new RichTextBox();
@@ -305,6 +306,7 @@
             // tabPage3
             // 
             tabPage3.BorderStyle = BorderStyle.FixedSingle;
+            tabPage3.Controls.Add(buttonUpdateDoStep);
             tabPage3.Controls.Add(label8);
             tabPage3.Controls.Add(label7);
             tabPage3.Controls.Add(richTextDoDescription);
@@ -320,6 +322,18 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "执行类任务配置";
             tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdateDoStep
+            // 
+            buttonUpdateDoStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateDoStep.Location = new Point(446, 375);
+            buttonUpdateDoStep.Name = "buttonUpdateDoStep";
+            buttonUpdateDoStep.Size = new Size(271, 198);
+            buttonUpdateDoStep.TabIndex = 24;
+            buttonUpdateDoStep.Text = "更新指令";
+            buttonUpdateDoStep.UseVisualStyleBackColor = true;
+            buttonUpdateDoStep.Visible = false;
+            buttonUpdateDoStep.Click += buttonUpdateDoStep_Click;
             // 
             // label8
             // 
@@ -746,5 +760,6 @@
         private Button buttonSubStepMoveDown;
         private Button buttonSubStepMoveUp;
         private Button buttonUpdateGatherStep;
+        private Button buttonUpdateDoStep;
     }
 }
