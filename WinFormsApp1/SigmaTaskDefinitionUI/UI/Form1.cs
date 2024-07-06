@@ -15,6 +15,7 @@ using SigmaTaskDefinitionUI;
 using SigmaTaskDefinitionUI.Data;
 using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
+//using System.Reflection.Metadata.Ecma335;
 
 #pragma warning disable IDE1006
 #pragma warning disable IDE0028
@@ -41,6 +42,8 @@ namespace WinFormsApp1
         private void Form1_Load(object sender, EventArgs e)
         {
             dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
+
+            buttonUpdateGatherStep.Visible = false;
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
@@ -99,7 +102,7 @@ namespace WinFormsApp1
                             data.node.Remove();
 
                             //如果最后一个子任务节点删除了，是否需要删除父ComplexStep节点？
-                            if(parent_data != null && parent_data.node != null && parent_data.node.Nodes.Count <=0)
+                            if (parent_data != null && parent_data.node != null && parent_data.node.Nodes.Count <= 0)
                             {
                                 MessageBox.Show("子任务节点全部删除了");
                             }
@@ -108,7 +111,7 @@ namespace WinFormsApp1
                         if (data.type == TreeNodeType.COMPLEX) //复杂任务节点需要删除下面的所有子任务节点
                         {
                             //删除下面所有子节点和子任务的关联
-                            foreach(TreeNode child_node in data.node.Nodes)
+                            foreach (TreeNode child_node in data.node.Nodes)
                             {
                                 TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
                             }
@@ -141,12 +144,84 @@ namespace WinFormsApp1
             switch (item)
             {
                 case "toolStripMenuItemEdit":
-                    //MessageBox.Show("Sender: " + sender.ToString() + " Event: toolStripMenuItemEdit");
+                    {
+                        TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+                        if (root_node == null) break;
+
+                        if (treeView.SelectedNode == root_node)
+                        {
+                            tabControlTask.SelectedIndex = 0;
+                            Func_ContextMenuHandle_EditBegin(null);
+                        }
+                        else
+                        {
+                            TreeNodeData? treeNodeData = TreeNodeManage.Instance.GetTreeNodeData(treeView.SelectedNode);
+                            if (treeNodeData == null) { return; }
+
+                            if (treeNodeData.type == TreeNodeType.SUB)
+                            {
+                                frmSubStep.ShowDialog();
+                            }
+                            else
+                            {
+                                tabControlTask.SelectedIndex = (int)treeNodeData.type - 1;
+                            }
+                            Func_ContextMenuHandle_EditBegin(treeNodeData);
+                        }
+                    }
                     break;
                 default:
                     break;
             }
         }
+
+        //根据需要编辑的Step类型给各个控件赋值
+        private void Func_ContextMenuHandle_EditBegin(TreeNodeData? node_data)
+        {
+            if (node_data == null) //root node will be edited
+            {
+                //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+                textTaskName.Text = sigma_task.getTaskName();
+            }
+            else
+            {
+                if (node_data.type == TreeNodeType.SUB)
+                {
+                    return;
+                }
+
+                if (node_data.type == TreeNodeType.COMPLEX)
+                {
+                    return;
+                }
+
+                if (node_data.type == TreeNodeType.GATHER)
+                {
+                    if (node_data.step is GatherStep stepG)
+                    {
+                        //清空ListBoxGatherObject控件的物体和之前保存的物体名称
+                        textBoxGatherObjectBack.Text = string.Empty;
+                        listBoxGatherObject.Items.Clear();
+                        existingGatherObjects.Clear();
+
+                        buttonUpdateGatherStep.Visible = true;
+
+                        foreach (string obj in stepG.Objects)
+                        {
+                            listBoxGatherObject.Items.Add(obj);
+                            existingGatherObjects.Add(obj);
+                        }
+                    }
+                    return;
+                }
+
+                if (node_data.type == TreeNodeType.DO)
+                {
+                    return;
+                }
+            }
+        }
+
         #endregion
 
         #region Message Handle for Tab of Basic
@@ -213,14 +288,32 @@ namespace WinFormsApp1
 
         private void buttonAddGatherStep_Click(object sender, EventArgs e)
         {
-            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-            if (root_node == null) return;
-
             if (listBoxGatherObject.Items.Count <= 0)
             {
                 MessageBox.Show("请先输入需要收集的物品名字", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
+
+            Func_AddorUpdateGatherStep(null);
+        }
+
+        private void buttonUpdateGatherStep_Click(object sender, EventArgs e)
+        {
+            if (listBoxGatherObject.Items.Count <= 0)
+            {
+                MessageBox.Show("请先输入需要收集的物品名字", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Func_AddorUpdateGatherStep(treeView.SelectedNode);
+
+            buttonUpdateGatherStep.Visible = false;
+        }
+
+        private void Func_AddorUpdateGatherStep(TreeNode? tree_node)
+        {
+            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            if (root_node == null) return;
 
             //TreeView 增加一个GatherStep节点
             string GatherStepName = "GatherStep: ";
@@ -233,7 +326,8 @@ namespace WinFormsApp1
                 Objects.Add(obj);
             }
 
-            TreeNode newNode = new();
+            bool isNew = (tree_node == null);
+            TreeNode newNode = (tree_node == null) ? new() : tree_node;
             if (GatherStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = GatherStepName; //物体字符太长的话，用Tip来展示
@@ -241,20 +335,35 @@ namespace WinFormsApp1
             }
             newNode.Text = GatherStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.GATHER;
-            int node_index = root_node.Nodes.Add(newNode);
-            root_node.Expand();
 
-            Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
+            if (isNew)
+            {
+                int node_index = root_node.Nodes.Add(newNode);
+                root_node.Expand();
+                Debug.WriteLine("Add New Gather Node: " + GatherStepName + "  node_index:" + node_index);
+
+                //TaskData增加一条记录
+                Step? step = sigma_task.addGatherStep(Objects);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
+            }
+            else
+            {
+                //TaskData更新一条记录
+                TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(tree_node);
+                if (data != null)
+                {
+                    sigma_task.updateGatherStep(data.step, Objects);
+                }
+
+                Debug.WriteLine("Update Gather Node: " + GatherStepName + "  node_index:" + newNode.Index);
+            }
 
             //清空ListBoxGatherObject控件的物体和之前保存的物体名称
+            textBoxGatherObjectBack.Text = string.Empty;
             listBoxGatherObject.Items.Clear();
             existingGatherObjects.Clear();
-
-            //TaskData增加一条记录
-            Step? step = sigma_task.addGatherStep(Objects);
-
-            //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
-            TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
         }
 
         #endregion
@@ -323,7 +432,7 @@ namespace WinFormsApp1
                 return;
             }
 
-            if(SubStepDataList.Count <= 0)
+            if (SubStepDataList.Count <= 0)
             {
                 MessageBox.Show("请先添加子任务", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -350,7 +459,7 @@ namespace WinFormsApp1
 
             //TreeView 增加SubSteps节点
             {
-                Func_AddSubSteps(newNode,step);
+                Func_AddSubSteps(newNode, step);
             }
 
             //清空子任务列表；复杂任务的描述控件清空
@@ -414,7 +523,7 @@ namespace WinFormsApp1
 
         private void Func_AddSubSteps(TreeNode parent_node, Step? complex_step)
         {
-            for(int i = 0; i<SubStepDataList.Count; i++)
+            for (int i = 0; i < SubStepDataList.Count; i++)
             {
                 UISubStep step = SubStepDataList[i];
 
@@ -438,12 +547,28 @@ namespace WinFormsApp1
                 {
                     TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, stepC.SubSteps[i]);
                 }
-                else 
+                else
                 {
                     MessageBox.Show("出错了：子任务的父节点无法转换为ComplexStep", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
+
+
+        private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
+        {
+            if (fromIndex < 0 || fromIndex >= SubStepDataList.Count || toIndex < 0 || toIndex >= SubStepDataList.Count)
+            {
+                return;
+            }
+
+            UISubStep selectedItem = SubStepDataList.ElementAt(fromIndex);
+            SubStepDataList.RemoveAt(fromIndex);
+            SubStepDataList.Insert(toIndex, selectedItem);
+        }
+
+        #endregion
 
         private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)
         {
@@ -473,20 +598,5 @@ namespace WinFormsApp1
             listBox.EndUpdate();
             listBox.ResumeLayout();
         }
-
-        private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
-        {
-            if (fromIndex < 0 || fromIndex >= SubStepDataList.Count || toIndex < 0 || toIndex >= SubStepDataList.Count)
-            {
-                return;
-            }
-
-            UISubStep selectedItem = SubStepDataList.ElementAt(fromIndex);
-            SubStepDataList.RemoveAt(fromIndex);
-            SubStepDataList.Insert(toIndex, selectedItem);
-        }
-
-        #endregion
     }
-
 }

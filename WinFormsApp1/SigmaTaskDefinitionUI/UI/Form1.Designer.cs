@@ -32,12 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form));
             textTaskName = new TextBox();
             label1 = new Label();
-            tabControl1 = new TabControl();
+            tabControlTask = new TabControl();
             tabPage1 = new TabPage();
             pictureTip1 = new PictureBox();
             label2 = new Label();
             buttonNewTask = new Button();
             tabPage2 = new TabPage();
+            buttonUpdateGatherStep = new Button();
             label3 = new Label();
             richTextBox1 = new RichTextBox();
             label5 = new Label();
@@ -81,7 +82,7 @@
             buttonNodeDown = new Button();
             buttonNodeDelete = new Button();
             buttonMainClose = new Button();
-            tabControl1.SuspendLayout();
+            tabControlTask.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             tabPage2.SuspendLayout();
@@ -110,18 +111,18 @@
             label1.TabIndex = 2;
             label1.Text = "任务名称";
             // 
-            // tabControl1
+            // tabControlTask
             // 
-            tabControl1.Appearance = TabAppearance.FlatButtons;
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
-            tabControl1.Location = new Point(32, 30);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(787, 997);
-            tabControl1.TabIndex = 3;
+            tabControlTask.Appearance = TabAppearance.FlatButtons;
+            tabControlTask.Controls.Add(tabPage1);
+            tabControlTask.Controls.Add(tabPage2);
+            tabControlTask.Controls.Add(tabPage3);
+            tabControlTask.Controls.Add(tabPage4);
+            tabControlTask.Location = new Point(32, 30);
+            tabControlTask.Name = "tabControlTask";
+            tabControlTask.SelectedIndex = 0;
+            tabControlTask.Size = new Size(787, 997);
+            tabControlTask.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -173,6 +174,7 @@
             // tabPage2
             // 
             tabPage2.BorderStyle = BorderStyle.FixedSingle;
+            tabPage2.Controls.Add(buttonUpdateGatherStep);
             tabPage2.Controls.Add(label3);
             tabPage2.Controls.Add(richTextBox1);
             tabPage2.Controls.Add(label5);
@@ -190,6 +192,18 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "收集类任务配置";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdateGatherStep
+            // 
+            buttonUpdateGatherStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateGatherStep.Location = new Point(471, 457);
+            buttonUpdateGatherStep.Name = "buttonUpdateGatherStep";
+            buttonUpdateGatherStep.Size = new Size(271, 198);
+            buttonUpdateGatherStep.TabIndex = 17;
+            buttonUpdateGatherStep.Text = "更新指令";
+            buttonUpdateGatherStep.UseVisualStyleBackColor = true;
+            buttonUpdateGatherStep.Visible = false;
+            buttonUpdateGatherStep.Click += buttonUpdateGatherStep_Click;
             // 
             // label3
             // 
@@ -650,13 +664,13 @@
             Controls.Add(buttonNodeUp);
             Controls.Add(buttonOutput);
             Controls.Add(treeView);
-            Controls.Add(tabControl1);
+            Controls.Add(tabControlTask);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             Name = "Form";
             Text = "Sigma指令生成工具";
             Load += Form1_Load;
-            tabControl1.ResumeLayout(false);
+            tabControlTask.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
@@ -682,7 +696,7 @@
 #endregion
         private TextBox textTaskName;
         private Label label1;
-        private TabControl tabControl1;
+        private TabControl tabControlTask;
         private TabPage tabPage1;
         private TabPage tabPage2;
         private TabPage tabPage3;
@@ -731,5 +745,6 @@
         private Button buttonEditSubStep;
         private Button buttonSubStepMoveDown;
         private Button buttonSubStepMoveUp;
+        private Button buttonUpdateGatherStep;
     }
 }

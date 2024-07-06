@@ -59,6 +59,19 @@ namespace Sigma
             return step;
         }
 
+        public bool updateGatherStep(Step? step, List<string> objects)
+        {
+            if (_data.Steps == null || step == null) return false;
+
+            if (step is GatherStep stepG)
+            {
+                stepG.Objects = objects;
+                return true;
+            }
+
+            return false;
+        }
+
         public Step? addDoStep(string description, TimeSpan ts)
         {
             if (_data.Steps == null) return null;
