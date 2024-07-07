@@ -32,8 +32,13 @@ namespace WinFormsApp1
         private readonly FormOutput frmOutput = new();
         private readonly FormSubStep frmSubStep = new();
 
-        private readonly HashSet<string> existingGatherObjects = new();// HashSet<string>();
-        private readonly List<UISubStep> SubStepDataList = new();// List<UISubStep>();
+        private readonly HashSet<string> existingGatherObjects = new();
+        private readonly List<UISubStep> SubStepDataList = new();
+
+        //把TreeView右键选中的Node记录下来，以免编辑的时候用户又鼠标右键点中了其它节点
+        private TreeNode? contextMenu_choosed_node = null;
+        //TreeView右键选中的Node进入编辑的时候，固定TabControl，不允许切换Tab
+        private int tabcontrol_fixed_index = -1;
 
         public Form()
         {
@@ -59,7 +64,7 @@ namespace WinFormsApp1
             this.Close();
         }
 
-        #region Message Handle for TreeView
+        #region Message Handle for TreeView & TabControl
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             //MessageBox.Show("treeView_NodeMouseClick: " + e.Node.Text + "  index: " + e.Node.Index);
@@ -157,19 +162,22 @@ namespace WinFormsApp1
                         TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
                         if (root_node == null) break;
 
-                        if (treeView.SelectedNode == root_node)
+                        contextMenu_choosed_node = treeView.SelectedNode;
+                        if (contextMenu_choosed_node == null) break;
+
+                        if (contextMenu_choosed_node == root_node)
                         {
-                            tabControlTask.SelectedIndex = 0;
+                            tabControlTask.SelectedIndex = tabcontrol_fixed_index = 0;
                             Func_ContextMenuHandle_EditBegin(null);
                         }
                         else
                         {
-                            TreeNodeData? treeNodeData = TreeNodeManage.Instance.GetTreeNodeData(treeView.SelectedNode);
+                            TreeNodeData? treeNodeData = TreeNodeManage.Instance.GetTreeNodeData(contextMenu_choosed_node);
                             if (treeNodeData == null) { return; }
 
                             if (treeNodeData.type != TreeNodeType.SUB)
                             {
-                                tabControlTask.SelectedIndex = (int)treeNodeData.type - 1;
+                                tabControlTask.SelectedIndex = tabcontrol_fixed_index = (int)treeNodeData.type - 1;
                             }
                             Func_ContextMenuHandle_EditBegin(treeNodeData);
                         }
@@ -246,7 +254,19 @@ namespace WinFormsApp1
                 }
             }
         }
+        private void Func_ContextMenuHandle_EditEnd()
+        { 
+            contextMenu_choosed_node = null;
+            tabcontrol_fixed_index = -1;
+        }
 
+        private void tabControlTask_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabcontrol_fixed_index >= 0) //节点进入编辑状态，不允许切换Tab
+            {
+                tabControlTask.SelectedIndex = tabcontrol_fixed_index;
+            }
+        }
         #endregion
 
         #region Message Handle for Tab of Basic
@@ -261,11 +281,13 @@ namespace WinFormsApp1
         {
             TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             Func_AddorUpdateTask(root_node);
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void buttonUpdateTaskCancel_Click(object sender, EventArgs e)
         {
             textTaskName.Clear();
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void Func_AddorUpdateTask(TreeNode? root_node)
@@ -344,8 +366,9 @@ namespace WinFormsApp1
                 return;
             }
 
-            Func_AddorUpdateGatherStep(treeView.SelectedNode);
+            Func_AddorUpdateGatherStep(contextMenu_choosed_node);
             Func_AddandUpdateButtonVisible(false, TreeNodeType.GATHER);
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void buttonUpdateGatherStepCancel_Click(object sender, EventArgs e)
@@ -356,6 +379,8 @@ namespace WinFormsApp1
             textBoxGatherObjectBack.Text = string.Empty;
             listBoxGatherObject.Items.Clear();
             existingGatherObjects.Clear();
+
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void Func_AddorUpdateGatherStep(TreeNode? tree_node)
@@ -466,8 +491,9 @@ namespace WinFormsApp1
                 return;
             }
 
-            Func_AddorUpdateDoStep(span, treeView.SelectedNode);
+            Func_AddorUpdateDoStep(span, contextMenu_choosed_node);
             Func_AddandUpdateButtonVisible(false, TreeNodeType.DO);
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void buttonUpdateDoStepCancel_Click(object sender, EventArgs e)
@@ -477,6 +503,7 @@ namespace WinFormsApp1
             richTextDoDescription.Text = string.Empty;
 
             Func_AddandUpdateButtonVisible(false, TreeNodeType.DO);
+            Func_ContextMenuHandle_EditEnd();
         }
 
         private void Func_AddorUpdateDoStep(TimeSpan span, TreeNode? tree_node)
@@ -700,7 +727,7 @@ namespace WinFormsApp1
         #region Function tool for All Steps
         private void Func_AddandUpdateButtonVisible(bool isEdit, TreeNodeType type)
         {
-            if(type == TreeNodeType.ROOT || type == TreeNodeType.NONE)
+            if (type == TreeNodeType.ROOT || type == TreeNodeType.NONE)
             {
                 buttonUpdateTask.Visible = isEdit;
                 buttonUpdateTaskCancel.Visible = isEdit;
@@ -721,7 +748,11 @@ namespace WinFormsApp1
                 buttonAddDoStep.Visible = !isEdit;
             }
 
-            buttonNodeUp.Enabled = buttonNodeDown.Enabled = buttonNodeDelete.Enabled = !isEdit;
+            if (type != TreeNodeType.ROOT)
+            {
+                buttonNodeUp.Enabled = buttonNodeDown.Enabled = buttonNodeDelete.Enabled = !isEdit;
+                buttonOutput.Enabled = !isEdit;
+            }
         }
 
         private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)

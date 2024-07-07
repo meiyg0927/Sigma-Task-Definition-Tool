@@ -130,6 +130,7 @@
             tabControlTask.SelectedIndex = 0;
             tabControlTask.Size = new Size(787, 997);
             tabControlTask.TabIndex = 3;
+            tabControlTask.SelectedIndexChanged += tabControlTask_SelectedIndexChanged;
             // 
             // tabPage1
             // 
