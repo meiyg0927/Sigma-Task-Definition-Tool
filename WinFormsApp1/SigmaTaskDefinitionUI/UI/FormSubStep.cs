@@ -10,12 +10,14 @@ using System.Windows.Forms;
 using Sigma;
 using UISubStep = Sigma.SubStep;
 
+#pragma warning disable IDE1006
+
 namespace SigmaTaskDefinitionUI
 {
     public partial class FormSubStep : Form
     {
-        private UISubStep _inValue = new UISubStep();
-        private UISubStep _retValue = new UISubStep();
+        private UISubStep _inValue = new();
+        private UISubStep _retValue = new();
         internal UISubStep inValue
         {
             get { return _inValue; }
@@ -55,6 +57,7 @@ namespace SigmaTaskDefinitionUI
         private void buttonSubStepCancel_Click(object sender, EventArgs e)
         {
             //richTextSubStepDescription.Text = string.Empty;
+            _inValue.Description = string.Empty;
             this.DialogResult= DialogResult.Cancel;
             this.Close();
         }

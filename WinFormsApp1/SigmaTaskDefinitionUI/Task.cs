@@ -112,6 +112,23 @@ namespace Sigma
             return step;
         }
 
+        public bool updateSubStepinComplexStep(Step? complex_step, SubStep? subStep, SubStep? updated_data)
+        {
+            if (_data.Steps == null || complex_step == null || subStep == null || updated_data == null) { return false; }
+
+            if (complex_step is ComplexStep stepC && stepC.SubSteps.Contains(subStep))
+            {
+                int index = stepC.SubSteps.IndexOf(subStep);
+                if (index >= 0)
+                { 
+                    stepC.SubSteps[index].Copy(updated_data);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool RemoveStep(Step? step)
         {
             if (step == null) return false;

@@ -167,11 +167,7 @@ namespace WinFormsApp1
                             TreeNodeData? treeNodeData = TreeNodeManage.Instance.GetTreeNodeData(treeView.SelectedNode);
                             if (treeNodeData == null) { return; }
 
-                            if (treeNodeData.type == TreeNodeType.SUB)
-                            {
-                                frmSubStep.ShowDialog();
-                            }
-                            else
+                            if (treeNodeData.type != TreeNodeType.SUB)
                             {
                                 tabControlTask.SelectedIndex = (int)treeNodeData.type - 1;
                             }
@@ -196,6 +192,15 @@ namespace WinFormsApp1
             {
                 if (node_data.type == TreeNodeType.SUB)
                 {
+                    if (node_data.subStep is UISubStep stepS)
+                    {
+                        frmSubStep.inValue.Copy(stepS);
+                        if(DialogResult.OK == frmSubStep.ShowDialog())
+                        {
+                            UISubStep updated_data = frmSubStep.retValue.Clone();
+                            Func_UpdateSubSteps(node_data, updated_data);
+                        }
+                    }
                     return;
                 }
 
@@ -641,7 +646,24 @@ namespace WinFormsApp1
             }
         }
 
+        private void Func_UpdateSubSteps(TreeNodeData? subStep_data, UISubStep updated_data)
+        {
+            if (subStep_data == null || subStep_data.node == null || subStep_data.subStep == null || subStep_data.step == null) return;
 
+            string SubStepName = "SubStep: " + updated_data.Description;
+            TreeNode newNode = subStep_data.node;
+            if (SubStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = SubStepName; //物体字符太长的话，用Tip来展示
+                SubStepName = SubStepName.Substring(0, NAME_MAX);
+            }
+
+            newNode.Text = SubStepName;
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.SUB;
+
+            //TaskData更新一条记录(针对父节点ComplexStep)
+            sigma_task.updateSubStepinComplexStep(subStep_data.step, subStep_data.subStep, updated_data);
+        }
 
         private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
         {
