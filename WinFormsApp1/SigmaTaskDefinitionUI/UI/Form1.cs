@@ -199,6 +199,7 @@ namespace WinFormsApp1
             if (node_data == null) //root node will be edited
             {
                 textTaskName.Text = sigma_task.getTaskName();
+                //Func_LockTreeView();
             }
             else
             {
@@ -218,6 +219,28 @@ namespace WinFormsApp1
 
                 if (node_data.type == TreeNodeType.COMPLEX)
                 {
+                    //清空子任务列表；复杂任务的描述控件清空
+                    listBoxSubStep.Items.Clear();
+                    richTextComplexDescription.Text = string.Empty;
+                    SubStepDataList.Clear();
+
+                    if (node_data.step is ComplexStep stepC)
+                    {
+                        richTextComplexDescription.Text = stepC.Description;
+
+                        Func_AddandUpdateButtonVisible(true, TreeNodeType.COMPLEX);
+
+                        foreach (UISubStep subStep in stepC.SubSteps)
+                        {
+                            UISubStep data = subStep.Clone();
+                            SubStepDataList.Add(data);
+
+                            string str = subStep.Description;
+                            if (str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
+                            listBoxSubStep.Items.Add(str);
+                        }
+                    }
+
                     return;
                 }
 
@@ -255,7 +278,7 @@ namespace WinFormsApp1
             }
         }
         private void Func_ContextMenuHandle_EditEnd()
-        { 
+        {
             contextMenu_choosed_node = null;
             tabcontrol_fixed_index = -1;
         }
@@ -281,12 +304,14 @@ namespace WinFormsApp1
         {
             TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             Func_AddorUpdateTask(root_node);
+            Func_LockTreeView(false);
             Func_ContextMenuHandle_EditEnd();
         }
 
         private void buttonUpdateTaskCancel_Click(object sender, EventArgs e)
         {
             textTaskName.Clear();
+            Func_LockTreeView(false);
             Func_ContextMenuHandle_EditEnd();
         }
 
@@ -560,9 +585,6 @@ namespace WinFormsApp1
         #region Message Handle for Tab of Complex Step
         private void buttonAddComplexStep_Click(object sender, EventArgs e)
         {
-            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-            if (root_node == null) return;
-
             if (string.IsNullOrWhiteSpace(richTextComplexDescription.Text))
             {
                 MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -575,9 +597,47 @@ namespace WinFormsApp1
                 return;
             }
 
+            Func_AddorUpdateComplexStep(null);
+        }
+
+        private void buttonUpdateComplexStep_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(richTextComplexDescription.Text))
+            {
+                MessageBox.Show("请输入任务描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            if (SubStepDataList.Count <= 0)
+            {
+                MessageBox.Show("请先添加子任务", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            Func_AddorUpdateComplexStep(contextMenu_choosed_node);
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.COMPLEX);
+            Func_ContextMenuHandle_EditEnd();
+        }
+
+        private void buttonUpdateComplexStepCancel_Click(object sender, EventArgs e)
+        {
+            listBoxSubStep.Items.Clear();
+            richTextComplexDescription.Text = string.Empty;
+            SubStepDataList.Clear();
+
+            Func_AddandUpdateButtonVisible(false, TreeNodeType.COMPLEX);
+            Func_ContextMenuHandle_EditEnd();
+        }
+
+        private void Func_AddorUpdateComplexStep(TreeNode? tree_node)
+        {
+            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            if (root_node == null) return;
+
+            bool isNew = (tree_node == null);
+            TreeNode newNode = (tree_node == null) ? new() : tree_node;
             //TreeView 增加一个ComplexStep节点
             string ComplexStepName = "ComplexStep: " + richTextComplexDescription.Text;
-            TreeNode newNode = new();
             if (ComplexStepName.Length > NAME_MAX)
             {
                 newNode.ToolTipText = ComplexStepName; //物体字符太长的话，用Tip来展示
@@ -585,18 +645,45 @@ namespace WinFormsApp1
             }
             newNode.Text = ComplexStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.COMPLEX;
-            root_node.Nodes.Add(newNode);
-            root_node.Expand();
 
-            //TaskData增加一条记录
-            Step? step = sigma_task.addComplexStep(richTextComplexDescription.Text, SubStepDataList);
-
-            //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
-            TreeNodeManage.Instance.Add(TreeNodeType.COMPLEX, newNode, step);
-
-            //TreeView 增加SubSteps节点
+            if (isNew)
             {
-                Func_AddSubSteps(newNode, step);
+                root_node.Nodes.Add(newNode);
+                root_node.Expand();
+
+                //TaskData增加一条记录
+                Step? step = sigma_task.addComplexStep(richTextComplexDescription.Text, SubStepDataList);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.COMPLEX, newNode, step);
+
+                //TreeView 增加SubSteps节点
+                {
+                    Func_AddSubSteps(newNode, step);
+                }
+            }
+            else
+            {
+                TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(tree_node);
+
+                if (data != null && data.node != null && data.step != null)
+                {
+                    //TaskData更新一条记录（TaskData上重新创建SubSteps数据）
+                    sigma_task.updateComplexStep(data.step, richTextComplexDescription.Text, SubStepDataList);
+
+                   //删除下面所有子节点和子任务的关联
+                    foreach (TreeNode child_node in data.node.Nodes)
+                    {
+                        TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
+                    }
+                    //TreeViews上删除旧子节点
+                    data.node.Nodes.Clear();
+
+                    //TreeView上重新增加SubSteps节点
+                    {
+                        Func_AddSubSteps(newNode, data.step);
+                    }
+                }
             }
 
             //清空子任务列表；复杂任务的描述控件清空
@@ -604,8 +691,10 @@ namespace WinFormsApp1
             richTextComplexDescription.Text = string.Empty;
             SubStepDataList.Clear();
         }
+
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
+            frmSubStep.inValue.Copy(new UISubStep());
             if (DialogResult.OK == frmSubStep.ShowDialog())
             {
                 UISubStep data = frmSubStep.retValue.Clone();
@@ -748,11 +837,25 @@ namespace WinFormsApp1
                 buttonAddDoStep.Visible = !isEdit;
             }
 
+            if (type == TreeNodeType.COMPLEX || type == TreeNodeType.NONE)
+            {
+                buttonUpdateComplexStep.Visible = isEdit;
+                buttonUpdateComplexStepCancel.Visible = isEdit;
+                buttonAddComplexStep.Visible = !isEdit;
+            }
+
             if (type != TreeNodeType.ROOT)
             {
-                buttonNodeUp.Enabled = buttonNodeDown.Enabled = buttonNodeDelete.Enabled = !isEdit;
+                Func_LockTreeView(isEdit);
                 buttonOutput.Enabled = !isEdit;
             }
+        }
+
+        private void Func_LockTreeView(bool isEdit = true)
+        {
+            buttonNodeUp.Enabled = buttonNodeDown.Enabled = buttonNodeDelete.Enabled = !isEdit;
+            //contextMenuStripTreeView.Enabled = !isEdit;
+            treeView.Enabled = !isEdit;
         }
 
         private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)

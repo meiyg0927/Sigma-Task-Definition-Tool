@@ -64,6 +64,8 @@
             pictureTip3 = new PictureBox();
             dateTimeDoDuring = new DateTimePicker();
             tabPage4 = new TabPage();
+            buttonUpdateComplexStepCancel = new Button();
+            buttonUpdateComplexStep = new Button();
             groupBox1 = new GroupBox();
             buttonSubStepMoveDown = new Button();
             buttonSubStepMoveUp = new Button();
@@ -475,6 +477,8 @@
             // tabPage4
             // 
             tabPage4.BorderStyle = BorderStyle.FixedSingle;
+            tabPage4.Controls.Add(buttonUpdateComplexStepCancel);
+            tabPage4.Controls.Add(buttonUpdateComplexStep);
             tabPage4.Controls.Add(groupBox1);
             tabPage4.Controls.Add(label10);
             tabPage4.Controls.Add(richTextComplexDescription);
@@ -489,6 +493,28 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "复杂任务配置";
             tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdateComplexStepCancel
+            // 
+            buttonUpdateComplexStepCancel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateComplexStepCancel.Location = new Point(602, 494);
+            buttonUpdateComplexStepCancel.Name = "buttonUpdateComplexStepCancel";
+            buttonUpdateComplexStepCancel.Size = new Size(132, 198);
+            buttonUpdateComplexStepCancel.TabIndex = 31;
+            buttonUpdateComplexStepCancel.Text = "取消";
+            buttonUpdateComplexStepCancel.UseVisualStyleBackColor = true;
+            buttonUpdateComplexStepCancel.Click += buttonUpdateComplexStepCancel_Click;
+            // 
+            // buttonUpdateComplexStep
+            // 
+            buttonUpdateComplexStep.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateComplexStep.Location = new Point(464, 494);
+            buttonUpdateComplexStep.Name = "buttonUpdateComplexStep";
+            buttonUpdateComplexStep.Size = new Size(132, 198);
+            buttonUpdateComplexStep.TabIndex = 30;
+            buttonUpdateComplexStep.Text = "更新";
+            buttonUpdateComplexStep.UseVisualStyleBackColor = true;
+            buttonUpdateComplexStep.Click += buttonUpdateComplexStep_Click;
             // 
             // groupBox1
             // 
@@ -835,5 +861,7 @@
         private ToolStripMenuItem toolStripMenuItemExpandAll;
         private Button buttonUpdateTaskCancel;
         private Button buttonUpdateTask;
+        private Button buttonUpdateComplexStep;
+        private Button buttonUpdateComplexStepCancel;
     }
 }

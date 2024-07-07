@@ -11,6 +11,12 @@ namespace Sigma
         public string Label { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public SubStep()
+        {
+            this.Label = string.Empty;
+            this.Description = string.Empty;
+        }
+
         public SubStep Clone()
         {
             SubStep newStep = new();

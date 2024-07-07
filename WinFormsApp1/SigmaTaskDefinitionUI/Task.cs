@@ -112,6 +112,25 @@ namespace Sigma
             return step;
         }
 
+        public bool updateComplexStep(Step? step, string description, List<SubStep> subSteps)
+        {
+            if (_data.Steps == null || step == null) return false;
+
+            if(step is ComplexStep stepC)
+            {
+                stepC.Description = description;
+                stepC.SubSteps.Clear();
+                foreach (SubStep subStep in subSteps) //SubStep不更新，直接删除重新赋值
+                {
+                    SubStep newStep = subStep.Clone();
+                    stepC.SubSteps.Add(newStep);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
         public bool updateSubStepinComplexStep(Step? complex_step, SubStep? subStep, SubStep? updated_data)
         {
             if (_data.Steps == null || complex_step == null || subStep == null || updated_data == null) { return false; }
