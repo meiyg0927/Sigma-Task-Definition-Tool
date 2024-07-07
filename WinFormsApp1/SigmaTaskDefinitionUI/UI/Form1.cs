@@ -175,6 +175,11 @@ namespace WinFormsApp1
                         }
                     }
                     break;
+                case "toolStripMenuItemExpandAll":
+                    {
+                        treeView.ExpandAll();
+                    }
+                    break;
                 default:
                     break;
             }
@@ -185,7 +190,6 @@ namespace WinFormsApp1
         {
             if (node_data == null) //root node will be edited
             {
-                //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
                 textTaskName.Text = sigma_task.getTaskName();
             }
             else
@@ -195,7 +199,7 @@ namespace WinFormsApp1
                     if (node_data.subStep is UISubStep stepS)
                     {
                         frmSubStep.inValue.Copy(stepS);
-                        if(DialogResult.OK == frmSubStep.ShowDialog())
+                        if (DialogResult.OK == frmSubStep.ShowDialog())
                         {
                             UISubStep updated_data = frmSubStep.retValue.Clone();
                             Func_UpdateSubSteps(node_data, updated_data);
@@ -249,13 +253,27 @@ namespace WinFormsApp1
         private void buttonNewTask_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("buttonNewTask_Click");
+            Func_AddorUpdateTask(null);
+            Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT); //只能创建一个Task
+        }
 
+        private void buttonUpdateTask_Click(object sender, EventArgs e)
+        {
+            TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
+            Func_AddorUpdateTask(root_node);
+        }
+
+        private void buttonUpdateTaskCancel_Click(object sender, EventArgs e)
+        {
+            textTaskName.Clear();
+        }
+
+        private void Func_AddorUpdateTask(TreeNode? root_node)
+        {
             string taskName = textTaskName.Text.Trim();
 
             if (sigma_task.setTaskName(taskName))
             {
-                TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-
                 if (root_node == null)
                 {
                     TreeNode newNode = new(taskName);
@@ -682,6 +700,13 @@ namespace WinFormsApp1
         #region Function tool for All Steps
         private void Func_AddandUpdateButtonVisible(bool isEdit, TreeNodeType type)
         {
+            if(type == TreeNodeType.ROOT || type == TreeNodeType.NONE)
+            {
+                buttonUpdateTask.Visible = isEdit;
+                buttonUpdateTaskCancel.Visible = isEdit;
+                buttonNewTask.Visible = !isEdit;
+            }
+
             if (type == TreeNodeType.GATHER || type == TreeNodeType.NONE)
             {
                 buttonUpdateGatherStep.Visible = isEdit;

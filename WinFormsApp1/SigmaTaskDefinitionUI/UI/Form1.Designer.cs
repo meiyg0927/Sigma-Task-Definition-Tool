@@ -34,6 +34,8 @@
             label1 = new Label();
             tabControlTask = new TabControl();
             tabPage1 = new TabPage();
+            buttonUpdateTaskCancel = new Button();
+            buttonUpdateTask = new Button();
             pictureTip1 = new PictureBox();
             label2 = new Label();
             buttonNewTask = new Button();
@@ -78,6 +80,8 @@
             treeView = new TreeView();
             contextMenuStripTreeView = new ContextMenuStrip(components);
             toolStripSeparator1 = new ToolStripSeparator();
+            toolStripMenuItemExpandAll = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             toolStripMenuItemEdit = new ToolStripMenuItem();
             imageList = new ImageList(components);
             buttonOutput = new Button();
@@ -130,6 +134,8 @@
             // tabPage1
             // 
             tabPage1.BorderStyle = BorderStyle.FixedSingle;
+            tabPage1.Controls.Add(buttonUpdateTaskCancel);
+            tabPage1.Controls.Add(buttonUpdateTask);
             tabPage1.Controls.Add(pictureTip1);
             tabPage1.Controls.Add(label2);
             tabPage1.Controls.Add(buttonNewTask);
@@ -142,6 +148,28 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "任务总体配置";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdateTaskCancel
+            // 
+            buttonUpdateTaskCancel.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateTaskCancel.Location = new Point(399, 467);
+            buttonUpdateTaskCancel.Name = "buttonUpdateTaskCancel";
+            buttonUpdateTaskCancel.Size = new Size(271, 198);
+            buttonUpdateTaskCancel.TabIndex = 7;
+            buttonUpdateTaskCancel.Text = "取消";
+            buttonUpdateTaskCancel.UseVisualStyleBackColor = true;
+            buttonUpdateTaskCancel.Click += buttonUpdateTaskCancel_Click;
+            // 
+            // buttonUpdateTask
+            // 
+            buttonUpdateTask.Font = new Font("Microsoft YaHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            buttonUpdateTask.Location = new Point(64, 467);
+            buttonUpdateTask.Name = "buttonUpdateTask";
+            buttonUpdateTask.Size = new Size(271, 198);
+            buttonUpdateTask.TabIndex = 6;
+            buttonUpdateTask.Text = "更新";
+            buttonUpdateTask.UseVisualStyleBackColor = true;
+            buttonUpdateTask.Click += buttonUpdateTask_Click;
             // 
             // pictureTip1
             // 
@@ -614,21 +642,32 @@
             // contextMenuStripTreeView
             // 
             contextMenuStripTreeView.ImageScalingSize = new Size(32, 32);
-            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemEdit });
+            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemExpandAll, toolStripSeparator2, toolStripMenuItemEdit });
             contextMenuStripTreeView.Name = "contextMenuStripTreeView";
-            contextMenuStripTreeView.Size = new Size(137, 48);
+            contextMenuStripTreeView.Size = new Size(233, 92);
             contextMenuStripTreeView.ItemClicked += contextMenuStripTreeView_ItemClicked;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(133, 6);
+            toolStripSeparator1.Size = new Size(229, 6);
+            // 
+            // toolStripMenuItemExpandAll
+            // 
+            toolStripMenuItemExpandAll.Name = "toolStripMenuItemExpandAll";
+            toolStripMenuItemExpandAll.Size = new Size(232, 38);
+            toolStripMenuItemExpandAll.Text = "展开所有节点";
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(229, 6);
             // 
             // toolStripMenuItemEdit
             // 
             toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            toolStripMenuItemEdit.Size = new Size(136, 38);
-            toolStripMenuItemEdit.Text = "编辑";
+            toolStripMenuItemEdit.Size = new Size(232, 38);
+            toolStripMenuItemEdit.Text = "属性";
             // 
             // imageList
             // 
@@ -791,5 +830,9 @@
         private Button buttonUpdateDoStep;
         private Button buttonUpdateGatherStepCancel;
         private Button buttonUpdateDoStepCancel;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem toolStripMenuItemExpandAll;
+        private Button buttonUpdateTaskCancel;
+        private Button buttonUpdateTask;
     }
 }
