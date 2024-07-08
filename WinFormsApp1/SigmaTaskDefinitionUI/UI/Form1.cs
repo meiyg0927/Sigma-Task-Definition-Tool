@@ -441,15 +441,15 @@ namespace WinFormsApp1
                 root_node.Expand();
                 Debug.WriteLine("Add New GatherStep Node: " + GatherStepName + "  node_index:" + node_index);
 
-                //TaskData增加一条记录
+                //Task增加一条记录
                 Step? step = sigma_task.addGatherStep(Objects);
 
-                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
                 TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
             }
             else
             {
-                //TaskData更新一条记录
+                //Task更新一条记录
                 TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(tree_node);
                 if (data != null)
                 {
@@ -556,15 +556,15 @@ namespace WinFormsApp1
 
                 Debug.WriteLine("Add New DoStep Node: " + DoStepName + "  node_index:" + node_index);
 
-                //TaskData增加一条记录
+                //Task增加一条记录
                 Step? step = sigma_task.addDoStep(richTextDoDescription.Text, span);
 
-                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
                 TreeNodeManage.Instance.Add(TreeNodeType.DO, newNode, step);
             }
             else
             {
-                //TaskData更新一条记录
+                //Task更新一条记录
                 TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(tree_node);
                 if (data != null)
                 {
@@ -651,10 +651,10 @@ namespace WinFormsApp1
                 root_node.Nodes.Add(newNode);
                 root_node.Expand();
 
-                //TaskData增加一条记录
+                //Task增加一条记录
                 Step? step = sigma_task.addComplexStep(richTextComplexDescription.Text, SubStepDataList);
 
-                //TreeNodeData增加一条记录，把TreeView的Node和TaskData的记录关联起来
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
                 TreeNodeManage.Instance.Add(TreeNodeType.COMPLEX, newNode, step);
 
                 //TreeView 增加SubSteps节点
@@ -668,7 +668,7 @@ namespace WinFormsApp1
 
                 if (data != null && data.node != null && data.step != null)
                 {
-                    //TaskData更新一条记录（TaskData上重新创建SubSteps数据）
+                    //Task更新一条记录（Task上重新创建SubSteps数据）
                     sigma_task.updateComplexStep(data.step, richTextComplexDescription.Text, SubStepDataList);
 
                    //删除下面所有子节点和子任务的关联
@@ -766,7 +766,7 @@ namespace WinFormsApp1
                 parent_node.Nodes.Add(newNode);
                 parent_node.Expand();
 
-                //TaskData中不需要增加SubStep记录
+                //Task中不需要增加SubStep记录
 
                 //TreeNodeData增加一条记录，把TreeView的Node和SubStep的记录关联起来
                 if (complex_step is ComplexStep stepC)
@@ -795,7 +795,7 @@ namespace WinFormsApp1
             newNode.Text = SubStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.SUB;
 
-            //TaskData更新一条记录(针对父节点ComplexStep)
+            //Task更新一条记录(针对父节点ComplexStep)
             sigma_task.updateSubStepinComplexStep(subStep_data.step, subStep_data.subStep, updated_data);
         }
 

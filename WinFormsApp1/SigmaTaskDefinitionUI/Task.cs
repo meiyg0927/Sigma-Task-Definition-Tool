@@ -17,8 +17,9 @@ namespace Sigma
     //This class is the bridge/interface between UI & Data
     internal class SigmaTask
     {
-        //注意：TaskData里面的Steps是不包括SubStep的；SubStep是ComplexStep的成员变量，因为它不继承Step，所以不记录在TaskData的Steps里面
-        private readonly TaskData _data = new() { Description = "This is the Sigma Task Data" };
+        //注意：Task里面的Steps是不包括SubStep的；SubStep是ComplexStep的成员变量，因为它不继承Step，所以不记录在Task的Steps里面
+        private readonly Task _data = new() { Description = "This is the Sigma Task Data" };
+        private readonly TaskCollection _serialize_data = new();
 
         //TaskName
         public string getTaskName() { return _data.Name; }
@@ -213,12 +214,20 @@ namespace Sigma
                 TypeNameHandling = TypeNameHandling.Auto,
                 Formatting = Formatting.Indented
             };
-            Type type = typeof(TaskData);
-            string serialized = JsonConvert.SerializeObject(_data, type, serializerSettings);
+            Type type = typeof(TaskCollection);
+            if (_serialize_data.Tasks.Count > 0)
+            {
+                _serialize_data.Tasks[0] = _data;//只支持一个Task
+            }
+            else
+            {
+                _serialize_data.Tasks.Add(_data);
+            }
+            string serialized = JsonConvert.SerializeObject(_serialize_data, type, serializerSettings);
 
-            Debug.WriteLine("=== Serialize TaskData START ===");
+            Debug.WriteLine("=== Serialize Tasks START ===");
             Debug.WriteLine(serialized);
-            Debug.WriteLine("=== Serialize TaskData END ===");
+            Debug.WriteLine("=== Serialize Tasks END ===");
 
             return serialized;
         }

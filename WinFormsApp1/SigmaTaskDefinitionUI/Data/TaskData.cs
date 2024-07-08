@@ -8,8 +8,12 @@ using System.Text.Json;
 
 namespace Sigma
 {
-    #region TaskData
-    internal class TaskData
+    internal class TaskCollection
+    {
+        public List<Task> Tasks { get; set; } = new();
+    }
+
+    internal class Task
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -17,5 +21,4 @@ namespace Sigma
         //public IList<Step>? Steps { get; set; }
         public List<Step> Steps { get; set; } = new();
     }
-    #endregion
 }
