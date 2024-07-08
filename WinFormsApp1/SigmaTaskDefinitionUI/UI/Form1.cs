@@ -25,8 +25,8 @@ namespace WinFormsApp1
 {
     public partial class Form : System.Windows.Forms.Form
     {
-        readonly int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
-        readonly int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
+        private readonly int NAME_MAX = 40; //TreeView控件显示的 Step 最长字符数
+        private readonly int NAME_SUBSTP_MAX = 20; //listBoxSubStep控件显示的 SubStep 最长字符数
 
         private readonly SigmaTask sigma_task = new();
         private readonly FormOutput frmOutput = new();
@@ -50,6 +50,8 @@ namespace WinFormsApp1
             dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
 
             Func_AddandUpdateButtonVisible(false, TreeNodeType.NONE);
+
+            CenterToScreen();
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
@@ -801,14 +803,7 @@ namespace WinFormsApp1
 
         private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
         {
-            if (fromIndex < 0 || fromIndex >= SubStepDataList.Count || toIndex < 0 || toIndex >= SubStepDataList.Count)
-            {
-                return;
-            }
-
-            UISubStep selectedItem = SubStepDataList.ElementAt(fromIndex);
-            SubStepDataList.RemoveAt(fromIndex);
-            SubStepDataList.Insert(toIndex, selectedItem);
+            Func_MoveItemInList<UISubStep>(SubStepDataList, fromIndex, toIndex);
         }
 
         #endregion
@@ -858,7 +853,7 @@ namespace WinFormsApp1
             treeView.Enabled = !isEdit;
         }
 
-        private void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)
+        public static void Func_MoveListBoxItemOptimized(ListBox listBox, int fromIndex, int toIndex)
         {
             if (fromIndex < 0 || fromIndex >= listBox.Items.Count || toIndex < 0 || toIndex >= listBox.Items.Count)
             {
@@ -885,6 +880,18 @@ namespace WinFormsApp1
             listBox.SetSelected(selectedIndex, true);
             listBox.EndUpdate();
             listBox.ResumeLayout();
+        }
+
+        public static void Func_MoveItemInList<T>(List<T> list, int fromIndex, int toIndex)
+        {
+            if (fromIndex < 0 || fromIndex >= list.Count || toIndex < 0 || toIndex >= list.Count)
+            {
+                return;
+            }
+
+            T selectedItem = list.ElementAt(fromIndex);
+            list.RemoveAt(fromIndex);
+            list.Insert(toIndex, selectedItem);
         }
 
         #endregion

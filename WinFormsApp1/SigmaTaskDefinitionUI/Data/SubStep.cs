@@ -11,6 +11,8 @@ namespace Sigma
         public string Label { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
+        public List<VirtualObjectDescriptor> VirtualObjects { get; set; } = new();
+
         public SubStep()
         {
             this.Label = string.Empty;
@@ -28,6 +30,22 @@ namespace Sigma
         {
             this.Label = source.Label;
             this.Description = source.Description;
+            
+            this.VirtualObjects.Clear();
+            foreach(VirtualObjectDescriptor descriptor in source.VirtualObjects)
+            {
+                this.VirtualObjects.Add(new VirtualObjectDescriptor() 
+                { Name = descriptor.Name, ModelType = descriptor.ModelType });
+            }
         }
+    }
+
+
+    internal class VirtualObjectDescriptor
+    {
+        public string Name { get; set; } = string.Empty;
+
+        public string ModelType { get; set; } = string.Empty;
+
     }
 }

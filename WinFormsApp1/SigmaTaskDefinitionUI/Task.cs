@@ -234,9 +234,9 @@ namespace Sigma
 
         public void Dump()
         {
-            Debug.WriteLine("=== Dump TaskData START ===");
+            Debug.WriteLine("=== Dump Tasks START ===");
             Debug.WriteLine("Task Name: " + _data.Name);
-            Debug.WriteLine("=== Dump TaskData END ===");
+            Debug.WriteLine("=== Dump Tasks END ===");
         }
     }
 }

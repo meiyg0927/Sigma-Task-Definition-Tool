@@ -9,11 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+#pragma warning disable IDE1006
+
 namespace SigmaTaskDefinitionUI
 {
     public partial class FormOutput : Form
     {
-        private static string jsonFileName = "sigma.state.diamond.tasklibrary.json";
+        private readonly string jsonFileName = "sigma.state.diamond.tasklibrary.json";
 
         public FormOutput()
         {
@@ -22,7 +24,7 @@ namespace SigmaTaskDefinitionUI
 
         private void FormOutput_Load(object sender, EventArgs e)
         {
-
+            CenterToParent();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
