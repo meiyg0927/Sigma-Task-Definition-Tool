@@ -33,7 +33,7 @@
             buttonEditVirtualObject = new Button();
             buttonRemoveVirtualObject = new Button();
             buttonAddVirtualObject = new Button();
-            tabControl1 = new TabControl();
+            tabControlSubStep = new TabControl();
             tabPage1 = new TabPage();
             label2 = new Label();
             pictureTip1 = new PictureBox();
@@ -44,7 +44,7 @@
             buttonSubStepMoveUp = new Button();
             listBoxVO = new ListBox();
             tabPage3 = new TabPage();
-            tabControl1.SuspendLayout();
+            tabControlSubStep.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             tabPage2.SuspendLayout();
@@ -105,17 +105,17 @@
             buttonAddVirtualObject.UseVisualStyleBackColor = true;
             buttonAddVirtualObject.Click += buttonAddVirtualObject_Click;
             // 
-            // tabControl1
+            // tabControlSubStep
             // 
-            tabControl1.Appearance = TabAppearance.FlatButtons;
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Controls.Add(tabPage3);
-            tabControl1.Location = new Point(47, 21);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(847, 568);
-            tabControl1.TabIndex = 40;
+            tabControlSubStep.Appearance = TabAppearance.FlatButtons;
+            tabControlSubStep.Controls.Add(tabPage1);
+            tabControlSubStep.Controls.Add(tabPage2);
+            tabControlSubStep.Controls.Add(tabPage3);
+            tabControlSubStep.Location = new Point(47, 21);
+            tabControlSubStep.Name = "tabControlSubStep";
+            tabControlSubStep.SelectedIndex = 0;
+            tabControlSubStep.Size = new Size(847, 568);
+            tabControlSubStep.TabIndex = 40;
             // 
             // tabPage1
             // 
@@ -231,7 +231,7 @@
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1249, 626);
-            Controls.Add(tabControl1);
+            Controls.Add(tabControlSubStep);
             Controls.Add(buttonSubStepCancel);
             Controls.Add(buttonSubStepOK);
             FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -239,7 +239,7 @@
             Name = "FormSubStep";
             Text = "子任务配置";
             Load += FormSubStep_Load;
-            tabControl1.ResumeLayout(false);
+            tabControlSubStep.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
@@ -255,7 +255,7 @@
         private Button buttonRemoveVirtualObject;
         private Button buttonEditVirtualObject;
         private Button buttonAddVirtualObject;
-        private TabControl tabControl1;
+        private TabControl tabControlSubStep;
         private TabPage tabPage1;
         private RichTextBox richTextSubStepDescription;
         private TabPage tabPage2;

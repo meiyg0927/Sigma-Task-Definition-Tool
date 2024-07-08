@@ -46,6 +46,18 @@ namespace SigmaTaskDefinitionUI
         private void FormSubStep_Load(object sender, EventArgs e)
         {
             richTextSubStepDescription.Text = _inValue.Description;
+
+            VODataList.Clear(); listBoxVO.Items.Clear();
+            foreach (UIVO vo in _inValue.VirtualObjects)
+            {
+                UIVO new_vo = new UIVO() { Name = vo.Name, ModelType = vo.ModelType };
+                VODataList.Add(new_vo);
+
+                string str = vo.Name;
+                if (str.Length > NAME_MODEL_MAX) str = str.Substring(0, NAME_MODEL_MAX);
+                listBoxVO.Items.Add(str);
+            }
+            tabControlSubStep.SelectedIndex = 0;
             CenterToParent();
         }
 
@@ -58,6 +70,7 @@ namespace SigmaTaskDefinitionUI
             else
             {
                 retValue.Description = richTextSubStepDescription.Text.Trim();
+                retValue.VirtualObjects = VODataList; //Maybe it will generate BUGs
                 //richTextSubStepDescription.Text = string.Empty;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -68,6 +81,8 @@ namespace SigmaTaskDefinitionUI
         {
             //richTextSubStepDescription.Text = string.Empty;
             _inValue.Description = string.Empty;
+            _inValue.VirtualObjects.Clear();
+
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
