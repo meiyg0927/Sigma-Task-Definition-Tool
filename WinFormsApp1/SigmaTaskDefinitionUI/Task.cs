@@ -172,6 +172,39 @@ namespace Sigma
             return false;
         }
 
+        public bool SwapStep(Step? step1, Step? step2)
+        {
+            if(step1 == null || step2 == null) return false;
+
+            int index1 = _data.Steps.IndexOf(step1);
+            int index2 = _data.Steps.IndexOf(step2);
+
+            if (index1 == index2 || index1 < 0 || index2 < 0) return false;
+
+            _data.Steps[index1] = step2;
+            _data.Steps[index2] = step1;
+
+            return true;
+        }
+
+        public bool SwapSubStep(Step? complexStep, SubStep? step1, SubStep? step2)
+        {
+            if (complexStep == null || step1 == null || step2 == null) return false;
+
+            if (complexStep is ComplexStep stepC)
+            {
+                int index1 = stepC.SubSteps.IndexOf(step1);
+                int index2 = stepC.SubSteps.IndexOf(step2);
+
+                if(index1 == index2 || index1 < 0 || index2 < 0) return false;
+
+                stepC.SubSteps[index1] = step2;
+                stepC.SubSteps[index2] = step1;
+            }
+
+            return true;
+        }
+
         //Method
         public void CalculateLabel()
         {

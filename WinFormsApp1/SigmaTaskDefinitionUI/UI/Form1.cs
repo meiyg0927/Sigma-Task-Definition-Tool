@@ -16,6 +16,7 @@ using SigmaTaskDefinitionUI.Data;
 using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
 using System.Reflection.Metadata.Ecma335;
+using System.Xml.Linq;
 
 #pragma warning disable IDE1006
 #pragma warning disable IDE0028
@@ -148,6 +149,53 @@ namespace WinFormsApp1
                         Debug.WriteLine("Delete Normal Node: " + data.type.ToString());
                     }
                 }
+            }
+        }
+
+        private void buttonNodeUp_Click(object sender, EventArgs e)
+        {
+            TreeNode? node1 = null, node2 = null;
+            Func_SwapTreeNode(treeView, true, out node1, out node2);
+
+            if (node1 == null || node2 == null) return;
+            
+            TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
+            TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
+
+            if (node_data1 == null || node_data2 == null) return;
+
+            if (node_data1.type == TreeNodeType.SUB) 
+            {
+                //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1                
+                sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
+            }
+            else
+            {
+                sigma_task.SwapStep(node_data1.step, node_data2.step);
+            }
+        }
+
+        private void buttonNodeDown_Click(object sender, EventArgs e)
+        {
+            TreeNode? node1 = null, node2 = null;
+
+            Func_SwapTreeNode(treeView, false, out node1, out node2);
+
+            if (node1 == null || node2 == null) return;
+
+            TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
+            TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
+
+            if (node_data1 == null || node_data2 == null) return;
+
+            if (node_data1.type == TreeNodeType.SUB) 
+            {
+                //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1               
+                sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
+            }
+            else
+            {
+                sigma_task.SwapStep(node_data1.step, node_data2.step);
             }
         }
 
@@ -673,7 +721,7 @@ namespace WinFormsApp1
                     //Task更新一条记录（Task上重新创建SubSteps数据）
                     sigma_task.updateComplexStep(data.step, richTextComplexDescription.Text, SubStepDataList);
 
-                   //删除下面所有子节点和子任务的关联
+                    //删除下面所有子节点和子任务的关联
                     foreach (TreeNode child_node in data.node.Nodes)
                     {
                         TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
@@ -880,6 +928,63 @@ namespace WinFormsApp1
             listBox.SetSelected(selectedIndex, true);
             listBox.EndUpdate();
             listBox.ResumeLayout();
+        }
+
+        private void Func_SwapTreeNode(System.Windows.Forms.TreeView treeview, bool moveUp, out TreeNode? retTreeNode1, out TreeNode? retTreeNode2)
+        {
+            TreeNode selected_node = treeView.SelectedNode;
+            retTreeNode1 = retTreeNode2 = null;
+
+            if (selected_node == null) return;
+
+            treeview.SuspendLayout();
+            treeview.BeginUpdate();
+
+            TreeNode parentNode = selected_node.Parent;
+            TreeNode prevSibling = selected_node.PrevNode;
+            TreeNode nextSibling = selected_node.NextNode;
+
+            // 根据移动方向调整节点位置
+            if (moveUp)
+            {
+                // 如果当前节点是第一个节点, 返回
+                if (prevSibling == null)
+                {
+
+                }
+                // 否则，将当前节点移动到其上一个兄弟节点之前
+                else
+                {
+                    int prev_index = parentNode.Nodes.IndexOf(prevSibling);
+                    parentNode.Nodes.Remove(selected_node);
+                    parentNode.Nodes.Insert(prev_index, selected_node);
+
+                    retTreeNode1 = selected_node;
+                    retTreeNode2 = prevSibling;
+                }
+            }
+            else
+            {
+                // 如果当前节点是最后一个节点，返回
+                if (nextSibling == null)
+                {
+                }
+                // 否则，将当前节点移动到其下一个兄弟节点之后
+                else
+                {
+                    int next_index = parentNode.Nodes.IndexOf(nextSibling);
+                    parentNode.Nodes.Remove(selected_node);
+                    parentNode.Nodes.Insert(next_index, selected_node);
+
+                    retTreeNode1 = selected_node;
+                    retTreeNode2 = nextSibling;
+                }
+            }
+
+            treeview.SelectedNode = selected_node;
+            treeview.Focus();
+            treeview.EndUpdate();
+            treeview.ResumeLayout();
         }
 
         public static void Func_MoveItemInList<T>(List<T> list, int fromIndex, int toIndex)

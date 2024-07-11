@@ -728,6 +728,7 @@
             buttonNodeUp.TabIndex = 6;
             buttonNodeUp.Text = "▲";
             buttonNodeUp.UseVisualStyleBackColor = true;
+            buttonNodeUp.Click += buttonNodeUp_Click;
             // 
             // buttonNodeDown
             // 
@@ -738,6 +739,7 @@
             buttonNodeDown.TabIndex = 7;
             buttonNodeDown.Text = "▼";
             buttonNodeDown.UseVisualStyleBackColor = true;
+            buttonNodeDown.Click += buttonNodeDown_Click;
             // 
             // buttonNodeDelete
             // 
