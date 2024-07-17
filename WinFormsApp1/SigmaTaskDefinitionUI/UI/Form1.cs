@@ -17,6 +17,7 @@ using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
 using System.Reflection.Metadata.Ecma335;
 using System.Xml.Linq;
+using SigmaTaskDefinitionUI.UI;
 
 #pragma warning disable IDE1006
 #pragma warning disable IDE0028
@@ -32,6 +33,7 @@ namespace WinFormsApp1
         private readonly SigmaTask sigma_task = new();
         private readonly FormOutput frmOutput = new();
         private readonly FormSubStep frmSubStep = new();
+        private readonly FormAbout frmAbout = new();
 
         private readonly HashSet<string> existingGatherObjects = new();
         private readonly List<UISubStep> SubStepDataList = new();
@@ -158,13 +160,13 @@ namespace WinFormsApp1
             Func_SwapTreeNode(treeView, true, out node1, out node2);
 
             if (node1 == null || node2 == null) return;
-            
+
             TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
             TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
 
             if (node_data1 == null || node_data2 == null) return;
 
-            if (node_data1.type == TreeNodeType.SUB) 
+            if (node_data1.type == TreeNodeType.SUB)
             {
                 //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1                
                 sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
@@ -188,7 +190,7 @@ namespace WinFormsApp1
 
             if (node_data1 == null || node_data2 == null) return;
 
-            if (node_data1.type == TreeNodeType.SUB) 
+            if (node_data1.type == TreeNodeType.SUB)
             {
                 //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1               
                 sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
@@ -346,8 +348,10 @@ namespace WinFormsApp1
         private void buttonNewTask_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("buttonNewTask_Click");
-            Func_AddorUpdateTask(null);
-            Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT); //只能创建一个Task
+            if (Func_AddorUpdateTask(null))
+            {
+                Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT); //只能创建一个Task
+            }
         }
 
         private void buttonUpdateTask_Click(object sender, EventArgs e)
@@ -365,7 +369,7 @@ namespace WinFormsApp1
             Func_ContextMenuHandle_EditEnd();
         }
 
-        private void Func_AddorUpdateTask(TreeNode? root_node)
+        private bool Func_AddorUpdateTask(TreeNode? root_node)
         {
             string taskName = textTaskName.Text.Trim();
 
@@ -388,7 +392,11 @@ namespace WinFormsApp1
                 }
 
                 textTaskName.Clear();
+
+                return true;
             }
+
+            return false;
         }
         #endregion
 
@@ -852,6 +860,14 @@ namespace WinFormsApp1
         private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)
         {
             Func_MoveItemInList<UISubStep>(SubStepDataList, fromIndex, toIndex);
+        }
+
+        #endregion
+
+        #region Message Handle for Main Menu
+        private void toolStripMenuItemHelpAbout_Click(object sender, EventArgs e)
+        {
+            frmAbout.ShowDialog();
         }
 
         #endregion

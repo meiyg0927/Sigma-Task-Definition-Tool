@@ -91,6 +91,11 @@
             buttonNodeDown = new Button();
             buttonNodeDelete = new Button();
             buttonMainClose = new Button();
+            menuStrip = new MenuStrip();
+            ToolStripMenuItemFile = new ToolStripMenuItem();
+            ToolStripMenuItemHelp = new ToolStripMenuItem();
+            ToolStripMenuItemHelpAbout = new ToolStripMenuItem();
+            tableLayoutPanel1 = new TableLayoutPanel();
             tabControlTask.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
@@ -102,6 +107,7 @@
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             contextMenuStripTreeView.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // textTaskName
@@ -127,7 +133,7 @@
             tabControlTask.Controls.Add(tabPage2);
             tabControlTask.Controls.Add(tabPage3);
             tabControlTask.Controls.Add(tabPage4);
-            tabControlTask.Location = new Point(32, 30);
+            tabControlTask.Location = new Point(32, 66);
             tabControlTask.Name = "tabControlTask";
             tabControlTask.SelectedIndex = 0;
             tabControlTask.Size = new Size(787, 997);
@@ -658,7 +664,7 @@
             treeView.ContextMenuStrip = contextMenuStripTreeView;
             treeView.ImageIndex = 0;
             treeView.ImageList = imageList;
-            treeView.Location = new Point(839, 73);
+            treeView.Location = new Point(839, 109);
             treeView.Name = "treeView";
             treeView.SelectedImageIndex = 0;
             treeView.ShowNodeToolTips = true;
@@ -711,7 +717,7 @@
             // buttonOutput
             // 
             buttonOutput.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonOutput.Location = new Point(1598, 460);
+            buttonOutput.Location = new Point(1609, 705);
             buttonOutput.Name = "buttonOutput";
             buttonOutput.Size = new Size(271, 198);
             buttonOutput.TabIndex = 5;
@@ -722,7 +728,7 @@
             // buttonNodeUp
             // 
             buttonNodeUp.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonNodeUp.Location = new Point(1561, 75);
+            buttonNodeUp.Location = new Point(1561, 111);
             buttonNodeUp.Name = "buttonNodeUp";
             buttonNodeUp.Size = new Size(84, 82);
             buttonNodeUp.TabIndex = 6;
@@ -733,7 +739,7 @@
             // buttonNodeDown
             // 
             buttonNodeDown.Font = new Font("Microsoft YaHei UI", 16.125F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonNodeDown.Location = new Point(1561, 162);
+            buttonNodeDown.Location = new Point(1561, 198);
             buttonNodeDown.Name = "buttonNodeDown";
             buttonNodeDown.Size = new Size(84, 82);
             buttonNodeDown.TabIndex = 7;
@@ -744,7 +750,7 @@
             // buttonNodeDelete
             // 
             buttonNodeDelete.Font = new Font("Segoe UI", 15F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            buttonNodeDelete.Location = new Point(1561, 250);
+            buttonNodeDelete.Location = new Point(1561, 286);
             buttonNodeDelete.Name = "buttonNodeDelete";
             buttonNodeDelete.Size = new Size(84, 82);
             buttonNodeDelete.TabIndex = 8;
@@ -755,7 +761,7 @@
             // buttonMainClose
             // 
             buttonMainClose.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonMainClose.Location = new Point(1598, 876);
+            buttonMainClose.Location = new Point(1609, 920);
             buttonMainClose.Name = "buttonMainClose";
             buttonMainClose.Size = new Size(271, 143);
             buttonMainClose.TabIndex = 9;
@@ -763,11 +769,54 @@
             buttonMainClose.UseVisualStyleBackColor = true;
             buttonMainClose.Click += buttonMainClose_Click;
             // 
+            // menuStrip
+            // 
+            menuStrip.ImageScalingSize = new Size(32, 32);
+            menuStrip.Items.AddRange(new ToolStripItem[] { ToolStripMenuItemFile, ToolStripMenuItemHelp });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.Size = new Size(1920, 39);
+            menuStrip.TabIndex = 10;
+            menuStrip.Text = "menuStrip1";
+            // 
+            // ToolStripMenuItemFile
+            // 
+            ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
+            ToolStripMenuItemFile.Size = new Size(82, 35);
+            ToolStripMenuItemFile.Text = "文件";
+            // 
+            // ToolStripMenuItemHelp
+            // 
+            ToolStripMenuItemHelp.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemHelpAbout });
+            ToolStripMenuItemHelp.Name = "ToolStripMenuItemHelp";
+            ToolStripMenuItemHelp.Size = new Size(82, 35);
+            ToolStripMenuItemHelp.Text = "帮助";
+            // 
+            // ToolStripMenuItemHelpAbout
+            // 
+            ToolStripMenuItemHelpAbout.Name = "ToolStripMenuItemHelpAbout";
+            ToolStripMenuItemHelpAbout.Size = new Size(195, 44);
+            ToolStripMenuItemHelpAbout.Text = "关于";
+            ToolStripMenuItemHelpAbout.Click += toolStripMenuItemHelpAbout_Click;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Location = new Point(0, 42);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(1920, 10);
+            tableLayoutPanel1.TabIndex = 11;
+            // 
             // Form
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(menuStrip);
             Controls.Add(buttonMainClose);
             Controls.Add(buttonNodeDelete);
             Controls.Add(buttonNodeDown);
@@ -775,7 +824,9 @@
             Controls.Add(buttonOutput);
             Controls.Add(treeView);
             Controls.Add(tabControlTask);
+            Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MainMenuStrip = menuStrip;
             MaximizeBox = false;
             Name = "Form";
             Text = "Sigma指令生成工具";
@@ -795,7 +846,10 @@
             groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             contextMenuStripTreeView.ResumeLayout(false);
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         private void ButtonNewTask_DoubleClick(object sender, EventArgs e)
@@ -865,5 +919,10 @@
         private Button buttonUpdateTask;
         private Button buttonUpdateComplexStep;
         private Button buttonUpdateComplexStepCancel;
+        private MenuStrip menuStrip;
+        private ToolStripMenuItem ToolStripMenuItemFile;
+        private ToolStripMenuItem ToolStripMenuItemHelp;
+        private ToolStripMenuItem ToolStripMenuItemHelpAbout;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
