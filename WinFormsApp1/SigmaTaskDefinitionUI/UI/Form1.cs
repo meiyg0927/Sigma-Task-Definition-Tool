@@ -42,6 +42,8 @@ namespace WinFormsApp1
         private TreeNode? contextMenu_choosed_node = null;
         //TreeView右键选中的Node进入编辑的时候，固定TabControl，不允许切换Tab
         private int tabcontrol_fixed_index = -1;
+        //当前设置为编辑的任务节点
+        private TreeNode? current_task_node = null;
 
         public Form()
         {
@@ -73,9 +75,10 @@ namespace WinFormsApp1
         private void treeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             //MessageBox.Show("treeView_NodeMouseClick: " + e.Node.Text + "  index: " + e.Node.Index);
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Right)
             {
-                //_index_node_choose = e.Node.Index;
+                toolStripMenuItemTask.Enabled = (e.Node.Parent == null);
+                treeView.SelectedNode = e.Node;
             }
         }
 
@@ -200,6 +203,11 @@ namespace WinFormsApp1
                 sigma_task.SwapStep(node_data1.step, node_data2.step);
             }
         }
+        private void contextMenuStripTreeView_Opening(object sender, CancelEventArgs e)
+        {
+            TreeNode node = treeView.SelectedNode;
+            toolStripMenuItemTask.Enabled = (node != null && node.Parent == null);
+        }
 
         private void contextMenuStripTreeView_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -240,6 +248,23 @@ namespace WinFormsApp1
                         treeView.ExpandAll();
                     }
                     break;
+
+                case "toolStripMenuItemTask":
+                    {
+                        TreeNode node = treeView.SelectedNode;
+                        if (node != null)
+                        {
+                            node.ImageIndex = node.SelectedImageIndex = (int)TreeNodeType.MAX;
+                        }
+                        if (current_task_node != null && current_task_node != node)
+                        {
+                            current_task_node.ImageIndex = current_task_node.SelectedImageIndex = (int)TreeNodeType.ROOT;
+
+                        }
+                        current_task_node = node;
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -868,6 +893,11 @@ namespace WinFormsApp1
         private void toolStripMenuItemHelpAbout_Click(object sender, EventArgs e)
         {
             frmAbout.ShowDialog();
+        }
+
+        private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         #endregion

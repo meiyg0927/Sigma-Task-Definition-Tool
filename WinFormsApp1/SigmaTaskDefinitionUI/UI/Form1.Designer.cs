@@ -83,6 +83,7 @@
             contextMenuStripTreeView = new ContextMenuStrip(components);
             toolStripSeparator1 = new ToolStripSeparator();
             toolStripMenuItemExpandAll = new ToolStripMenuItem();
+            toolStripMenuItemTask = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             toolStripMenuItemEdit = new ToolStripMenuItem();
             imageList = new ImageList(components);
@@ -96,6 +97,7 @@
             ToolStripMenuItemHelp = new ToolStripMenuItem();
             ToolStripMenuItemHelpAbout = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
+            ToolStripMenuItemExit = new ToolStripMenuItem();
             tabControlTask.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
@@ -675,31 +677,38 @@
             // contextMenuStripTreeView
             // 
             contextMenuStripTreeView.ImageScalingSize = new Size(32, 32);
-            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemExpandAll, toolStripSeparator2, toolStripMenuItemEdit });
+            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripSeparator1, toolStripMenuItemExpandAll, toolStripMenuItemTask, toolStripSeparator2, toolStripMenuItemEdit });
             contextMenuStripTreeView.Name = "contextMenuStripTreeView";
-            contextMenuStripTreeView.Size = new Size(233, 92);
+            contextMenuStripTreeView.Size = new Size(305, 130);
+            contextMenuStripTreeView.Opening += contextMenuStripTreeView_Opening;
             contextMenuStripTreeView.ItemClicked += contextMenuStripTreeView_ItemClicked;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(229, 6);
+            toolStripSeparator1.Size = new Size(301, 6);
             // 
             // toolStripMenuItemExpandAll
             // 
             toolStripMenuItemExpandAll.Name = "toolStripMenuItemExpandAll";
-            toolStripMenuItemExpandAll.Size = new Size(232, 38);
+            toolStripMenuItemExpandAll.Size = new Size(304, 38);
             toolStripMenuItemExpandAll.Text = "展开所有节点";
+            // 
+            // toolStripMenuItemTask
+            // 
+            toolStripMenuItemTask.Name = "toolStripMenuItemTask";
+            toolStripMenuItemTask.Size = new Size(304, 38);
+            toolStripMenuItemTask.Text = "设置为当前编辑任务";
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(229, 6);
+            toolStripSeparator2.Size = new Size(301, 6);
             // 
             // toolStripMenuItemEdit
             // 
             toolStripMenuItemEdit.Name = "toolStripMenuItemEdit";
-            toolStripMenuItemEdit.Size = new Size(232, 38);
+            toolStripMenuItemEdit.Size = new Size(304, 38);
             toolStripMenuItemEdit.Text = "属性";
             // 
             // imageList
@@ -713,6 +722,7 @@
             imageList.Images.SetKeyName(3, "Do.png");
             imageList.Images.SetKeyName(4, "Complex.png");
             imageList.Images.SetKeyName(5, "Substep.png");
+            imageList.Images.SetKeyName(6, "Task2.png");
             // 
             // buttonOutput
             // 
@@ -775,21 +785,22 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { ToolStripMenuItemFile, ToolStripMenuItemHelp });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1920, 39);
+            menuStrip.Size = new Size(1920, 42);
             menuStrip.TabIndex = 10;
             menuStrip.Text = "menuStrip1";
             // 
             // ToolStripMenuItemFile
             // 
+            ToolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemExit });
             ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            ToolStripMenuItemFile.Size = new Size(82, 35);
+            ToolStripMenuItemFile.Size = new Size(82, 38);
             ToolStripMenuItemFile.Text = "文件";
             // 
             // ToolStripMenuItemHelp
             // 
             ToolStripMenuItemHelp.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemHelpAbout });
             ToolStripMenuItemHelp.Name = "ToolStripMenuItemHelp";
-            ToolStripMenuItemHelp.Size = new Size(82, 35);
+            ToolStripMenuItemHelp.Size = new Size(82, 38);
             ToolStripMenuItemHelp.Text = "帮助";
             // 
             // ToolStripMenuItemHelpAbout
@@ -810,6 +821,13 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Size = new Size(1920, 10);
             tableLayoutPanel1.TabIndex = 11;
+            // 
+            // ToolStripMenuItemExit
+            // 
+            ToolStripMenuItemExit.Name = "ToolStripMenuItemExit";
+            ToolStripMenuItemExit.Size = new Size(359, 44);
+            ToolStripMenuItemExit.Text = "退出";
+            ToolStripMenuItemExit.Click += ToolStripMenuItemExit_Click;
             // 
             // Form
             // 
@@ -924,5 +942,7 @@
         private ToolStripMenuItem ToolStripMenuItemHelp;
         private ToolStripMenuItem ToolStripMenuItemHelpAbout;
         private TableLayoutPanel tableLayoutPanel1;
+        private ToolStripMenuItem toolStripMenuItemTask;
+        private ToolStripMenuItem ToolStripMenuItemExit;
     }
 }

@@ -15,7 +15,8 @@ namespace SigmaTaskDefinitionUI.Data
         GATHER = 2,
         DO = 3,
         COMPLEX = 4,
-        SUB = 5
+        SUB = 5,
+        MAX = 6
     }
 
     internal class TreeNodeData
@@ -29,6 +30,17 @@ namespace SigmaTaskDefinitionUI.Data
         public TreeNodeData(TreeNodeType Type, TreeNode? Node, Step? Stp, SubStep? Substp) 
         { this.type = Type; this.node = Node; this.step = Stp; this.subStep = Substp; }
     }
+    
+    internal class TreeNodeTaskData //for multi-tasks
+    {
+        public readonly TreeNodeType type = TreeNodeType.ROOT;
+        public TreeNode? node = null;
+        public int index = -1; //List<Task>Tasks中的位置
+
+        public TreeNodeTaskData() { }
+        public TreeNodeTaskData (TreeNode? Node, int Index)
+        { this.node = Node; this.index = Index; }
+    }
 
     internal class TreeNodeManage
     {
@@ -41,8 +53,12 @@ namespace SigmaTaskDefinitionUI.Data
         // 把TreeView的Node 和 TaskData的数据 一对一对应起来; 根节点直接保存，不加入Dictionary，因为没有Step数据；
         // 注意：SubStep也会记录在Dictionary里面，这点和TaskData不一样；
         private readonly Dictionary<TreeNode, TreeNodeData> _dict = new();
+
+        private readonly Dictionary<TreeNode, TreeNodeTaskData> _dict2 = new();
+
         private TreeNode? root_node = null;
 
+        #region TreeNodeData Handle
         public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null, SubStep? Substp = null)
         {
             if (Node == null) return false;
@@ -118,5 +134,68 @@ namespace SigmaTaskDefinitionUI.Data
                 return false;
             }
         }
+        #endregion
+
+        #region TreeNodeTaskData Handle
+        public bool Add(TreeNode? Node, int Index)
+        {
+            if (Node == null) return false;
+
+            TreeNodeTaskData data = new(Node, Index);
+            try
+            {
+                _dict2.Add(Node, data);
+            }
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine(error_message_title + ex.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        public TreeNodeTaskData? GetTreeNodeTaskData(TreeNode? Node)
+        {
+            if (Node == null) return null;
+
+            TreeNodeTaskData? NodeTaskData = null;
+
+            try
+            {
+                _dict2.TryGetValue(Node, out NodeTaskData);
+            }
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine(error_message_title + ex.Message);
+            }
+
+            return NodeTaskData;
+        }
+        public bool RemoveTaskNode(TreeNode? Node)
+        {
+            if (Node == null) return false;
+            try
+            {
+                //if(TreeNodeType.COMPLEX == NodeType) //需要在UI层先删除下面的SUB节点的关联
+                //{
+                //}
+
+                return _dict2.Remove(Node);
+            }
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine(error_message_title + ex.Message);
+                return false;
+            }
+        }
+
+        public bool RemoveAllTaskNodes()
+        {
+            _dict2.Clear();
+            return true;
+        }
+
+        #endregion
     }
 }
