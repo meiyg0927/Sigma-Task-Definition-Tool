@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SigmaTaskDefinitionUI.UI
+namespace SigmaTaskDefinitionUI
 {
     public partial class FormAbout : Form
     {

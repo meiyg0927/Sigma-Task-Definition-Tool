@@ -35,11 +35,11 @@ namespace SigmaTaskDefinitionUI.Data
     {
         public readonly TreeNodeType type = TreeNodeType.ROOT;
         public TreeNode? node = null;
-        public int index = -1; //List<Task>Tasks中的位置
+        public TaskHead? head = null;
 
         public TreeNodeTaskData() { }
-        public TreeNodeTaskData (TreeNode? Node, int Index)
-        { this.node = Node; this.index = Index; }
+        public TreeNodeTaskData (TreeNode? Node, TaskHead? Head)
+        { this.node = Node; this.head = Head; }
     }
 
     internal class TreeNodeManage
@@ -52,7 +52,7 @@ namespace SigmaTaskDefinitionUI.Data
 
         // 把TreeView的Node 和 TaskData的数据 一对一对应起来; 根节点直接保存，不加入Dictionary，因为没有Step数据；
         // 注意：SubStep也会记录在Dictionary里面，这点和TaskData不一样；
-        private readonly Dictionary<TreeNode, TreeNodeData> _dict = new();
+        private readonly Dictionary<TreeNode, TreeNodeData> _dict1 = new();
 
         private readonly Dictionary<TreeNode, TreeNodeTaskData> _dict2 = new();
 
@@ -65,16 +65,17 @@ namespace SigmaTaskDefinitionUI.Data
 
             if (Type == TreeNodeType.ROOT)
             {
-                if (root_node == null) { root_node = Node; }
-                else
-                    return false; //只允许一个Root
+                return false;
+                //if (root_node == null) { root_node = Node; }
+                //else
+                //    return false; //只允许一个Root
             }
             else
             {
                 TreeNodeData data = new(Type, Node, Stp, Substp);
                 try
                 {
-                    _dict.Add(Node, data);
+                    _dict1.Add(Node, data);
                 }
                 catch(ArgumentException ex) 
                 {
@@ -99,7 +100,7 @@ namespace SigmaTaskDefinitionUI.Data
 
             try
             {
-                _dict.TryGetValue(Node, out NodeData);
+                _dict1.TryGetValue(Node, out NodeData);
             }
             catch (ArgumentException ex)
             {
@@ -112,7 +113,7 @@ namespace SigmaTaskDefinitionUI.Data
         public bool RemoveAllNodes()
         {
             root_node = null;
-            _dict.Clear();
+            _dict1.Clear();
 
             return true;
         }
@@ -126,7 +127,7 @@ namespace SigmaTaskDefinitionUI.Data
                 //{
                 //}
                 
-                return _dict.Remove(Node);
+                return _dict1.Remove(Node);
             }
             catch (ArgumentException ex)
             {
@@ -137,11 +138,11 @@ namespace SigmaTaskDefinitionUI.Data
         #endregion
 
         #region TreeNodeTaskData Handle
-        public bool Add(TreeNode? Node, int Index)
+        public bool AddTaskNode(TreeNode? Node, TaskHead? Head)
         {
             if (Node == null) return false;
 
-            TreeNodeTaskData data = new(Node, Index);
+            TreeNodeTaskData data = new(Node, Head);
             try
             {
                 _dict2.Add(Node, data);
@@ -172,6 +173,30 @@ namespace SigmaTaskDefinitionUI.Data
 
             return NodeTaskData;
         }
+
+        public bool UpdateTreeNodeTaskData(TreeNode? Node, string Name, string Descrption)
+        {
+            if (Node == null) return false;
+
+            TreeNodeTaskData? NodeTaskData = null;
+
+            try
+            {
+                _dict2.TryGetValue(Node, out NodeTaskData);
+            }
+            catch (ArgumentException ex)
+            {
+                Debug.WriteLine(error_message_title + ex.Message);
+            }
+
+            if(NodeTaskData == null || NodeTaskData.head == null) return false;  
+
+            NodeTaskData.head.Name = Name;
+            NodeTaskData.head.Description = Descrption;
+
+            return true;
+        }
+
         public bool RemoveTaskNode(TreeNode? Node)
         {
             if (Node == null) return false;

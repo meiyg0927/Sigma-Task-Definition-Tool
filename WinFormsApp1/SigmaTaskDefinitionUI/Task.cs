@@ -30,14 +30,14 @@ namespace Sigma
         private readonly TaskCollection _serialize_data = new();
 
         //TaskName
-        public string getTaskName() { return _data.Name; }
-        public bool setTaskName(string s)
-        {
-            if (string.IsNullOrWhiteSpace(s)) return false;
+        //public string getTaskName() { return _data.Name; }
+        //public bool setTaskName(string s)
+        //{
+        //    if (string.IsNullOrWhiteSpace(s)) return false;
 
-            _data.Name = s.Trim();
-            return true;
-        }
+        //    _data.Name = s.Trim();
+        //    return true;
+        //}
 
         public bool Initialize()
         {
@@ -233,11 +233,21 @@ namespace Sigma
 
             if (!Option.bDeferredUpdate) return false;
 
-            _data.Steps.Clear();
+            _serialize_data.Tasks.Clear();
+
             foreach (TreeNode node_task in tree.Nodes)
             {
                 //Task_Level
                 //...
+                Task task = new();
+                task.Steps.Clear();
+
+                TreeNodeTaskData? task_data = TreeNodeManage.Instance.GetTreeNodeTaskData(node_task);
+                
+                if (task_data == null) continue;
+
+                task.Name = task_data.head == null ? "" : task_data.head.Name;
+                task.Description = task_data.head == null ? "" : task_data.head.Description;
 
                 for (int index = 0; index < node_task.Nodes.Count; index++)
                 {
@@ -251,13 +261,13 @@ namespace Sigma
                             case TreeNodeType.GATHER:
                                 if (data.step is GatherStep stepG)
                                 {
-                                    _data.Steps.Add(stepG);
+                                    task.Steps.Add(stepG);
                                 }
                                 break;
                             case TreeNodeType.DO:
                                 if (data.step is DoStep stepD)
                                 {
-                                    _data.Steps.Add(stepD);
+                                    task.Steps.Add(stepD);
                                 }
                                 break;
                             case TreeNodeType.COMPLEX:
@@ -275,7 +285,7 @@ namespace Sigma
                                         }
                                     }
 
-                                    _data.Steps.Add(stepC);
+                                    task.Steps.Add(stepC);
                                 }
                                 break;
                             default:
@@ -284,7 +294,9 @@ namespace Sigma
                     }
                 }
 
-                break; //只做一层Task
+                _serialize_data.Tasks.Add(task);
+
+                //break; //只做一层Task
             }
 
             return true;
@@ -293,33 +305,36 @@ namespace Sigma
         //Method
         public void CalculateLabel()
         {
-            int index = 0;
-            foreach (Step step in _data.Steps)
+            foreach (Task task in _serialize_data.Tasks)
             {
-                if (step is GatherStep stepG)
+                int index = 0;
+                foreach (Step step in task.Steps)
                 {
-                    stepG.Label = index.ToString();
-                }
-                else
-                if(step is DoStep stepD)
-                {
-                   stepD.Label = index.ToString();
-                }
-                else
-                if(step is ComplexStep stepC)
-                {
-                    stepC.Label = index.ToString();
-
-                    int index_sub = 0;
-                    foreach(SubStep sub_step in stepC.SubSteps)
+                    if (step is GatherStep stepG)
                     {
-                        sub_step.Label = index_sub.ToString();
-                        index_sub++;
+                        stepG.Label = index.ToString();
                     }
-                }
+                    else
+                    if (step is DoStep stepD)
+                    {
+                        stepD.Label = index.ToString();
+                    }
+                    else
+                    if (step is ComplexStep stepC)
+                    {
+                        stepC.Label = index.ToString();
 
-                index++;
-             }
+                        int index_sub = 0;
+                        foreach (SubStep sub_step in stepC.SubSteps)
+                        {
+                            sub_step.Label = index_sub.ToString();
+                            index_sub++;
+                        }
+                    }
+
+                    index++;
+                }
+            }
         }
         public string JsonSerialize()
         {
@@ -333,14 +348,14 @@ namespace Sigma
                 Formatting = Formatting.Indented
             };
             Type type = typeof(TaskCollection);
-            if (_serialize_data.Tasks.Count > 0)
-            {
-                _serialize_data.Tasks[0] = _data;//只支持一个Task
-            }
-            else
-            {
-                _serialize_data.Tasks.Add(_data);
-            }
+            //if (_serialize_data.Tasks.Count > 0)
+            //{
+            //    _serialize_data.Tasks[0] = _data;//只支持一个Task
+            //}
+            //else
+            //{
+            //    _serialize_data.Tasks.Add(_data);
+            //}
             string serialized = JsonConvert.SerializeObject(_serialize_data, type, serializerSettings);
 
             Debug.WriteLine("=== Serialize Tasks START ===");

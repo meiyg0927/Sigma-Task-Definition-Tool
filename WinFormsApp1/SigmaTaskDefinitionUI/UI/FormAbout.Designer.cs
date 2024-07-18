@@ -1,4 +1,4 @@
-﻿namespace SigmaTaskDefinitionUI.UI
+﻿namespace SigmaTaskDefinitionUI
 {
     partial class FormAbout
     {
