@@ -60,6 +60,7 @@ namespace WinFormsApp1
         }
         private void buttonOutput_Click(object sender, EventArgs e)
         {
+            sigma_task.AssembleSteps(treeView);
             sigma_task.CalculateLabel();
             frmOutput.strJson = sigma_task.JsonSerialize();
             if (DialogResult.OK == frmOutput.ShowDialog())
@@ -162,21 +163,24 @@ namespace WinFormsApp1
             TreeNode? node1 = null, node2 = null;
             Func_SwapTreeNode(treeView, true, out node1, out node2);
 
-            if (node1 == null || node2 == null) return;
+            if(!Option.bDeferredUpdate)
+            { 
+                if (node1 == null || node2 == null) return;
 
-            TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
-            TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
+                TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
+                TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
 
-            if (node_data1 == null || node_data2 == null) return;
+                if (node_data1 == null || node_data2 == null) return;
 
-            if (node_data1.type == TreeNodeType.SUB)
-            {
-                //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1                
-                sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
-            }
-            else
-            {
-                sigma_task.SwapStep(node_data1.step, node_data2.step);
+                if (node_data1.type == TreeNodeType.SUB)
+                {
+                    //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1                
+                    sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
+                }
+                else
+                {
+                    sigma_task.SwapStep(node_data1.step, node_data2.step);
+                }           
             }
         }
 
@@ -186,21 +190,24 @@ namespace WinFormsApp1
 
             Func_SwapTreeNode(treeView, false, out node1, out node2);
 
-            if (node1 == null || node2 == null) return;
-
-            TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
-            TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
-
-            if (node_data1 == null || node_data2 == null) return;
-
-            if (node_data1.type == TreeNodeType.SUB)
+            if (!Option.bDeferredUpdate)
             {
-                //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1               
-                sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
-            }
-            else
-            {
-                sigma_task.SwapStep(node_data1.step, node_data2.step);
+                if (node1 == null || node2 == null) return;
+
+                TreeNodeData? node_data1 = TreeNodeManage.Instance.GetTreeNodeData(node1);
+                TreeNodeData? node_data2 = TreeNodeManage.Instance.GetTreeNodeData(node2);
+
+                if (node_data1 == null || node_data2 == null) return;
+
+                if (node_data1.type == TreeNodeType.SUB)
+                {
+                    //if (node_data1.type != node_data2.type) return; //node_data2.type should be same as node_data1               
+                    sigma_task.SwapSubStep(node_data1.step, node_data1.subStep, node_data2.subStep);
+                }
+                else
+                {
+                    sigma_task.SwapStep(node_data1.step, node_data2.step);
+                }
             }
         }
         private void contextMenuStripTreeView_Opening(object sender, CancelEventArgs e)
@@ -307,17 +314,38 @@ namespace WinFormsApp1
 
                         Func_AddandUpdateButtonVisible(true, TreeNodeType.COMPLEX);
 
-                        foreach (UISubStep subStep in stepC.SubSteps)
-                        {
-                            UISubStep data = subStep.Clone();
-                            SubStepDataList.Add(data);
+                        if (node_data.node == null) return;
 
-                            string str = subStep.Description;
-                            if (str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
-                            listBoxSubStep.Items.Add(str);
+                        if (Option.bDeferredUpdate)
+                        {
+                            foreach (TreeNode child_node in node_data.node.Nodes)
+                            {
+                                TreeNodeData? child_node_data = TreeNodeManage.Instance.GetTreeNodeData(child_node);
+
+                                if(child_node_data != null && child_node_data.type == TreeNodeType.SUB && child_node_data.subStep is SubStep subStep)
+                                {
+                                    UISubStep data = subStep.Clone();
+                                    SubStepDataList.Add(data);
+
+                                    string str = subStep.Description;
+                                    if (str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
+                                    listBoxSubStep.Items.Add(str);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (UISubStep subStep in stepC.SubSteps)
+                            {
+                                UISubStep data = subStep.Clone();
+                                SubStepDataList.Add(data);
+
+                                string str = subStep.Description;
+                                if (str.Length > NAME_SUBSTP_MAX) str = str.Substring(0, NAME_SUBSTP_MAX);
+                                listBoxSubStep.Items.Add(str);
+                            }
                         }
                     }
-
                     return;
                 }
 
@@ -854,7 +882,15 @@ namespace WinFormsApp1
                 //TreeNodeData增加一条记录，把TreeView的Node和SubStep的记录关联起来
                 if (complex_step is ComplexStep stepC)
                 {
-                    TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, stepC.SubSteps[i]);
+                    if (Option.bDeferredUpdate)
+                    { 
+                        UISubStep newStep = SubStepDataList[i].Clone();
+                        TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, newStep);                    
+                    }
+                    else 
+                    {
+                        TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, stepC.SubSteps[i]);
+                    }
                 }
                 else
                 {
@@ -878,8 +914,15 @@ namespace WinFormsApp1
             newNode.Text = SubStepName;
             newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.SUB;
 
-            //Task更新一条记录(针对父节点ComplexStep)
-            sigma_task.updateSubStepinComplexStep(subStep_data.step, subStep_data.subStep, updated_data);
+            if (Option.bDeferredUpdate)
+            {
+                subStep_data.subStep = updated_data.Clone();
+            }
+            else
+            {
+                //Task更新一条记录(针对父节点ComplexStep)
+                sigma_task.updateSubStepinComplexStep(subStep_data.step, subStep_data.subStep, updated_data);
+            }
         }
 
         private void Func_MoveUISubStepDataInList(int fromIndex, int toIndex)

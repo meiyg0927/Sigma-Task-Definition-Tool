@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 
+#pragma warning disable IDE0028
+
 namespace Sigma
 {
     internal class TaskCollection
@@ -20,5 +22,12 @@ namespace Sigma
 
         //public IList<Step>? Steps { get; set; }
         public List<Step> Steps { get; set; } = new();
+    }
+
+    internal class TaskHead
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+
     }
 }
