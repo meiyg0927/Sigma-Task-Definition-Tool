@@ -81,10 +81,13 @@
             buttonAddComplexStep = new Button();
             treeView = new TreeView();
             contextMenuStripTreeView = new ContextMenuStrip(components);
-            toolStripSeparator1 = new ToolStripSeparator();
-            toolStripMenuItemExpandAll = new ToolStripMenuItem();
             toolStripMenuItemTask = new ToolStripMenuItem();
-            toolStripSeparator2 = new ToolStripSeparator();
+            toolStripSeparatorNode = new ToolStripSeparator();
+            toolStripMenuItemExpandAll = new ToolStripMenuItem();
+            toolStripMenuItemCollapseAll = new ToolStripMenuItem();
+            toolStripMenuItemExpandCurrent = new ToolStripMenuItem();
+            toolStripMenuItemCollapseCurrent = new ToolStripMenuItem();
+            toolStripSeparatorEdit = new ToolStripSeparator();
             toolStripMenuItemEdit = new ToolStripMenuItem();
             imageList = new ImageList(components);
             buttonOutput = new Button();
@@ -677,22 +680,11 @@
             // contextMenuStripTreeView
             // 
             contextMenuStripTreeView.ImageScalingSize = new Size(32, 32);
-            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripMenuItemTask, toolStripSeparator1, toolStripMenuItemExpandAll, toolStripSeparator2, toolStripMenuItemEdit });
+            contextMenuStripTreeView.Items.AddRange(new ToolStripItem[] { toolStripMenuItemTask, toolStripSeparatorNode, toolStripMenuItemExpandAll, toolStripMenuItemCollapseAll, toolStripMenuItemExpandCurrent, toolStripMenuItemCollapseCurrent, toolStripSeparatorEdit, toolStripMenuItemEdit });
             contextMenuStripTreeView.Name = "contextMenuStripTreeView";
-            contextMenuStripTreeView.Size = new Size(305, 174);
+            contextMenuStripTreeView.Size = new Size(305, 244);
             contextMenuStripTreeView.Opening += contextMenuStripTreeView_Opening;
             contextMenuStripTreeView.ItemClicked += contextMenuStripTreeView_ItemClicked;
-            // 
-            // toolStripSeparator1
-            // 
-            toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(301, 6);
-            // 
-            // toolStripMenuItemExpandAll
-            // 
-            toolStripMenuItemExpandAll.Name = "toolStripMenuItemExpandAll";
-            toolStripMenuItemExpandAll.Size = new Size(304, 38);
-            toolStripMenuItemExpandAll.Text = "展开所有节点";
             // 
             // toolStripMenuItemTask
             // 
@@ -700,10 +692,39 @@
             toolStripMenuItemTask.Size = new Size(304, 38);
             toolStripMenuItemTask.Text = "设置为当前编辑任务";
             // 
-            // toolStripSeparator2
+            // toolStripSeparatorNode
             // 
-            toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(301, 6);
+            toolStripSeparatorNode.Name = "toolStripSeparatorNode";
+            toolStripSeparatorNode.Size = new Size(301, 6);
+            // 
+            // toolStripMenuItemExpandAll
+            // 
+            toolStripMenuItemExpandAll.Name = "toolStripMenuItemExpandAll";
+            toolStripMenuItemExpandAll.Size = new Size(304, 38);
+            toolStripMenuItemExpandAll.Text = "展开所有节点";
+            // 
+            // toolStripMenuItemCollapseAll
+            // 
+            toolStripMenuItemCollapseAll.Name = "toolStripMenuItemCollapseAll";
+            toolStripMenuItemCollapseAll.Size = new Size(304, 38);
+            toolStripMenuItemCollapseAll.Text = "折叠所有节点";
+            // 
+            // toolStripMenuItemExpandCurrent
+            // 
+            toolStripMenuItemExpandCurrent.Name = "toolStripMenuItemExpandCurrent";
+            toolStripMenuItemExpandCurrent.Size = new Size(304, 38);
+            toolStripMenuItemExpandCurrent.Text = "展开当前节点";
+            // 
+            // toolStripMenuItemCollapseCurrent
+            // 
+            toolStripMenuItemCollapseCurrent.Name = "toolStripMenuItemCollapseCurrent";
+            toolStripMenuItemCollapseCurrent.Size = new Size(304, 38);
+            toolStripMenuItemCollapseCurrent.Text = "折叠当前节点";
+            // 
+            // toolStripSeparatorEdit
+            // 
+            toolStripSeparatorEdit.Name = "toolStripSeparatorEdit";
+            toolStripSeparatorEdit.Size = new Size(301, 6);
             // 
             // toolStripMenuItemEdit
             // 
@@ -844,6 +865,7 @@
             Controls.Add(tabControlTask);
             Controls.Add(tableLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip;
             MaximizeBox = false;
             Name = "Form";
@@ -904,7 +926,7 @@
         private Label label3;
         private ImageList imageList;
         private ContextMenuStrip contextMenuStripTreeView;
-        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator toolStripSeparatorNode;
         private ToolStripMenuItem toolStripMenuItemEdit;
         private DateTimePicker dateTimeDoDuring;
         private Label label6;
@@ -931,7 +953,7 @@
         private Button buttonUpdateDoStep;
         private Button buttonUpdateGatherStepCancel;
         private Button buttonUpdateDoStepCancel;
-        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripSeparator toolStripSeparatorEdit;
         private ToolStripMenuItem toolStripMenuItemExpandAll;
         private Button buttonUpdateTaskCancel;
         private Button buttonUpdateTask;
@@ -944,5 +966,8 @@
         private TableLayoutPanel tableLayoutPanel1;
         private ToolStripMenuItem toolStripMenuItemTask;
         private ToolStripMenuItem ToolStripMenuItemExit;
+        private ToolStripMenuItem toolStripMenuItemExpandCurrent;
+        private ToolStripMenuItem toolStripMenuItemCollapseCurrent;
+        private ToolStripMenuItem toolStripMenuItemCollapseAll;
     }
 }

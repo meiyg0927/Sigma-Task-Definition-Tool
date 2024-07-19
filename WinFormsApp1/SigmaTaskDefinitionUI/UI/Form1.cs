@@ -243,6 +243,30 @@ namespace WinFormsApp1
                     }
                     break;
 
+                case "toolStripMenuItemCollapseAll":
+                    {
+                        treeView.CollapseAll();
+                    }
+                    break;
+
+                case "toolStripMenuItemExpandCurrent":
+                    {
+                        contextMenu_choosed_node = treeView.SelectedNode;
+                        if (contextMenu_choosed_node == null) break;
+
+                        contextMenu_choosed_node.ExpandAll();
+                    }
+                    break;
+
+                case "toolStripMenuItemCollapseCurrent":
+                    {
+                        contextMenu_choosed_node = treeView.SelectedNode;
+                        if (contextMenu_choosed_node == null) break;
+
+                        contextMenu_choosed_node.Collapse();
+                    }
+                    break;
+
                 case "toolStripMenuItemTask":
                     {
                         Func_SetCurrent_TaskNode(treeView.SelectedNode);

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVirtualObject));
             comboBoxModelType = new ComboBox();
             label1 = new Label();
             label2 = new Label();
@@ -118,6 +119,7 @@
             Controls.Add(label1);
             Controls.Add(comboBoxModelType);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormVirtualObject";
             Text = "FormVirtualObject";

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSubStep));
             buttonSubStepOK = new Button();
             buttonSubStepCancel = new Button();
             buttonEditVirtualObject = new Button();
@@ -235,6 +236,7 @@
             Controls.Add(buttonSubStepCancel);
             Controls.Add(buttonSubStepOK);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormSubStep";
             Text = "子任务配置";

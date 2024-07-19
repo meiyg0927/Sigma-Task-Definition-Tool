@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOutput));
             richTextBox = new RichTextBox();
             buttonSave = new Button();
             buttonCancel = new Button();
@@ -73,6 +74,7 @@
             Controls.Add(buttonSave);
             Controls.Add(richTextBox);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormOutput";
             Text = "预览 & 输出";
