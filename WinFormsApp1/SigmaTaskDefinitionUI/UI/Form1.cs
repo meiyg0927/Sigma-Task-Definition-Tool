@@ -89,14 +89,10 @@ namespace WinFormsApp1
             if (treeView.SelectedNode == null) { }
             else
             {
-                //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-                //if (root_node == null) return;
-
                 if (DialogResult.No == MessageBox.Show("这将删除任务，是否继续？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning))
                     return;
 
                 TreeNode? root_node = treeView.SelectedNode.Parent;
-                //if (treeView.SelectedNode == root_node) //删除根节点
                 if (root_node == null) //删除根节点
                 {
                     //treeView.Nodes.RemoveAt(treeView.SelectedNode.Index);
@@ -121,57 +117,6 @@ namespace WinFormsApp1
                 else //删除普通节点
                 {
                     Func_DeleteTreeNode(treeView.SelectedNode);
-                #if false
-                    TreeNodeData? data = TreeNodeManage.Instance.GetTreeNodeData(treeView.SelectedNode);
-                    if (data != null && data.node != null)
-                    {
-                        if (data.type == TreeNodeType.SUB) //子任务节点删除后需要通知父ComplexStep节点
-                        {
-                            TreeNodeData? parent_data = TreeNodeManage.Instance.GetTreeNodeData(data.node.Parent);
-                            if (parent_data != null)
-                            {
-                                sigma_task.RemoveSubStep(parent_data.step, data.subStep);
-                            }
-                            TreeNodeManage.Instance.RemoveNode(data.node, TreeNodeType.SUB);
-
-                            data.node.Remove();
-
-                            //如果最后一个子任务节点删除了，是否需要删除父ComplexStep节点？
-                            if (parent_data != null && parent_data.node != null && parent_data.node.Nodes.Count <= 0)
-                            {
-                                // MessageBox.Show("子任务节点全部删除了");
-
-                                root_node.Nodes.Remove(parent_data.node);
-                                sigma_task.RemoveStep(parent_data.step);
-                                TreeNodeManage.Instance.RemoveNode(parent_data.node, TreeNodeType.COMPLEX);
-                            }
-                        }
-                        else
-                        if (data.type == TreeNodeType.COMPLEX) //复杂任务节点需要删除下面的所有子任务节点
-                        {
-                            //删除下面所有子节点和子任务的关联
-                            foreach (TreeNode child_node in data.node.Nodes)
-                            {
-                                TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
-                            }
-                            //删除子节点
-                            data.node.Nodes.Clear();
-
-                            root_node.Nodes.Remove(data.node);
-                            sigma_task.RemoveStep(data.step);
-                            TreeNodeManage.Instance.RemoveNode(data.node, TreeNodeType.COMPLEX);
-                        }
-                        else
-                        {
-                            root_node.Nodes.Remove(data.node);
-                            sigma_task.RemoveStep(data.step);
-                            TreeNodeManage.Instance.RemoveNode(data.node, data.type);
-                        }
-
-                        Debug.WriteLine("Delete Normal Node: " + data.type.ToString());
-                    }
-
-                #endif
                 }
             }
         }
@@ -316,9 +261,6 @@ namespace WinFormsApp1
             {
                 case "toolStripMenuItemEdit":
                     {
-                        //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-                        //if (root_node == null) break;                   
-
                         contextMenu_choosed_node = treeView.SelectedNode;
                         if (contextMenu_choosed_node == null) break;
 
@@ -395,9 +337,6 @@ namespace WinFormsApp1
                     Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT);
                     Func_LockTreeView();
                 }
-
-                //textTaskName.Text = sigma_task.getTaskName();
-                ////Func_LockTreeView();
             }
             else
             {
@@ -514,14 +453,23 @@ namespace WinFormsApp1
         #region Message Handle for Tab of Basic
         private void buttonNewTask_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(textTaskName.Text))
+            {
+                MessageBox.Show("请先输入任务的名字", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             Func_AddorUpdateTask(null);
-            //Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT); //只能创建一个Tas
         }
 
         private void buttonUpdateTask_Click(object sender, EventArgs e)
         {
-            //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
-            //Func_AddorUpdateTask(root_node);
+            if (string.IsNullOrWhiteSpace(textTaskName.Text))
+            {
+                MessageBox.Show("请先输入任务的名字", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             Func_AddorUpdateTask(current_task_node);
             Func_AddandUpdateButtonVisible(false, TreeNodeType.ROOT);
             Func_ContextMenuHandle_EditEnd();
@@ -538,33 +486,28 @@ namespace WinFormsApp1
         {
             string taskName = textTaskName.Text.Trim();
 
-            //if (sigma_task.setTaskName(taskName))
+            if (root_node == null)
             {
-                if (root_node == null)
-                {
-                    TreeNode newNode = new(taskName);
-                    newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.ROOT;
-                    treeView.Nodes.Add(newNode);
-                    TreeNodeManage.Instance.AddTaskNode(newNode, new TaskHead() { Name = taskName, Description = "This is the Sigma Task Data" });
-                    Func_SetCurrent_TaskNode(newNode);
-                    //TreeNodeManage.Instance.Add(TreeNodeType.ROOT, newNode);
+                TreeNode newNode = new(taskName);
+                newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.ROOT;
+                treeView.Nodes.Add(newNode);
+                TreeNodeManage.Instance.AddTaskNode(newNode, new TaskHead() { Name = taskName, Description = "This is the Sigma Task Data" });
+                Func_SetCurrent_TaskNode(newNode);
 
-                    Debug.WriteLine("Add New Root Node: " + taskName);
-                }
-                else
-                {
-                    TreeNode rootTreeNode = root_node;
-                    rootTreeNode.Text = taskName;
-                    TreeNodeManage.Instance.UpdateTreeNodeTaskData(rootTreeNode, taskName, "This is the Sigma Task Data");
-                    Debug.WriteLine("Update Root Node: " + taskName);
-                }
-
-                textTaskName.Clear();
-
-                return true;
+                Debug.WriteLine("Add New Root Node: " + taskName);
+            }
+            else
+            {
+                TreeNode rootTreeNode = root_node;
+                rootTreeNode.Text = taskName;
+                TreeNodeManage.Instance.UpdateTreeNodeTaskData(rootTreeNode, taskName, "This is the Sigma Task Data");
+                Debug.WriteLine("Update Root Node: " + taskName);
             }
 
-            //return false;
+            textTaskName.Clear();
+
+            return true;
+
         }
 #endregion
 
@@ -636,7 +579,6 @@ namespace WinFormsApp1
 
         private void Func_AddorUpdateGatherStep(TreeNode? tree_node)
         {
-            //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             TreeNode? root_node = current_task_node;
             if (root_node == null)
             {
@@ -764,7 +706,6 @@ namespace WinFormsApp1
 
         private void Func_AddorUpdateDoStep(TimeSpan span, TreeNode? tree_node)
         {
-            //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             TreeNode? root_node = current_task_node;
             if (root_node == null)
             {
@@ -867,7 +808,6 @@ namespace WinFormsApp1
 
         private void Func_AddorUpdateComplexStep(TreeNode? tree_node)
         {
-            //TreeNode? root_node = TreeNodeManage.Instance.GetRootTreeNode();
             TreeNode? root_node = current_task_node;
             if (root_node == null)
             {
@@ -1106,7 +1046,6 @@ namespace WinFormsApp1
                 buttonAddComplexStep.Visible = !isEdit;
             }
 
-            //if (type != TreeNodeType.ROOT)
             {
                 Func_LockTreeView(isEdit);
                 buttonOutput.Enabled = !isEdit;

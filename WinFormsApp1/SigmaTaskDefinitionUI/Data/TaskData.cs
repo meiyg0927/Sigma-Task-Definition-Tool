@@ -20,7 +20,6 @@ namespace Sigma
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        //public IList<Step>? Steps { get; set; }
         public List<Step> Steps { get; set; } = new();
     }
 

@@ -29,16 +29,6 @@ namespace Sigma
         private readonly Task _data = new() { Description = "This is the Sigma Task Data" };
         private readonly TaskCollection _serialize_data = new();
 
-        //TaskName
-        //public string getTaskName() { return _data.Name; }
-        //public bool setTaskName(string s)
-        //{
-        //    if (string.IsNullOrWhiteSpace(s)) return false;
-
-        //    _data.Name = s.Trim();
-        //    return true;
-        //}
-
         public bool Initialize()
         {
             _data.Name = string.Empty;
@@ -348,14 +338,7 @@ namespace Sigma
                 Formatting = Formatting.Indented
             };
             Type type = typeof(TaskCollection);
-            //if (_serialize_data.Tasks.Count > 0)
-            //{
-            //    _serialize_data.Tasks[0] = _data;//只支持一个Task
-            //}
-            //else
-            //{
-            //    _serialize_data.Tasks.Add(_data);
-            //}
+
             string serialized = JsonConvert.SerializeObject(_serialize_data, type, serializerSettings);
 
             Debug.WriteLine("=== Serialize Tasks START ===");

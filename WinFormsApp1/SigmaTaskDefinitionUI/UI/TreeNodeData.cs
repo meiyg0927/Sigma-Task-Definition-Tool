@@ -56,7 +56,6 @@ namespace SigmaTaskDefinitionUI.Data
 
         private readonly Dictionary<TreeNode, TreeNodeTaskData> _dict2 = new();
 
-        private TreeNode? root_node = null;
 
         #region TreeNodeData Handle
         public bool Add(TreeNodeType Type, TreeNode? Node, Step? Stp = null, SubStep? Substp = null)
@@ -87,11 +86,6 @@ namespace SigmaTaskDefinitionUI.Data
             return true;
         }
 
-        public TreeNode? GetRootTreeNode()
-        {
-            return root_node;
-        }
-
         public TreeNodeData? GetTreeNodeData(TreeNode? Node) 
         {
             if (Node == null) return null;
@@ -112,8 +106,8 @@ namespace SigmaTaskDefinitionUI.Data
 
         public bool RemoveAllNodes()
         {
-            root_node = null;
             _dict1.Clear();
+            _dict2.Clear();
 
             return true;
         }
@@ -213,12 +207,6 @@ namespace SigmaTaskDefinitionUI.Data
                 Debug.WriteLine(error_message_title + ex.Message);
                 return false;
             }
-        }
-
-        public bool RemoveAllTaskNodes()
-        {
-            _dict2.Clear();
-            return true;
         }
 
         #endregion
