@@ -13,6 +13,7 @@ using UIVO = Sigma.VirtualObjectDescriptor;
 using SigmaTaskDefinitionUI.UI;
 
 #pragma warning disable IDE1006
+#pragma warning disable IDE0057
 
 namespace SigmaTaskDefinitionUI
 {
@@ -50,7 +51,7 @@ namespace SigmaTaskDefinitionUI
             VODataList.Clear(); listBoxVO.Items.Clear();
             foreach (UIVO vo in _inValue.VirtualObjects)
             {
-                UIVO new_vo = new UIVO() { Name = vo.Name, ModelType = vo.ModelType };
+                UIVO new_vo = new() { Name = vo.Name, ModelType = vo.ModelType };
                 VODataList.Add(new_vo);
 
                 string str = vo.Name;

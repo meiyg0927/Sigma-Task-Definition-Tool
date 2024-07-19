@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Sigma;
 
+#pragma warning disable IDE0028
+
 namespace SigmaTaskDefinitionUI.Data
 {
     public enum TreeNodeType

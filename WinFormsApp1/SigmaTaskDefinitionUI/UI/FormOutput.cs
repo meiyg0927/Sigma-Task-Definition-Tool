@@ -51,8 +51,8 @@ namespace SigmaTaskDefinitionUI
 
         private void SavetoFlie()
         {
-            FileStream fs = new FileStream(Directory.GetCurrentDirectory() + "\\" + jsonFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-            StreamWriter sw = new StreamWriter(fs, Encoding.Default);
+            FileStream fs = new(Directory.GetCurrentDirectory() + "\\" + jsonFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+            StreamWriter sw = new(fs, Encoding.Default);
             StringBuilder exdata;
             try
             {

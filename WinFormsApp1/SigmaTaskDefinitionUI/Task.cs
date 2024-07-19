@@ -17,51 +17,23 @@ namespace Sigma
 {
     internal class Option
     {
-        //这个标志true： UI的TreeView内节点的变化并不会影响Task里面数据的变化；数据在序列化之前需要更加TreeNode的布置做处理
-        //这个标志false：UI的TreeView内节点的变化会时时刻刻影响Task里面数据的变化；数据不需要在序列化之前做任何处理
-        public static readonly bool bDeferredUpdate = true;         
+        public static readonly bool bflag = true;         
     }
 
     //This class is the bridge/interface between UI & Data
     internal class SigmaTask
     {
         //注意：Task里面的Steps是不包括SubStep的；SubStep是ComplexStep的成员变量，因为它不继承Step，所以不记录在Task的Steps里面
-        private readonly Task _data = new() { Description = "This is the Sigma Task Data" };
-        private readonly TaskCollection _serialize_data = new();
-
-        public bool Initialize()
-        {
-            _data.Name = string.Empty;
-            _data.Description = string.Empty;
-
-            if (Option.bDeferredUpdate) return true;
-
-            foreach (Step step in _data.Steps)
-            {
-                if (step is ComplexStep stepC)//如果是ComplexStep，需要清空内部的SubStep
-                {
-                    stepC.SubSteps.Clear();
-                }
-            }
-
-            _data.Steps.Clear();
-            return true;
-        }
+        private readonly TaskCollection _data = new();
         
         //Step
-        public Step? addGatherStep(List<string> objects)
+        public static Step? addGatherStep(List<string> objects)
         {
-            if(_data.Steps == null) return null;
-
             GatherStep step = new() { Objects = objects };
-
-            if (!Option.bDeferredUpdate)
-                _data.Steps.Add(step);
-
-                return step;
+            return step;
         }
 
-        public bool updateGatherStep(Step? step, List<string> objects)
+        public static bool updateGatherStep(Step? step, List<string> objects)
         {
             if (step != null && step is GatherStep stepG)
             {
@@ -72,19 +44,13 @@ namespace Sigma
             return false;
         }
 
-        public Step? addDoStep(string description, TimeSpan ts)
+        public static Step? addDoStep(string description, TimeSpan ts)
         {
-            if (_data.Steps == null) return null;
-
             DoStep step = new() { Description=description, TimerDuration=ts };
-
-            if(!Option.bDeferredUpdate)
-                _data.Steps.Add(step);
-
             return step;
         }
 
-        public bool updateDoStep(Step? step, string description, TimeSpan ts)
+        public static bool updateDoStep(Step? step, string description, TimeSpan ts)
         {
             if (step != null && step is DoStep stepD)
             {
@@ -97,133 +63,28 @@ namespace Sigma
             return false;
         }
 
-        public Step? addComplexStep(string description, List<SubStep> subSteps)
+        public static Step? addComplexStep(string description)
         {
             ComplexStep step = new() { Description = description };
             step.Description = description;
-
-            if (!Option.bDeferredUpdate)
-            {
-                foreach (SubStep subStep in subSteps)
-                {
-                    SubStep newStep = subStep.Clone();
-                    step.SubSteps.Add(newStep);
-                }
-                _data.Steps.Add(step);
-            }
-
             return step;
         }
 
-        public bool updateComplexStep(Step? step, string description, List<SubStep> subSteps)
+        public static bool updateComplexStep(Step? step, string description)
         {
             if(step != null && step is ComplexStep stepC)
             {
                 stepC.Description = description;
-                if(!Option.bDeferredUpdate) 
-                {
-                    stepC.SubSteps.Clear();
-                    foreach (SubStep subStep in subSteps) //SubStep不更新，直接删除重新赋值
-                    {
-                        SubStep newStep = subStep.Clone();
-                        stepC.SubSteps.Add(newStep);
-                    }
-                }
                 return true;
             }
             return false;
-        }
-
-        public bool updateSubStepinComplexStep(Step? complex_step, SubStep? subStep, SubStep? updated_data)
-        {
-            if (Option.bDeferredUpdate) return false;           
-            
-            if (_data.Steps == null || complex_step == null || subStep == null || updated_data == null) { return false; }
-
-            if (complex_step is ComplexStep stepC && stepC.SubSteps.Contains(subStep))
-            {
-                int index = stepC.SubSteps.IndexOf(subStep);
-                if (index >= 0)
-                { 
-                    stepC.SubSteps[index].Copy(updated_data);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool RemoveStep(Step? step)
-        {
-            if (Option.bDeferredUpdate) return false;
-
-            if (step == null) return false;
-
-            if (step is ComplexStep stepC)//如果是ComplexStep，需要清空内部的SubStep
-            {
-               stepC.SubSteps.Clear();
-            }
-            
-            return _data.Steps.Remove(step);
-        }
-
-        public bool RemoveSubStep(Step? complexStep, SubStep? subStep)
-        {
-            if (Option.bDeferredUpdate) return false;
-
-            if (subStep == null || complexStep == null) return false;
-
-            if (complexStep is ComplexStep complexStepC)
-            { 
-                return complexStepC.SubSteps.Remove(subStep);
-            }
-            return false;
-        }
-
-        public bool SwapStep(Step? step1, Step? step2)
-        {
-            if (Option.bDeferredUpdate) return false;
-
-            if (step1 == null || step2 == null) return false;
-
-            int index1 = _data.Steps.IndexOf(step1);
-            int index2 = _data.Steps.IndexOf(step2);
-
-            if (index1 == index2 || index1 < 0 || index2 < 0) return false;
-
-            _data.Steps[index1] = step2;
-            _data.Steps[index2] = step1;
-
-            return true;
-        }
-
-        public bool SwapSubStep(Step? complexStep, SubStep? step1, SubStep? step2)
-        {
-            if (Option.bDeferredUpdate) return false;
-
-            if (complexStep == null || step1 == null || step2 == null) return false;
-
-            if (complexStep is ComplexStep stepC)
-            {
-                int index1 = stepC.SubSteps.IndexOf(step1);
-                int index2 = stepC.SubSteps.IndexOf(step2);
-
-                if(index1 == index2 || index1 < 0 || index2 < 0) return false;
-
-                stepC.SubSteps[index1] = step2;
-                stepC.SubSteps[index2] = step1;
-            }
-
-            return true;
         }
 
         public bool AssembleSteps(TreeView? tree)
         {
             if (tree == null) return false;
 
-            if (!Option.bDeferredUpdate) return false;
-
-            _serialize_data.Tasks.Clear();
+            _data.Tasks.Clear();
 
             foreach (TreeNode node_task in tree.Nodes)
             {
@@ -284,7 +145,7 @@ namespace Sigma
                     }
                 }
 
-                _serialize_data.Tasks.Add(task);
+                _data.Tasks.Add(task);
 
                 //break; //只做一层Task
             }
@@ -295,7 +156,7 @@ namespace Sigma
         //Method
         public void CalculateLabel()
         {
-            foreach (Task task in _serialize_data.Tasks)
+            foreach (Task task in _data.Tasks)
             {
                 int index = 0;
                 foreach (Step step in task.Steps)
@@ -339,7 +200,7 @@ namespace Sigma
             };
             Type type = typeof(TaskCollection);
 
-            string serialized = JsonConvert.SerializeObject(_serialize_data, type, serializerSettings);
+            string serialized = JsonConvert.SerializeObject(_data, type, serializerSettings);
 
             Debug.WriteLine("=== Serialize Tasks START ===");
             Debug.WriteLine(serialized);
@@ -351,7 +212,6 @@ namespace Sigma
         public void Dump()
         {
             Debug.WriteLine("=== Dump Tasks START ===");
-            Debug.WriteLine("Task Name: " + _data.Name);
             Debug.WriteLine("=== Dump Tasks END ===");
         }
     }
