@@ -19,6 +19,12 @@ namespace SigmaTaskDefinitionUI.UI
         private VirtualObjectDescriptor _inValue = new();
         private VirtualObjectDescriptor _retValue = new();
 
+        private AtKnownSpatialLocation atKnowSpatialLocation = new();
+
+        private bool _isNew = false; //是否是按了Add按钮不是Edit按钮进入的窗体（会影响一些控件的状态）
+
+        private bool _isKnownPose = false;
+
         internal VirtualObjectDescriptor inValue
         {
             get { return _inValue; }
@@ -28,6 +34,12 @@ namespace SigmaTaskDefinitionUI.UI
         {
             get { return _retValue; }
             set { _retValue = value; }
+        }
+
+        internal bool isNew
+        {
+            get { return this._isNew; }
+            set { this._isNew = value; }
         }
 
         public FormVirtualObject()
@@ -48,9 +60,38 @@ namespace SigmaTaskDefinitionUI.UI
                 comboBoxModelType.SelectedIndex = index;
             }
             else
-            { 
+            {
                 comboBoxModelType.SelectedIndex = 0;
             }
+
+            if (_isNew)
+            {
+                _isKnownPose = true;
+                radioButtonKnownPose.Checked = _isKnownPose;
+                radioButtonUnknownPose.Checked = !_isKnownPose;
+
+                richTextBoxModelPoseDescription.Text = atKnowSpatialLocation.SpatialLocationName = "";
+                richTextBoxModelPoseDescription.Enabled = _isKnownPose;
+                return;
+            }
+
+            _isKnownPose = false;
+            radioButtonKnownPose.Checked = _isKnownPose;
+            radioButtonUnknownPose.Checked = !_isKnownPose;
+
+            if (inValue.SpatialPose != null && inValue.SpatialPose is AtKnownSpatialLocation atkSpatialPose)
+            {
+                if(!string.IsNullOrWhiteSpace(atkSpatialPose.SpatialLocationName))
+                {
+                    richTextBoxModelPoseDescription.Text = 
+                        atKnowSpatialLocation.SpatialLocationName = atkSpatialPose.SpatialLocationName;
+                }
+                _isKnownPose= true;
+                radioButtonKnownPose.Checked = _isKnownPose;
+                radioButtonUnknownPose.Checked = !_isKnownPose;
+            }
+
+            richTextBoxModelPoseDescription.Enabled = _isKnownPose;       
         }
 
         private void buttonVirtualObjectOK_Click(object sender, EventArgs e)
@@ -59,10 +100,25 @@ namespace SigmaTaskDefinitionUI.UI
             {
                 MessageBox.Show("请输入虚拟物体描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+            else if(_isKnownPose && string.IsNullOrWhiteSpace(richTextBoxModelPoseDescription.Text))
+            {
+                MessageBox.Show("请输入虚拟物体位置描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
             else
             {
                 _retValue.ModelType = comboBoxModelType.Text;
                 _retValue.Name = richTextBoxModelName.Text;
+                if (_isKnownPose) 
+                {
+                    atKnowSpatialLocation.SpatialLocationName = richTextBoxModelPoseDescription.Text;
+                    _retValue.SpatialPose = atKnowSpatialLocation;
+
+                }
+                else
+                {
+                    richTextBoxModelPoseDescription.Text = "";
+                    _retValue.SpatialPose = null;
+                }
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -72,8 +128,21 @@ namespace SigmaTaskDefinitionUI.UI
         {
             _inValue.Name = string.Empty;
             _inValue.ModelType = string.Empty;
+            _inValue.SpatialPose = null;
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void radioButtonUnknownPose_CheckedChanged(object sender, EventArgs e)
+        {
+            _isKnownPose = !radioButtonUnknownPose.Checked;
+            richTextBoxModelPoseDescription.Enabled = _isKnownPose;
+        }
+
+        private void radioButtonKnownPose_CheckedChanged(object sender, EventArgs e)
+        {
+            _isKnownPose = radioButtonKnownPose.Checked;
+            richTextBoxModelPoseDescription.Enabled = _isKnownPose;        
         }
     }
 }

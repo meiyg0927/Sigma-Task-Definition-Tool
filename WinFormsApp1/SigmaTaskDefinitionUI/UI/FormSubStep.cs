@@ -51,7 +51,7 @@ namespace SigmaTaskDefinitionUI
             VODataList.Clear(); listBoxVO.Items.Clear();
             foreach (UIVO vo in _inValue.VirtualObjects)
             {
-                UIVO new_vo = new() { Name = vo.Name, ModelType = vo.ModelType };
+                UIVO new_vo = vo.Clone();
                 VODataList.Add(new_vo);
 
                 string str = vo.Name;
@@ -91,12 +91,12 @@ namespace SigmaTaskDefinitionUI
         private void buttonAddVirtualObject_Click(object sender, EventArgs e)
         {
             //frmSubStep.inValue.Copy(new UISubStep());
+
             frmVO.inValue = new();
+            frmVO.isNew = true;
             if (DialogResult.OK == frmVO.ShowDialog())
             {
-                VirtualObjectDescriptor data = new()
-                { ModelType = frmVO.retValue.ModelType, Name = frmVO.retValue.Name };
-
+                VirtualObjectDescriptor data = frmVO.retValue.Clone();
                 VODataList.Add(data);
 
                 string str = data.Name;
@@ -120,13 +120,11 @@ namespace SigmaTaskDefinitionUI
             {
                 int SelectedIndex = listBoxVO.SelectedIndex;
 
-                frmVO.inValue.Name = VODataList.ElementAt(SelectedIndex).Name;
-                frmVO.inValue.ModelType = VODataList.ElementAt(SelectedIndex).ModelType;
-
+                frmVO.inValue.Copy(VODataList.ElementAt(SelectedIndex));
+                frmVO.isNew = false;
                 if (DialogResult.OK == frmVO.ShowDialog())
                 {
-                    VODataList[SelectedIndex].Name = frmVO.retValue.Name;
-                    VODataList[SelectedIndex].ModelType = frmVO.retValue.ModelType;
+                    VODataList[SelectedIndex].Copy(frmVO.retValue);
 
                     string updated_str = frmVO.retValue.Name;
                     if (updated_str.Length > NAME_MODEL_MAX) updated_str = updated_str.Substring(0, NAME_MODEL_MAX);

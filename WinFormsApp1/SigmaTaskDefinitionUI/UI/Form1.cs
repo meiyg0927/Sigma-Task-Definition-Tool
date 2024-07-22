@@ -108,7 +108,7 @@ namespace WinFormsApp1
 
                     foreach (TreeNode node in selected_node.Nodes)
                     {
-                        Func_DeleteTreeNode(node,true);
+                        Func_DeleteTreeNode(node, true);
                     }
                     TreeNodeManage.Instance.RemoveTaskNode(selected_node);
 
@@ -137,7 +137,7 @@ namespace WinFormsApp1
 
                     TreeNodeManage.Instance.RemoveNode(data.node, TreeNodeType.SUB);
 
-                    if(!only_delete_data)
+                    if (!only_delete_data)
                     {
                         data.node.Remove();
                     }
@@ -163,7 +163,7 @@ namespace WinFormsApp1
                         TreeNodeManage.Instance.RemoveNode(child_node, TreeNodeType.SUB);
                     }
 
-                    if(!only_delete_data)
+                    if (!only_delete_data)
                     {
                         //删除子节点
                         data.node.Nodes.Clear();
@@ -283,7 +283,7 @@ namespace WinFormsApp1
             if (node != null)
             {
                 node.ImageIndex = node.SelectedImageIndex = (int)TreeNodeType.MAX;
-                
+
                 if (current_task_node != null && current_task_node != node)
                 {
                     current_task_node.ImageIndex = current_task_node.SelectedImageIndex = (int)TreeNodeType.ROOT;
@@ -306,7 +306,7 @@ namespace WinFormsApp1
         {
             if (node_data == null) //root node will be edited
             {
-                if(node_task_data != null && node_task_data.head != null)
+                if (node_task_data != null && node_task_data.head != null)
                 {
                     textTaskName.Text = node_task_data.head.Name;
                     Func_AddandUpdateButtonVisible(true, TreeNodeType.ROOT);
@@ -350,7 +350,7 @@ namespace WinFormsApp1
                             {
                                 TreeNodeData? child_node_data = TreeNodeManage.Instance.GetTreeNodeData(child_node);
 
-                                if(child_node_data != null && child_node_data.type == TreeNodeType.SUB && child_node_data.subStep is SubStep subStep)
+                                if (child_node_data != null && child_node_data.type == TreeNodeType.SUB && child_node_data.subStep is SubStep subStep)
                                 {
                                     UISubStep data = subStep.Clone();
                                     SubStepDataList.Add(data);
@@ -411,7 +411,7 @@ namespace WinFormsApp1
                 tabControlTask.SelectedIndex = tabcontrol_fixed_index;
             }
         }
-#endregion
+        #endregion
 
         #region Message Handle for Tab of Basic
         private void buttonNewTask_Click(object sender, EventArgs e)
@@ -472,7 +472,7 @@ namespace WinFormsApp1
             return true;
 
         }
-#endregion
+        #endregion
 
         #region Message Handle for Tab of GatherStep
         private void buttonAddGatherList_Click(object sender, EventArgs e)
@@ -838,7 +838,7 @@ namespace WinFormsApp1
 
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
-            frmSubStep.inValue.Copy(new UISubStep());
+            frmSubStep.inValue.Copy(new UISubStep()); //有点浪费内存，每次点开SubStep窗体就会分配内存
             if (DialogResult.OK == frmSubStep.ShowDialog())
             {
                 UISubStep data = frmSubStep.retValue.Clone();
@@ -956,6 +956,17 @@ namespace WinFormsApp1
             frmAbout.ShowDialog();
         }
 
+        private void toolStripMenuItemOutput_Click(object sender, EventArgs e)
+        {
+            //same as output button
+            sigma_task.AssembleSteps(treeView);
+            sigma_task.CalculateLabel();
+            frmOutput.strJson = sigma_task.JsonSerialize();
+            if (DialogResult.OK == frmOutput.ShowDialog())
+            {
+            }
+        }
+
         private void ToolStripMenuItemExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -1061,10 +1072,10 @@ namespace WinFormsApp1
                 else
                 {
                     if (parentNode == null) //移动根节点
-                    { 
+                    {
                         int prev_index = treeview.Nodes.IndexOf(prevSibling);
                         treeview.Nodes.Remove(selected_node);
-                        treeview.Nodes.Insert(prev_index, selected_node);                    
+                        treeview.Nodes.Insert(prev_index, selected_node);
                     }
                     else
                     {
@@ -1083,7 +1094,7 @@ namespace WinFormsApp1
                 // 否则，将当前节点移动到其下一个兄弟节点之后
                 else
                 {
-                    if(parentNode == null) //移动根节点
+                    if (parentNode == null) //移动根节点
                     {
                         int next_index = treeview.Nodes.IndexOf(nextSibling);
                         treeview.Nodes.Remove(selected_node);
@@ -1094,7 +1105,7 @@ namespace WinFormsApp1
                         int next_index = parentNode.Nodes.IndexOf(nextSibling);
                         parentNode.Nodes.Remove(selected_node);
                         parentNode.Nodes.Insert(next_index, selected_node);
- 
+
                     }
                 }
             }

@@ -97,6 +97,7 @@
             buttonMainClose = new Button();
             menuStrip = new MenuStrip();
             ToolStripMenuItemFile = new ToolStripMenuItem();
+            toolStripMenuItemOutput = new ToolStripMenuItem();
             ToolStripMenuItemExit = new ToolStripMenuItem();
             ToolStripMenuItemHelp = new ToolStripMenuItem();
             ToolStripMenuItemHelpAbout = new ToolStripMenuItem();
@@ -806,21 +807,28 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { ToolStripMenuItemFile, ToolStripMenuItemHelp });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1920, 39);
+            menuStrip.Size = new Size(1920, 42);
             menuStrip.TabIndex = 10;
             menuStrip.Text = "menuStrip1";
             // 
             // ToolStripMenuItemFile
             // 
-            ToolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemExit });
+            ToolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOutput, ToolStripMenuItemExit });
             ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            ToolStripMenuItemFile.Size = new Size(82, 35);
+            ToolStripMenuItemFile.Size = new Size(82, 38);
             ToolStripMenuItemFile.Text = "文件";
+            // 
+            // toolStripMenuItemOutput
+            // 
+            toolStripMenuItemOutput.Name = "toolStripMenuItemOutput";
+            toolStripMenuItemOutput.Size = new Size(359, 44);
+            toolStripMenuItemOutput.Text = "命令输出";
+            toolStripMenuItemOutput.Click += toolStripMenuItemOutput_Click;
             // 
             // ToolStripMenuItemExit
             // 
             ToolStripMenuItemExit.Name = "ToolStripMenuItemExit";
-            ToolStripMenuItemExit.Size = new Size(195, 44);
+            ToolStripMenuItemExit.Size = new Size(359, 44);
             ToolStripMenuItemExit.Text = "退出";
             ToolStripMenuItemExit.Click += ToolStripMenuItemExit_Click;
             // 
@@ -828,7 +836,7 @@
             // 
             ToolStripMenuItemHelp.DropDownItems.AddRange(new ToolStripItem[] { ToolStripMenuItemHelpAbout });
             ToolStripMenuItemHelp.Name = "ToolStripMenuItemHelp";
-            ToolStripMenuItemHelp.Size = new Size(82, 35);
+            ToolStripMenuItemHelp.Size = new Size(82, 38);
             ToolStripMenuItemHelp.Text = "帮助";
             // 
             // ToolStripMenuItemHelpAbout
@@ -969,5 +977,6 @@
         private ToolStripMenuItem toolStripMenuItemExpandCurrent;
         private ToolStripMenuItem toolStripMenuItemCollapseCurrent;
         private ToolStripMenuItem toolStripMenuItemCollapseAll;
+        private ToolStripMenuItem toolStripMenuItemOutput;
     }
 }

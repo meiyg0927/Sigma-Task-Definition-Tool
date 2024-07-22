@@ -30,12 +30,11 @@ namespace Sigma
         {
             this.Label = source.Label;
             this.Description = source.Description;
-            
+
             this.VirtualObjects.Clear();
-            foreach(VirtualObjectDescriptor descriptor in source.VirtualObjects)
+            foreach (VirtualObjectDescriptor descriptor in source.VirtualObjects)
             {
-                this.VirtualObjects.Add(new VirtualObjectDescriptor() 
-                { Name = descriptor.Name, ModelType = descriptor.ModelType });
+                this.VirtualObjects.Add(descriptor.Clone());
             }
         }
     }
@@ -47,5 +46,60 @@ namespace Sigma
 
         public string ModelType { get; set; } = string.Empty;
 
+        public SpatialPoseDescriptor? SpatialPose { get; set; } = null;
+
+        public VirtualObjectDescriptor Clone()
+        {
+            VirtualObjectDescriptor newDescriptor = new VirtualObjectDescriptor();
+            newDescriptor.Copy(this);
+            return newDescriptor;
+        }
+
+        public void Copy(VirtualObjectDescriptor descriptor) //深拷贝
+        {
+            this.Name = descriptor.Name;
+            this.ModelType = descriptor.ModelType;
+  
+            if(descriptor.SpatialPose != null)
+            {
+                if (descriptor.SpatialPose is AtKnownSpatialLocation atkSpatialPose)
+                {
+                    if (this.SpatialPose != null && this.SpatialPose is AtKnownSpatialLocation atkSpatialPose2)
+                    {
+                        atkSpatialPose2.SpatialLocationName = atkSpatialPose.SpatialLocationName;
+                    }
+                    else
+                    {
+                        this.SpatialPose = new AtKnownSpatialLocation(atkSpatialPose.SpatialLocationName); 
+                    }
+                }
+                else
+                {
+                    if (this.SpatialPose == null) this.SpatialPose = new();
+                }
+            }
+            else 
+            { 
+                this.SpatialPose = null; 
+            }
+        }
+    }
+
+    internal class SpatialPoseDescriptor
+    {
+
+    }
+    internal class AtKnownSpatialLocation : SpatialPoseDescriptor
+    {
+        public AtKnownSpatialLocation()
+        {
+        }
+
+        public AtKnownSpatialLocation(string spatialLocationName)
+        {
+            SpatialLocationName = new string(spatialLocationName);
+        }
+
+        public string SpatialLocationName { get; set; } = string.Empty;
     }
 }
