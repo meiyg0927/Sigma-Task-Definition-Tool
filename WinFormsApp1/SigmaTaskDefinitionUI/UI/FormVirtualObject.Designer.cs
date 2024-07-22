@@ -43,10 +43,13 @@
             label3 = new Label();
             richTextBoxModelPoseDescription = new RichTextBox();
             groupBox2 = new GroupBox();
+            pictureTip1 = new PictureBox();
+            label4 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             SuspendLayout();
             // 
             // comboBoxModelType
@@ -200,17 +203,39 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "基本信息";
             // 
+            // pictureTip1
+            // 
+            pictureTip1.Image = Properties.Resources.Tips;
+            pictureTip1.Location = new Point(12, 542);
+            pictureTip1.Name = "pictureTip1";
+            pictureTip1.Size = new Size(93, 75);
+            pictureTip1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureTip1.TabIndex = 42;
+            pictureTip1.TabStop = false;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label4.Location = new Point(159, 562);
+            label4.Name = "label4";
+            label4.Size = new Size(590, 31);
+            label4.TabIndex = 43;
+            label4.Text = "上方输入模型（虚拟物体）的相关信息，并可预览模型";
+            // 
             // FormVirtualObject
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1713, 549);
+            ClientSize = new Size(1713, 629);
+            Controls.Add(label4);
+            Controls.Add(pictureTip1);
             Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormVirtualObject";
-            Text = "FormVirtualObject";
+            Text = "虚拟物体配置";
             Load += FormVirtualObject_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
@@ -218,7 +243,9 @@
             groupBox3.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -237,5 +264,7 @@
         private Label label3;
         private GroupBox groupBox2;
         private GroupBox groupBox3;
+        private PictureBox pictureTip1;
+        private Label label4;
     }
 }

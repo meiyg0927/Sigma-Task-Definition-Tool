@@ -98,11 +98,11 @@ namespace SigmaTaskDefinitionUI.UI
         {
             if (string.IsNullOrWhiteSpace(richTextBoxModelName.Text))
             {
-                MessageBox.Show("请输入虚拟物体描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("请输入模型描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else if(_isKnownPose && string.IsNullOrWhiteSpace(richTextBoxModelPoseDescription.Text))
             {
-                MessageBox.Show("请输入虚拟物体位置描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("请输入模型位置描述", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
