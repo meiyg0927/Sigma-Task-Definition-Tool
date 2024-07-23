@@ -13,6 +13,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Sigma;
 using SigmaTaskDefinitionUI;
 using SigmaTaskDefinitionUI.Data;
+using UITask = Sigma.Task;
+using UIGatherStep = Sigma.GatherStep;
+using UIDoStep = Sigma.DoStep;
+using UIComplexStep = Sigma.ComplexStep;
 using UISubStep = Sigma.SubStep;
 using System.Security.Cryptography;
 using System.Reflection.Metadata.Ecma335;
@@ -472,6 +476,18 @@ namespace WinFormsApp1
             return true;
 
         }
+
+        private TreeNode Func_NewTask(string taskName)
+        {
+            TreeNode newNode = new(taskName);
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.ROOT;
+            treeView.Nodes.Add(newNode);
+            TreeNodeManage.Instance.AddTaskNode(newNode, new TaskHead() { Name = taskName, Description = "This is the Sigma Task Data" });
+            //Func_SetCurrent_TaskNode(newNode);
+
+            return newNode;
+        }
+
         #endregion
 
         #region Message Handle for Tab of GatherStep
@@ -600,6 +616,50 @@ namespace WinFormsApp1
             listBoxGatherObject.Items.Clear();
             existingGatherObjects.Clear();
         }
+
+        private bool Func_newGatherStep(UIGatherStep stepG, TreeNode root_node)
+        {
+            string GatherStepName = "GatherStep: ";
+
+            for (int i = 0; i < stepG.Objects.Count; i++)
+            {
+                string? obj = stepG.Objects[i];
+                if (obj == null) continue;
+                GatherStepName += obj + ",";
+            }
+
+            TreeNode newNode = new();
+            if (GatherStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = GatherStepName; //物体字符太长的话，用Tip来展示
+                GatherStepName = GatherStepName.Substring(0, NAME_MAX);
+            }
+
+            //TreeNode状态更新
+            newNode.Text = GatherStepName;
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.GATHER;
+
+            //TreeView 增加一个GatherStep节点
+            {
+                int node_index = root_node.Nodes.Add(newNode);
+                root_node.Expand();
+                Debug.WriteLine("Add New GatherStep Node: " + GatherStepName + "  node_index:" + node_index);
+
+                //Task增加一条记录
+                Step? step = SigmaTask.addGatherStep(stepG.Objects);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.GATHER, newNode, step);
+            }
+
+            //清空ListBoxGatherObject控件的物体和之前保存的物体名称
+            textBoxGatherObjectBack.Text = string.Empty;
+            listBoxGatherObject.Items.Clear();
+            existingGatherObjects.Clear();
+
+            return true;
+        }
+
         #endregion
 
         #region Message Handle for Tab of DoStep
@@ -720,6 +780,41 @@ namespace WinFormsApp1
             richTextDoDescription.Text = string.Empty;
         }
 
+        private bool Func_NewDoStep(UIDoStep stepD, TreeNode root_node)
+        {
+            TreeNode newNode = new();
+            string DoStepName = "DoStep: " + stepD.TimerDuration.ToString() + " Desption: " + stepD.Description;
+            if (DoStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = DoStepName; //物体字符太长的话，用Tip来展示
+                DoStepName = DoStepName.Substring(0, NAME_MAX);
+            }
+
+            //TreeNode状态更新
+            newNode.Text = DoStepName;
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.DO;
+
+           //TreeView 增加一个DoStep节点
+            {
+                int node_index = root_node.Nodes.Add(newNode);
+                root_node.Expand();
+
+                Debug.WriteLine("Add New DoStep Node: " + DoStepName + "  node_index:" + node_index);
+
+                //Task增加一条记录
+                Step? step = SigmaTask.addDoStep(stepD.Description, stepD.TimerDuration);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.DO, newNode, step);
+            }
+
+            //DataTimePicker控件时间归零，执行任务的描述控件清空
+            dateTimeDoDuring.Value = dateTimeDoDuring.MinDate;
+            richTextDoDescription.Text = string.Empty;
+
+            return true;
+        }
+
         #endregion
 
         #region Message Handle for Tab of Complex Step
@@ -836,6 +931,44 @@ namespace WinFormsApp1
             SubStepDataList.Clear();
         }
 
+        private bool Func_NewComplexStep(UIComplexStep stepC, TreeNode root_node)
+        {
+            TreeNode newNode = new();
+            //TreeView 增加一个ComplexStep节点
+            string ComplexStepName = "ComplexStep: " + stepC.Description;
+            if (ComplexStepName.Length > NAME_MAX)
+            {
+                newNode.ToolTipText = ComplexStepName; //物体字符太长的话，用Tip来展示
+                ComplexStepName = ComplexStepName.Substring(0, NAME_MAX);
+            }
+            newNode.Text = ComplexStepName;
+            newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.COMPLEX;
+
+            //TreeView 增加一个ComplexStep节点
+            {
+                root_node.Nodes.Add(newNode);
+                root_node.Expand();
+
+                //Task增加一条记录
+                Step? step = SigmaTask.addComplexStep(stepC.Description);
+
+                //TreeNodeData增加一条记录，把TreeView的Node和Task的记录关联起来
+                TreeNodeManage.Instance.Add(TreeNodeType.COMPLEX, newNode, step);
+
+                //TreeView 增加SubSteps节点
+                {
+                    Func_AddSubSteps_V2(newNode, step, stepC.SubSteps);
+                }
+            }
+
+            //清空子任务列表；复杂任务的描述控件清空
+            listBoxSubStep.Items.Clear();
+            richTextComplexDescription.Text = string.Empty;
+            SubStepDataList.Clear();
+
+            return true;
+        }
+
         private void buttonAddSubStep_Click(object sender, EventArgs e)
         {
             frmSubStep.inValue.Copy(new UISubStep()); //有点浪费内存，每次点开SubStep窗体就会分配内存
@@ -925,6 +1058,40 @@ namespace WinFormsApp1
             }
         }
 
+        private void Func_AddSubSteps_V2(TreeNode parent_node, Step? complex_step, List<SubStep> SubSteps)
+        {
+            for (int i = 0; i < SubSteps.Count; i++)
+            {
+                UISubStep sub_step = SubSteps[i];
+
+                //TreeView 增加一个SubStep节点
+                string SubStepName = "SubStep: " + sub_step.Description;
+                TreeNode newNode = new();
+                if (SubStepName.Length > NAME_MAX)
+                {
+                    newNode.ToolTipText = SubStepName; //物体字符太长的话，用Tip来展示
+                    SubStepName = SubStepName.Substring(0, NAME_MAX);
+                }
+                newNode.Text = SubStepName;
+                newNode.ImageIndex = newNode.SelectedImageIndex = (int)TreeNodeType.SUB;
+                parent_node.Nodes.Add(newNode);
+                parent_node.Expand();
+
+                //Task中不需要增加SubStep记录
+
+                //TreeNodeData增加一条记录，把TreeView的Node和SubStep的记录关联起来
+                if (complex_step is ComplexStep stepC)
+                {
+                    UISubStep new_subStep = sub_step.Clone();
+                    TreeNodeManage.Instance.Add(TreeNodeType.SUB, newNode, complex_step, new_subStep);
+                }
+                else
+                {
+                    MessageBox.Show("出错了：子任务的父节点无法转换为ComplexStep", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private void Func_UpdateSubSteps(TreeNodeData? subStep_data, UISubStep updated_data)
         {
             if (subStep_data == null || subStep_data.node == null || subStep_data.subStep == null || subStep_data.step == null) return;
@@ -954,6 +1121,70 @@ namespace WinFormsApp1
         private void toolStripMenuItemHelpAbout_Click(object sender, EventArgs e)
         {
             frmAbout.ShowDialog();
+        }
+
+        private void toolStripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+                    try
+                    {
+                        string jsonContent = File.ReadAllText(filePath);
+                        TaskCollection? deserializedTasks = sigma_task.JsonDeserialize(jsonContent);
+
+                        // 在这里处理反序列化后的TaskCollection 对象, 更新 UI 或进行其他操作
+                        //MessageBox.Show("文件成功加载并反序列化!", "成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Func_UpdateUIDataWithTasks(deserializedTasks);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"加载文件时发生错误: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void Func_UpdateUIDataWithTasks(TaskCollection? deserializedTasks)
+        { 
+            if(deserializedTasks == null) return;
+
+            treeView.Nodes.Clear();
+            TreeNodeManage.Instance.RemoveAllNodes();
+
+            foreach (UITask task in deserializedTasks.Tasks)
+            {
+                //New Task
+                TreeNode root = Func_NewTask(task.Name);
+
+                //New All Steps in the Task
+                foreach(Step step in task.Steps)
+                {
+                    if(step is UIGatherStep stepG)
+                    {
+                        Func_newGatherStep(stepG, root);
+                        continue;
+                    }
+
+                    if(step is UIDoStep stepD)
+                    {
+                        Func_NewDoStep(stepD, root);
+                        continue;
+                    }
+
+                    if(step is UIComplexStep stepC)
+                    {
+                        Func_NewComplexStep(stepC, root);
+                        continue;
+                    }
+                }
+            }
         }
 
         private void toolStripMenuItemOutput_Click(object sender, EventArgs e)

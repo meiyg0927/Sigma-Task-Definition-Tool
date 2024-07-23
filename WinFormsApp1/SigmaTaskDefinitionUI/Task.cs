@@ -209,6 +209,22 @@ namespace Sigma
             return serialized;
         }
 
+        public TaskCollection? JsonDeserialize(string json)
+        {
+            var serializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            };
+
+            TaskCollection? deserialized = JsonConvert.DeserializeObject<TaskCollection>(json, serializerSettings);
+
+            Debug.WriteLine("=== Deserialize Tasks START ===");
+            Debug.WriteLine("Deserialization completed");
+            Debug.WriteLine("=== Deserialize Tasks END ===");
+
+            return deserialized;
+        }
+
         public void Dump()
         {
             Debug.WriteLine("=== Dump Tasks START ===");

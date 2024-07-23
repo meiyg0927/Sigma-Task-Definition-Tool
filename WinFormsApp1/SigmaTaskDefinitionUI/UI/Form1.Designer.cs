@@ -97,6 +97,7 @@
             buttonMainClose = new Button();
             menuStrip = new MenuStrip();
             ToolStripMenuItemFile = new ToolStripMenuItem();
+            toolStripMenuItemOpen = new ToolStripMenuItem();
             toolStripMenuItemOutput = new ToolStripMenuItem();
             ToolStripMenuItemExit = new ToolStripMenuItem();
             ToolStripMenuItemHelp = new ToolStripMenuItem();
@@ -813,10 +814,17 @@
             // 
             // ToolStripMenuItemFile
             // 
-            ToolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOutput, ToolStripMenuItemExit });
+            ToolStripMenuItemFile.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemOpen, toolStripMenuItemOutput, ToolStripMenuItemExit });
             ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
             ToolStripMenuItemFile.Size = new Size(82, 38);
             ToolStripMenuItemFile.Text = "文件";
+            // 
+            // toolStripMenuItemOpen
+            // 
+            toolStripMenuItemOpen.Name = "toolStripMenuItemOpen";
+            toolStripMenuItemOpen.Size = new Size(359, 44);
+            toolStripMenuItemOpen.Text = "打开";
+            toolStripMenuItemOpen.Click += toolStripMenuItemOpen_Click;
             // 
             // toolStripMenuItemOutput
             // 
@@ -978,5 +986,6 @@
         private ToolStripMenuItem toolStripMenuItemCollapseCurrent;
         private ToolStripMenuItem toolStripMenuItemCollapseAll;
         private ToolStripMenuItem toolStripMenuItemOutput;
+        private ToolStripMenuItem toolStripMenuItemOpen;
     }
 }
