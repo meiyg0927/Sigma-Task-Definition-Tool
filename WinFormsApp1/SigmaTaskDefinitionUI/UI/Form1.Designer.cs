@@ -830,7 +830,7 @@
             // 
             toolStripMenuItemOutput.Name = "toolStripMenuItemOutput";
             toolStripMenuItemOutput.Size = new Size(359, 44);
-            toolStripMenuItemOutput.Text = "命令输出";
+            toolStripMenuItemOutput.Text = "任务输出";
             toolStripMenuItemOutput.Click += toolStripMenuItemOutput_Click;
             // 
             // ToolStripMenuItemExit

@@ -63,7 +63,7 @@ namespace SigmaTaskDefinitionUI
                     fs.SetLength(0); //full overwrite previous content
                     sw.Write(exdata);
                 }
-                Debug.WriteLine("Tsigma.state.diamond.tasklibrary.json 保存完毕!");
+                Debug.WriteLine("sigma.state.diamond.tasklibrary.json 保存完毕!");
                 MessageBox.Show("sigma.state.diamond.tasklibrary.json 保存完毕!","", MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             catch (Exception ex)
