@@ -1136,7 +1136,7 @@ namespace WinFormsApp1
                     string filePath = openFileDialog.FileName;
                     try
                     {
-                        string jsonContent = File.ReadAllText(filePath);
+                        string jsonContent = System.IO.File.ReadAllText(filePath);
                         TaskCollection? deserializedTasks = sigma_task.JsonDeserialize(jsonContent);
 
                         // 在这里处理反序列化后的TaskCollection 对象, 更新 UI 或进行其他操作

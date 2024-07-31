@@ -32,7 +32,6 @@
             comboBoxModelType = new ComboBox();
             label2 = new Label();
             richTextBoxModelName = new RichTextBox();
-            pictureBox1 = new PictureBox();
             buttonVirtualObjectOK = new Button();
             buttonVirtualObjectCancel = new Button();
             panel1 = new Panel();
@@ -44,11 +43,18 @@
             groupBox2 = new GroupBox();
             pictureTip1 = new PictureBox();
             label4 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            pictureBox = new PictureBox();
+            panel2 = new Panel();
+            groupBox1 = new GroupBox();
+            checkBox2 = new CheckBox();
+            checkBox1 = new CheckBox();
             panel1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            panel2.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // comboBoxModelType
@@ -79,19 +85,10 @@
             richTextBoxModelName.TabIndex = 5;
             richTextBoxModelName.Text = "";
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox1.Location = new Point(19, 19);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(480, 480);
-            pictureBox1.TabIndex = 6;
-            pictureBox1.TabStop = false;
-            // 
             // buttonVirtualObjectOK
             // 
             buttonVirtualObjectOK.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonVirtualObjectOK.Location = new Point(1399, 26);
+            buttonVirtualObjectOK.Location = new Point(1067, 35);
             buttonVirtualObjectOK.Name = "buttonVirtualObjectOK";
             buttonVirtualObjectOK.Size = new Size(269, 171);
             buttonVirtualObjectOK.TabIndex = 9;
@@ -102,7 +99,7 @@
             // buttonVirtualObjectCancel
             // 
             buttonVirtualObjectCancel.Font = new Font("Microsoft YaHei UI", 13.875F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            buttonVirtualObjectCancel.Location = new Point(1399, 398);
+            buttonVirtualObjectCancel.Location = new Point(1067, 383);
             buttonVirtualObjectCancel.Name = "buttonVirtualObjectCancel";
             buttonVirtualObjectCancel.Size = new Size(269, 101);
             buttonVirtualObjectCancel.TabIndex = 10;
@@ -113,14 +110,14 @@
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(groupBox1);
             panel1.Controls.Add(buttonVirtualObjectCancel);
             panel1.Controls.Add(groupBox3);
             panel1.Controls.Add(groupBox2);
             panel1.Controls.Add(buttonVirtualObjectOK);
-            panel1.Controls.Add(pictureBox1);
-            panel1.Location = new Point(12, 12);
+            panel1.Location = new Point(558, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1689, 521);
+            panel1.Size = new Size(1362, 512);
             panel1.TabIndex = 11;
             // 
             // groupBox3
@@ -130,7 +127,7 @@
             groupBox3.Controls.Add(label3);
             groupBox3.Controls.Add(richTextBoxModelPoseDescription);
             groupBox3.FlatStyle = FlatStyle.Flat;
-            groupBox3.Location = new Point(961, 19);
+            groupBox3.Location = new Point(632, 19);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(410, 480);
             groupBox3.TabIndex = 16;
@@ -185,7 +182,7 @@
             groupBox2.Controls.Add(comboBoxModelType);
             groupBox2.Controls.Add(label2);
             groupBox2.FlatStyle = FlatStyle.Flat;
-            groupBox2.Location = new Point(523, 19);
+            groupBox2.Location = new Point(198, 19);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(411, 480);
             groupBox2.TabIndex = 7;
@@ -212,27 +209,81 @@
             label4.TabIndex = 43;
             label4.Text = "上方输入模型（虚拟物体）的相关信息，并可预览模型";
             // 
+            // pictureBox
+            // 
+            pictureBox.Location = new Point(21, 19);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(500, 500);
+            pictureBox.TabIndex = 44;
+            pictureBox.TabStop = false;
+            // 
+            // panel2
+            // 
+            panel2.BackgroundImageLayout = ImageLayout.None;
+            panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(pictureBox);
+            panel2.Location = new Point(12, 12);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(524, 512);
+            panel2.TabIndex = 45;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(checkBox2);
+            groupBox1.Controls.Add(checkBox1);
+            groupBox1.FlatStyle = FlatStyle.Flat;
+            groupBox1.Location = new Point(8, 19);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(164, 480);
+            groupBox1.TabIndex = 19;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "模型展示";
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(11, 325);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(118, 35);
+            checkBox2.TabIndex = 20;
+            checkBox2.Text = "坐标轴";
+            checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(11, 120);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(142, 35);
+            checkBox1.TabIndex = 19;
+            checkBox1.Text = "自动旋转";
+            checkBox1.UseVisualStyleBackColor = true;
+            // 
             // FormVirtualObject
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1713, 629);
+            ClientSize = new Size(1932, 629);
             Controls.Add(label4);
             Controls.Add(pictureTip1);
             Controls.Add(panel1);
+            Controls.Add(panel2);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "FormVirtualObject";
             Text = "虚拟物体配置";
             Load += FormVirtualObject_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            panel2.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -242,7 +293,6 @@
         private ComboBox comboBoxModelType;
         private Label label2;
         private RichTextBox richTextBoxModelName;
-        private PictureBox pictureBox1;
         private Button buttonVirtualObjectOK;
         private Button buttonVirtualObjectCancel;
         private Panel panel1;
@@ -254,5 +304,10 @@
         private GroupBox groupBox3;
         private PictureBox pictureTip1;
         private Label label4;
+        private PictureBox pictureBox;
+        private Panel panel2;
+        private GroupBox groupBox1;
+        private CheckBox checkBox2;
+        private CheckBox checkBox1;
     }
 }
