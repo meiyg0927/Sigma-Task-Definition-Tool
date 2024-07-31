@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVirtualObject));
             comboBoxModelType = new ComboBox();
-            label1 = new Label();
             label2 = new Label();
             richTextBoxModelName = new RichTextBox();
             pictureBox1 = new PictureBox();
@@ -57,19 +56,10 @@
             comboBoxModelType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxModelType.FormattingEnabled = true;
             comboBoxModelType.Items.AddRange(new object[] { "Null", "Straight", "Half circle", "Full circle" });
-            comboBoxModelType.Location = new Point(161, 65);
+            comboBoxModelType.Location = new Point(24, 65);
             comboBoxModelType.Name = "comboBoxModelType";
-            comboBoxModelType.Size = new Size(224, 39);
+            comboBoxModelType.Size = new Size(361, 39);
             comboBoxModelType.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(24, 73);
-            label1.Name = "label1";
-            label1.Size = new Size(110, 31);
-            label1.TabIndex = 3;
-            label1.Text = "模型类型";
             // 
             // label2
             // 
@@ -192,7 +182,6 @@
             // groupBox2
             // 
             groupBox2.Controls.Add(richTextBoxModelName);
-            groupBox2.Controls.Add(label1);
             groupBox2.Controls.Add(comboBoxModelType);
             groupBox2.Controls.Add(label2);
             groupBox2.FlatStyle = FlatStyle.Flat;
@@ -201,7 +190,7 @@
             groupBox2.Size = new Size(411, 480);
             groupBox2.TabIndex = 7;
             groupBox2.TabStop = false;
-            groupBox2.Text = "基本信息";
+            groupBox2.Text = "模型信息";
             // 
             // pictureTip1
             // 
@@ -251,7 +240,6 @@
         #endregion
 
         private ComboBox comboBoxModelType;
-        private Label label1;
         private Label label2;
         private RichTextBox richTextBoxModelName;
         private PictureBox pictureBox1;

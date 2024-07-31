@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 using Sigma;
 using UISubStep = Sigma.SubStep;
+
+using HelixToolkit.Wpf;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using System.Windows.Media.Imaging;
 
 #pragma warning disable IDE1006
 
@@ -53,6 +60,15 @@ namespace SigmaTaskDefinitionUI.UI
         {
             CenterToParent();
 
+            {
+                Func_GetStlFiles(out List<string> modelNameList);
+                comboBoxModelType.Items.Clear();
+                foreach (string modelName in modelNameList)
+                {
+                    comboBoxModelType.Items.Add(modelName);
+                }
+            }
+
             richTextBoxModelName.Text = inValue.Name;
             if (comboBoxModelType.Items.Contains(inValue.ModelType))
             {
@@ -93,6 +109,8 @@ namespace SigmaTaskDefinitionUI.UI
 
             richTextBoxModelPoseDescription.Enabled = _isKnownPose;       
         }
+
+        #region Message Handle for Controls
 
         private void buttonVirtualObjectOK_Click(object sender, EventArgs e)
         {
@@ -144,5 +162,38 @@ namespace SigmaTaskDefinitionUI.UI
             _isKnownPose = radioButtonKnownPose.Checked;
             richTextBoxModelPoseDescription.Enabled = _isKnownPose;        
         }
+
+        #endregion
+
+
+
+        #region Tool Functions
+        private static void Func_GetStlFiles(out List<string> modelNameList)
+        {
+            modelNameList = new();
+            try
+            {
+                Debug.WriteLine("=== Get STL models START ==");
+                string currentModelDirectory = Directory.GetCurrentDirectory() + "\\Resources\\models";
+                string[] stlFiles = Directory.GetFiles(currentModelDirectory, "*.stl");
+
+                foreach (string file in stlFiles)
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    Debug.WriteLine(fileName);
+
+                    // 或者将文件名添加到ListBox等控件中显示
+                    modelNameList.Add(fileName);
+                }
+
+                Debug.WriteLine("=== Get STL models END ==");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("发生错误: " + ex.Message);
+            }
+        }
+
+        #endregion
     }
 }
