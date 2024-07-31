@@ -62,9 +62,9 @@
             label2.Font = new Font("微软雅黑 Light", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
             label2.Location = new Point(312, 228);
             label2.Name = "label2";
-            label2.Size = new Size(165, 31);
+            label2.Size = new Size(169, 31);
             label2.TabIndex = 2;
-            label2.Text = "Version 1.1.0.0";
+            label2.Text = "Version 1.2.0.0";
             // 
             // linkLabel
             // 
