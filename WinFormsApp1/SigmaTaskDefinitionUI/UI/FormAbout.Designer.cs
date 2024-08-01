@@ -64,7 +64,7 @@
             label2.Name = "label2";
             label2.Size = new Size(169, 31);
             label2.TabIndex = 2;
-            label2.Text = "Version 1.2.0.0";
+            label2.Text = "Version 1.3.0.0";
             // 
             // linkLabel
             // 

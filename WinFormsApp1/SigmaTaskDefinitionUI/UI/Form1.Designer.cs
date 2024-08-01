@@ -823,7 +823,7 @@
             // 
             toolStripMenuItemOpen.Name = "toolStripMenuItemOpen";
             toolStripMenuItemOpen.Size = new Size(359, 44);
-            toolStripMenuItemOpen.Text = "打开";
+            toolStripMenuItemOpen.Text = "读取";
             toolStripMenuItemOpen.Click += toolStripMenuItemOpen_Click;
             // 
             // toolStripMenuItemOutput

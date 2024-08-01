@@ -35,6 +35,11 @@
             buttonVirtualObjectOK = new Button();
             buttonVirtualObjectCancel = new Button();
             panel1 = new Panel();
+            groupBox1 = new GroupBox();
+            checkBoxModelInfoVisibled = new CheckBox();
+            checkBoxAuxCubeVisibled = new CheckBox();
+            checkBoxAxisVisibled = new CheckBox();
+            checkBoxModelAutoRotate = new CheckBox();
             groupBox3 = new GroupBox();
             radioButtonKnownPose = new RadioButton();
             radioButtonUnknownPose = new RadioButton();
@@ -45,16 +50,13 @@
             label4 = new Label();
             pictureBox = new PictureBox();
             panel2 = new Panel();
-            groupBox1 = new GroupBox();
-            checkBox2 = new CheckBox();
-            checkBox1 = new CheckBox();
             panel1.SuspendLayout();
+            groupBox1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             panel2.SuspendLayout();
-            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // comboBoxModelType
@@ -66,6 +68,7 @@
             comboBoxModelType.Name = "comboBoxModelType";
             comboBoxModelType.Size = new Size(361, 39);
             comboBoxModelType.TabIndex = 0;
+            comboBoxModelType.SelectedIndexChanged += comboBoxModelType_SelectedIndexChanged;
             // 
             // label2
             // 
@@ -119,6 +122,66 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(1362, 512);
             panel1.TabIndex = 11;
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(checkBoxModelInfoVisibled);
+            groupBox1.Controls.Add(checkBoxAuxCubeVisibled);
+            groupBox1.Controls.Add(checkBoxAxisVisibled);
+            groupBox1.Controls.Add(checkBoxModelAutoRotate);
+            groupBox1.FlatStyle = FlatStyle.Flat;
+            groupBox1.Location = new Point(8, 19);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(164, 480);
+            groupBox1.TabIndex = 19;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "模型展示";
+            // 
+            // checkBoxModelInfoVisibled
+            // 
+            checkBoxModelInfoVisibled.AutoSize = true;
+            checkBoxModelInfoVisibled.Location = new Point(11, 430);
+            checkBoxModelInfoVisibled.Name = "checkBoxModelInfoVisibled";
+            checkBoxModelInfoVisibled.Size = new Size(142, 35);
+            checkBoxModelInfoVisibled.TabIndex = 22;
+            checkBoxModelInfoVisibled.Text = "性能参数";
+            checkBoxModelInfoVisibled.UseVisualStyleBackColor = true;
+            checkBoxModelInfoVisibled.CheckedChanged += checkBoxModelInfoVisibled_CheckedChanged;
+            // 
+            // checkBoxAuxCubeVisibled
+            // 
+            checkBoxAuxCubeVisibled.AutoSize = true;
+            checkBoxAuxCubeVisibled.Checked = true;
+            checkBoxAuxCubeVisibled.CheckState = CheckState.Checked;
+            checkBoxAuxCubeVisibled.Location = new Point(11, 321);
+            checkBoxAuxCubeVisibled.Name = "checkBoxAuxCubeVisibled";
+            checkBoxAuxCubeVisibled.Size = new Size(142, 35);
+            checkBoxAuxCubeVisibled.TabIndex = 21;
+            checkBoxAuxCubeVisibled.Text = "辅助方块";
+            checkBoxAuxCubeVisibled.UseVisualStyleBackColor = true;
+            checkBoxAuxCubeVisibled.CheckedChanged += checkBoxAuxCubeVisibled_CheckedChanged;
+            // 
+            // checkBoxAxisVisibled
+            // 
+            checkBoxAxisVisibled.AutoSize = true;
+            checkBoxAxisVisibled.Location = new Point(11, 210);
+            checkBoxAxisVisibled.Name = "checkBoxAxisVisibled";
+            checkBoxAxisVisibled.Size = new Size(118, 35);
+            checkBoxAxisVisibled.TabIndex = 20;
+            checkBoxAxisVisibled.Text = "坐标轴";
+            checkBoxAxisVisibled.UseVisualStyleBackColor = true;
+            checkBoxAxisVisibled.CheckedChanged += checkBoxAxisVisibled_CheckedChanged;
+            // 
+            // checkBoxModelAutoRotate
+            // 
+            checkBoxModelAutoRotate.AutoSize = true;
+            checkBoxModelAutoRotate.Location = new Point(11, 90);
+            checkBoxModelAutoRotate.Name = "checkBoxModelAutoRotate";
+            checkBoxModelAutoRotate.Size = new Size(142, 35);
+            checkBoxModelAutoRotate.TabIndex = 19;
+            checkBoxModelAutoRotate.Text = "自动旋转";
+            checkBoxModelAutoRotate.UseVisualStyleBackColor = true;
+            checkBoxModelAutoRotate.CheckedChanged += checkBoxModelAutoRotate_CheckedChanged;
             // 
             // groupBox3
             // 
@@ -205,9 +268,9 @@
             label4.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
             label4.Location = new Point(159, 562);
             label4.Name = "label4";
-            label4.Size = new Size(590, 31);
+            label4.Size = new Size(1358, 31);
             label4.TabIndex = 43;
-            label4.Text = "上方输入模型（虚拟物体）的相关信息，并可预览模型";
+            label4.Text = "上方输入模型（虚拟物体）的相关信息，并可预览模型。模型预览的操作方法：鼠标滚轮可以缩放模型；鼠标右键可以旋转模型";
             // 
             // pictureBox
             // 
@@ -227,38 +290,6 @@
             panel2.Size = new Size(524, 512);
             panel2.TabIndex = 45;
             // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(checkBox2);
-            groupBox1.Controls.Add(checkBox1);
-            groupBox1.FlatStyle = FlatStyle.Flat;
-            groupBox1.Location = new Point(8, 19);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(164, 480);
-            groupBox1.TabIndex = 19;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "模型展示";
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(11, 325);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(118, 35);
-            checkBox2.TabIndex = 20;
-            checkBox2.Text = "坐标轴";
-            checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(11, 120);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(142, 35);
-            checkBox1.TabIndex = 19;
-            checkBox1.Text = "自动旋转";
-            checkBox1.UseVisualStyleBackColor = true;
-            // 
             // FormVirtualObject
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
@@ -273,8 +304,11 @@
             MaximizeBox = false;
             Name = "FormVirtualObject";
             Text = "虚拟物体配置";
+            FormClosing += FormVirtualObject_FormClosing;
             Load += FormVirtualObject_Load;
             panel1.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -282,8 +316,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureTip1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             panel2.ResumeLayout(false);
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -307,7 +339,9 @@
         private PictureBox pictureBox;
         private Panel panel2;
         private GroupBox groupBox1;
-        private CheckBox checkBox2;
-        private CheckBox checkBox1;
+        private CheckBox checkBoxAxisVisibled;
+        private CheckBox checkBoxModelAutoRotate;
+        private CheckBox checkBoxAuxCubeVisibled;
+        private CheckBox checkBoxModelInfoVisibled;
     }
 }
