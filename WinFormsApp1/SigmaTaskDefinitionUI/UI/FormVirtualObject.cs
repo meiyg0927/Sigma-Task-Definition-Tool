@@ -272,7 +272,7 @@ namespace SigmaTaskDefinitionUI.UI
             D3_viewport.ShowFieldOfView = false;
             D3_viewport.ShowCameraInfo = false;
             D3_viewport.ShowCameraInfo = false;
-            D3_viewport.ShowCameraTarget = false;
+            D3_viewport.ShowCameraTarget = true;
 
             // 创建 ElementHost 并将其设置为 PictureBox 的大小和位置
             D3_host = new();

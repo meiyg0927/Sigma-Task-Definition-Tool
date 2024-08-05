@@ -44,7 +44,6 @@
             buttonSubStepMoveDown = new Button();
             buttonSubStepMoveUp = new Button();
             listBoxVO = new ListBox();
-            tabPage3 = new TabPage();
             tabControlSubStep.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureTip1).BeginInit();
@@ -111,7 +110,6 @@
             tabControlSubStep.Appearance = TabAppearance.FlatButtons;
             tabControlSubStep.Controls.Add(tabPage1);
             tabControlSubStep.Controls.Add(tabPage2);
-            tabControlSubStep.Controls.Add(tabPage3);
             tabControlSubStep.Location = new Point(47, 21);
             tabControlSubStep.Name = "tabControlSubStep";
             tabControlSubStep.SelectedIndex = 0;
@@ -217,16 +215,6 @@
             listBoxVO.Size = new Size(363, 407);
             listBoxVO.TabIndex = 42;
             // 
-            // tabPage3
-            // 
-            tabPage3.Location = new Point(4, 43);
-            tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(839, 521);
-            tabPage3.TabIndex = 2;
-            tabPage3.Text = "tabPage3";
-            tabPage3.UseVisualStyleBackColor = true;
-            // 
             // FormSubStep
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
@@ -264,7 +252,6 @@
         private Button buttonSubStepMoveDown;
         private Button buttonSubStepMoveUp;
         private ListBox listBoxVO;
-        private TabPage tabPage3;
         private Label label1;
         private PictureBox pictureTip1;
         private Label label2;
