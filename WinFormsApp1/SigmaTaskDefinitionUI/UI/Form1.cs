@@ -236,6 +236,9 @@ namespace WinFormsApp1
                             if (treeNodeData.type != TreeNodeType.SUB)
                             {
                                 tabControlTask.SelectedIndex = tabcontrol_fixed_index = (int)treeNodeData.type - 1;
+
+                                //右键菜单选择“属性”，如果不是根节点，也不是SubStep节点，必须设置父节点为当前编辑任务节点，否则无法Update
+                                Func_SetCurrent_TaskNode(contextMenu_choosed_node.Parent);
                             }
                             Func_ContextMenuHandle_EditBegin(treeNodeData, null);
                         }
