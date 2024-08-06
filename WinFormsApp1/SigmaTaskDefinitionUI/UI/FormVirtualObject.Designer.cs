@@ -157,7 +157,7 @@
             radioButtonUnknownPose.Name = "radioButtonUnknownPose";
             radioButtonUnknownPose.Size = new Size(189, 35);
             radioButtonUnknownPose.TabIndex = 13;
-            radioButtonUnknownPose.Text = "空间位置为止";
+            radioButtonUnknownPose.Text = "空间位置未知";
             radioButtonUnknownPose.UseVisualStyleBackColor = true;
             radioButtonUnknownPose.CheckedChanged += radioButtonUnknownPose_CheckedChanged;
             // 

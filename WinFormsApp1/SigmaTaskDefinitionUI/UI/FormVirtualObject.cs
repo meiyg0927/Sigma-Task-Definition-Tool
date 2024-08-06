@@ -60,7 +60,6 @@ namespace SigmaTaskDefinitionUI.UI
             InitializeComponent();
             InitializeRotation();
 
-            #if false
             {
                 Func_GetStlFiles(out List<string> modelNameList);
                 comboBoxModelType.Items.Clear();
@@ -71,39 +70,27 @@ namespace SigmaTaskDefinitionUI.UI
                 PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Off;
                 InitializeViewport();            
             }
-            #endif
-            comboBoxModelType.SelectedIndex = 0;
+            comboBoxModelType.SelectedIndex = -1;
         }
 
         private void FormVirtualObject_Load(object sender, EventArgs e)
         {
             CenterToParent();
 
-            {
-                Func_GetStlFiles(out List<string> modelNameList);
-                comboBoxModelType.Items.Clear();
-                foreach (string modelName in modelNameList)
-                {
-                    comboBoxModelType.Items.Add(modelName);
-                }
-            }
-
-            PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Off;
-            InitializeViewport();
             StartRotation();
 
             richTextBoxModelName.Text = inValue.Name;
             if (comboBoxModelType.Items.Contains(inValue.ModelType))
             {
                 int index = comboBoxModelType.Items.IndexOf(inValue.ModelType);
+                //确保comboBoxModelType_SelectedIndexChanged会被调用（虽然这样会调用二次）
+                comboBoxModelType.SelectedIndex = -1;
                 comboBoxModelType.SelectedIndex = index;
             }
             else
             {
                 comboBoxModelType.SelectedIndex = -1;
             }
-
-            //LoadSTLModel(comboBoxModelType.Items[0].ToString());
 
             if (_isNew)
             {
@@ -145,6 +132,12 @@ namespace SigmaTaskDefinitionUI.UI
             {
                 D3_timer.Tick -= Timer_Tick;
                 D3_timer.Dispose();
+            }
+
+            if (D3_modelVisual != null)
+            {
+                D3_modelVisual.Content = null;
+                D3_modelVisual.Transform = null;
             }
         }
 
@@ -206,7 +199,7 @@ namespace SigmaTaskDefinitionUI.UI
             // 获取当前选中的项
             object? selectedItem = comboBoxModelType.SelectedItem;
 
-            if (selectedItem != null)
+            if (selectedItem != null && comboBoxModelType.SelectedIndex >=0)
             {
                 string? selectedModel = selectedItem.ToString();
                 if (!string.IsNullOrEmpty(selectedModel))
