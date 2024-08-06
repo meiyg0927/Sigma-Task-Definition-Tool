@@ -51,6 +51,7 @@
             pictureBox = new PictureBox();
             panel2 = new Panel();
             panel3 = new Panel();
+            label1 = new Label();
             panel1.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -265,11 +266,11 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
-            label4.Location = new Point(152, 1158);
+            label4.Location = new Point(140, 1140);
             label4.Name = "label4";
-            label4.Size = new Size(1358, 31);
+            label4.Size = new Size(590, 31);
             label4.TabIndex = 43;
-            label4.Text = "上方输入模型（虚拟物体）的相关信息，并可预览模型。模型预览的操作方法：鼠标滚轮可以缩放模型；鼠标右键可以旋转模型";
+            label4.Text = "基本信息处，在下拉列表框里选择一个模型，即可预览";
             // 
             // pictureBox
             // 
@@ -298,11 +299,22 @@
             panel3.Size = new Size(982, 123);
             panel3.TabIndex = 46;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Microsoft YaHei UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 134);
+            label1.Location = new Point(140, 1184);
+            label1.Name = "label1";
+            label1.Size = new Size(1083, 31);
+            label1.TabIndex = 47;
+            label1.Text = "模型预览的操作方法：SHIFT+方向键可以移动模型；鼠标滚轮可以缩放模型；鼠标右键可以旋转模型";
+            // 
             // FormVirtualObject
             // 
             AutoScaleDimensions = new SizeF(14F, 31F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1581, 1225);
+            ClientSize = new Size(1581, 1236);
+            Controls.Add(label1);
             Controls.Add(buttonVirtualObjectCancel);
             Controls.Add(panel3);
             Controls.Add(label4);
@@ -356,5 +368,6 @@
         private CheckBox checkBoxAuxCubeVisibled;
         private CheckBox checkBoxModelInfoVisibled;
         private Panel panel3;
+        private Label label1;
     }
 }

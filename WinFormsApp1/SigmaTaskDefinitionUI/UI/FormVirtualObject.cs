@@ -59,6 +59,19 @@ namespace SigmaTaskDefinitionUI.UI
         {
             InitializeComponent();
             InitializeRotation();
+
+            #if false
+            {
+                Func_GetStlFiles(out List<string> modelNameList);
+                comboBoxModelType.Items.Clear();
+                foreach (string modelName in modelNameList)
+                {
+                    comboBoxModelType.Items.Add(modelName);
+                }
+                PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Off;
+                InitializeViewport();            
+            }
+            #endif
             comboBoxModelType.SelectedIndex = 0;
         }
 
@@ -293,9 +306,12 @@ namespace SigmaTaskDefinitionUI.UI
             var pointLight = new PointLight(Colors.White, new Point3D(3, 3, 3));
             var lightVisual = new ModelVisual3D();
             lightVisual.Content = pointLight;
-
-            // 将光源添加到视图
             D3_viewport.Children.Add(lightVisual);
+
+            PointLight pointLight2 = new PointLight(Colors.White, new Point3D(-30, -30, -30));
+            var lightVisual2 = new ModelVisual3D();
+            lightVisual2.Content = pointLight2;
+            D3_viewport.Children.Add(lightVisual2);
 
             // 设置旋转
             D3_rotation = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 0);
@@ -316,6 +332,16 @@ namespace SigmaTaskDefinitionUI.UI
                 // 使用 STLReader 加载 STL 文件
                 var reader = new StLReader();
                 Model3DGroup model = reader.Read(filePath);
+
+                // 为模型设置白色材质
+                foreach (var geometry in model.Children)
+                {
+                    if (geometry is GeometryModel3D geometryModel)
+                    {
+                        geometryModel.Material = new DiffuseMaterial(new SolidColorBrush(Colors.White));
+                        geometryModel.BackMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.White));
+                    }
+                }
 
                 // 获取模型的包围盒
                 var bounds = model.Bounds;
